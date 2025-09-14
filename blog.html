@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog | Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+        header { background: #2d3e50; color: #fff; padding: 2rem 1rem; text-align: center; }
+        main { max-width: 800px; margin: 2rem auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
+        h1 { margin-bottom: 0.5rem; }
+        .blog-post { background: #f8fafc; border-radius: 6px; padding: 18px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor:pointer; }
+        .blog-post h3 { margin: 0 0 8px 0; color: #2a5d84; }
+        .blog-post small { color: #888; }
+        .blog-post p { color: #444; }
+        .back-btn { margin-top:1rem;padding:0.5rem 1.2rem;font-size:1rem;background:#3498db;color:#fff;border:none;border-radius:4px;cursor:pointer; }
+        footer { text-align: center; color: #888; padding: 1rem 0; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Blog</h1>
+        <p>Updates on my engineering journey</p>
+        <button onclick="window.location.href='index.html'" class="back-btn">Back to Main Page</button>
+    </header>
+    <main>
+        <div class="blog-post" onclick="window.location.href='blog-post-1.html'">
+            <h3>Welcome to my blog!</h3>
+            <small>June 2024</small>
+            <p>A quick introduction to my blog and what I'll be sharing: updates on projects, programming, classes, and events like career fairs. <span style="color:#2a5d84;text-decoration:underline;cursor:pointer;">Read more</span></p>
+        </div>
+        <!-- Add more blog posts here, each with its own box and link -->
+    </main>
+    <footer>
+        &copy; 2024 My Portfolio. All rights reserved.
+    </footer>
+</body>
+</html>
