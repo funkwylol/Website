@@ -10,6 +10,22 @@
         main { max-width: 800px; margin: 2rem auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
         h1 { margin-bottom: 0.5rem; }
         .blog-post { background: #f8fafc; border-radius: 6px; padding: 18px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor:pointer; }
+        .blog-post.pinned {
+            border: 3px solid #f39c12;
+            background: #fffbe6;
+            position: relative;
+        }
+        .pin-icon {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 1.5rem;
+            color: #f39c12;
+            background: #fffbe6;
+            border-radius: 50%;
+            padding: 4px 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
         .blog-post h3 { margin: 0 0 8px 0; color: #2a5d84; }
         .blog-post small { color: #888; }
         .blog-post p { color: #444; }
@@ -30,6 +46,12 @@
             <p>A quick introduction to my blog and what I'll be sharing: updates on projects, programming, classes, and events like career fairs. <span style="color:#2a5d84;text-decoration:underline;cursor:pointer;">Read more</span></p>
         </div>
         <!-- Add more blog posts here, each with its own box and link -->
-    </main>
-</body>
-</html>
+            <div class="blog-post" onclick="window.location.href='blog-post-2.html'">
+                <h3>Why I decided to graduate high school early</h3>
+                <small>September 2025</small>
+                <p>My story about graduating high school ahead of schedule, the motivations behind my decision, and what I learned from the experience. <span style="color:#2a5d84;text-decoration:underline;cursor:pointer;">Read more</span></p>
+            </div>
+        </main>
+    <!-- Copyright footer removed -->
+    </body>
+    </html>
