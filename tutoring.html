@@ -1544,17 +1544,25 @@ const BOOKINGS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS-Vh2MXC5
 
 let confirmedBookings = []; // populated on page load
 
-// Fetch confirmed bookings from Google Sheets (silently — never blocks the page)
+// Load confirmed bookings from Google Sheets via JSONP (avoids CORS issues with Apps Script)
+function loadBookingsJSONP(url) {
+    var callbackName = '__bookingsCb_' + Date.now();
+    var script = document.createElement('script');
+    window[callbackName] = function(data) {
+        if (Array.isArray(data)) confirmedBookings = data;
+        delete window[callbackName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+    };
+    script.onerror = function() {
+        delete window[callbackName];
+        if (script.parentNode) script.parentNode.removeChild(script);
+    };
+    script.src = url + (url.indexOf('?') === -1 ? '?' : '&') + 'callback=' + callbackName;
+    document.head.appendChild(script);
+}
+
 if (BOOKINGS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL') {
-    fetch(BOOKINGS_SCRIPT_URL)
-        .then(r => r.json())
-        .then(data => {
-            if (Array.isArray(data)) confirmedBookings = data;
-        })
-        .catch(() => {
-            // If fetch fails (offline, CORS, etc.) just leave confirmedBookings empty
-            // so the form still works — conflict checking simply won't run
-        });
+    loadBookingsJSONP(BOOKINGS_SCRIPT_URL);
 }
 
 // Returns null if no conflict, or an object describing the conflict
