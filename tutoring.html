@@ -1130,6 +1130,7 @@ body {
                         <span>Wed</span><span>9:00 am – 5:00 pm</span>
                         <span>Thu – Sun</span><span>9:00 am – 7:00 pm</span>
                     </div>
+                    <div id="bookings-status" style="margin-top:0.6rem;font-size:0.78rem;font-family:'DM Mono',monospace;color:var(--ink-light);">Checking availability data…</div>
                 </div>
 
                 <form class="booking-form" id="bookingRequestForm">
@@ -1549,11 +1550,20 @@ function loadBookingsJSONP(url) {
     var callbackName = '__bookingsCb_' + Date.now();
     var script = document.createElement('script');
     window[callbackName] = function(data) {
-        if (Array.isArray(data)) confirmedBookings = data;
+        if (Array.isArray(data)) {
+            confirmedBookings = data;
+            var s = document.getElementById('bookings-status');
+            if (s) s.textContent = confirmedBookings.length + ' confirmed booking(s) on file — conflicts will be blocked.';
+        } else {
+            var s = document.getElementById('bookings-status');
+            if (s) s.textContent = 'Availability data loaded (no confirmed bookings yet).';
+        }
         delete window[callbackName];
         if (script.parentNode) script.parentNode.removeChild(script);
     };
     script.onerror = function() {
+        var s = document.getElementById('bookings-status');
+        if (s) s.textContent = 'Could not load availability data — contact me directly if unsure.';
         delete window[callbackName];
         if (script.parentNode) script.parentNode.removeChild(script);
     };
