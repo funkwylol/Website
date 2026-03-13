@@ -725,7 +725,313 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ============================
+   BOOKING SECTION
+   ============================ */
+.booking {
+    padding: 80px 20px;
+    background: var(--white);
+}
+
+.booking-intro {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 2.5rem;
+    font-size: 1.05rem;
+    color: var(--ink-mid);
+    line-height: 1.8;
+}
+
+.booking-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.booking-step-indicator {
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+    color: var(--ink-light);
+    background: var(--panel);
+    transition: all 0.3s;
+}
+
+.booking-step-indicator.active {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy);
+}
+
+.step-arrow {
+    color: var(--border-mid);
+    font-size: 1rem;
+}
+
+.booking-panel {
+    display: none;
+}
+
+.booking-panel.active {
+    display: block;
+}
+
+/* Week navigation */
+.week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.week-nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    transition: all 0.3s;
+}
+
+.week-nav-btn:hover:not(:disabled) {
+    border-color: var(--navy);
+    color: var(--navy);
+}
+
+.week-range {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    min-width: 200px;
+    text-align: center;
+}
+
+/* Calendar */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+}
+
+.day-column {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    min-width: 76px;
+}
+
+.day-header {
+    text-align: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.25rem;
+}
+
+.day-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.day-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 0.2rem;
+}
+
+.day-date.today {
+    color: var(--navy);
+}
+
+.time-slot {
+    width: 100%;
+    padding: 0.45rem 0.25rem;
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-size: 0.73rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--ink-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    line-height: 1.4;
+}
+
+.time-slot:hover {
+    border-color: var(--sage);
+    background: var(--sage-light);
+    color: var(--ink);
+}
+
+.time-slot.selected {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+}
+
+.time-slot.unavailable {
+    background: var(--panel);
+    color: var(--border);
+    cursor: not-allowed;
+    border-color: var(--border);
+    opacity: 0.5;
+}
+
+.no-slots {
+    font-size: 0.73rem;
+    color: var(--border-mid);
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.calendar-note {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--ink-light);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.3px;
+    margin-top: 0.75rem;
+}
+
+/* Booking form */
+.selected-slot-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--navy-light);
+    border: 1px solid #ccd4dc;
+    padding: 1rem 1.5rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.slot-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--navy);
+    line-height: 1.5;
+}
+
+.change-slot-btn {
+    background: none;
+    border: 1px solid var(--navy);
+    color: var(--navy);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.3s;
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+
+.change-slot-btn:hover {
+    background: var(--navy);
+    color: var(--white);
+}
+
+.booking-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.booking-note {
+    background: var(--sage-light);
+    border-left: 3px solid var(--sage);
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+}
+
+/* Confirmation */
+.booking-confirmation {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.confirmation-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: var(--sage);
+    color: white;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.booking-confirmation h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: var(--ink);
+}
+
+.booking-confirmation p {
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .calendar-grid {
+        grid-template-columns: repeat(7, minmax(70px, 1fr));
+    }
+
+    .step-arrow {
+        display: none;
+    }
+
+    .booking-step-indicator {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.72rem;
+    }
+
+    .selected-slot-banner {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+
+    .change-slot-btn {
+        margin-left: 0;
+    }
+}
+
     </style>
+    <!-- EmailJS — used by the booking form to email you when someone requests a session -->
+    <!-- Free up to 200 emails/month. Setup: https://www.emailjs.com -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -739,6 +1045,7 @@ body {
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#services" class="nav-link">Services</a></li>
                 <li><a href="#why-us" class="nav-link">Why Us</a></li>
+                <li><a href="#booking" class="nav-link">Book</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger">
@@ -898,6 +1205,92 @@ body {
                 <div class="testimonial-box">
                     <p><strong>I diagnose, fix, and help you move forward.</strong></p>
                     <p>Each session is tailored to where you are right now. I'll identify the gaps in your understanding, work with you to fill them, and help you build confidence for what's next. You'll truly understand what you're learning, not just memorize for the test.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking">
+        <div class="container">
+            <h2 class="section-title">Book a Session</h2>
+            <p class="booking-intro">Pick an available time slot below to send me a booking request. I'll confirm within 24 hours and send you a secure payment link via Stripe ($35–40/hr).</p>
+
+            <!-- Step Indicators -->
+            <div class="booking-steps">
+                <div class="booking-step-indicator active" id="step-indicator-1">1 · Choose a Time</div>
+                <div class="step-arrow">→</div>
+                <div class="booking-step-indicator" id="step-indicator-2">2 · Your Details</div>
+                <div class="step-arrow">→</div>
+                <div class="booking-step-indicator" id="step-indicator-3">3 · Request Sent</div>
+            </div>
+
+            <!-- Step 1: Calendar -->
+            <div class="booking-panel active" id="booking-step-1">
+                <div class="week-nav">
+                    <button class="week-nav-btn" id="prev-week" type="button">← Prev</button>
+                    <span class="week-range" id="week-range">Loading...</span>
+                    <button class="week-nav-btn" id="next-week" type="button">Next →</button>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+                <p class="calendar-note">Times shown in your local timezone &nbsp;·&nbsp; Sessions are 1 hr &nbsp;·&nbsp; 30-min buffer between bookings</p>
+            </div>
+
+            <!-- Step 2: Booking Form -->
+            <div class="booking-panel" id="booking-step-2">
+                <div class="selected-slot-banner">
+                    <span class="slot-label" id="selected-slot-display">No time selected</span>
+                    <button class="change-slot-btn" type="button" onclick="showBookingStep(1)">Change</button>
+                </div>
+                <form class="booking-form" id="bookingRequestForm">
+                    <div class="form-group">
+                        <input type="text" id="booking-name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="booking-email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="booking-phone" placeholder="Your Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="booking-subject" required>
+                            <option value="">Select Subject</option>
+                            <option value="Algebra & Pre-Calculus">Algebra & Pre-Calculus</option>
+                            <option value="Calculus (AB/BC)">Calculus (AB/BC)</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="AP Human Geography">AP Human Geography</option>
+                            <option value="AP Computer Science Principles">AP Computer Science Principles</option>
+                            <option value="AP Computer Science A">AP Computer Science A</option>
+                            <option value="SAT / ACT Prep">SAT / ACT Prep</option>
+                            <option value="Multiple Subjects">Multiple Subjects</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="booking-format" required>
+                            <option value="">In-person or Online?</option>
+                            <option value="In-person (LA/OC area)">In-person (LA/OC area)</option>
+                            <option value="Online (Zoom/video call)">Online (Zoom/video call)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="booking-notes" placeholder="Any notes: grade level, specific topics, school, etc." rows="4"></textarea>
+                    </div>
+                    <div class="booking-note">
+                        No payment now. Once I confirm your booking, I'll send a secure Stripe payment link for the session fee.
+                    </div>
+                    <button type="submit" class="submit-button" id="booking-submit-btn">Request Booking</button>
+                </form>
+            </div>
+
+            <!-- Step 3: Confirmation -->
+            <div class="booking-panel" id="booking-step-3">
+                <div class="booking-confirmation">
+                    <div class="confirmation-icon">✓</div>
+                    <h3>Request Sent!</h3>
+                    <p>Thanks! I received your booking request and will confirm within 24 hours.</p>
+                    <p>Check <strong id="confirm-email"></strong> for my reply with confirmation and your Stripe payment link.</p>
+                    <button class="cta-button" type="button" onclick="resetBooking()" style="margin-top: 2rem;">Book Another Session</button>
                 </div>
             </div>
         </div>
@@ -1164,6 +1557,290 @@ if (!('behavior' in document.documentElement.style)) {
         });
     });
 }
+
+// ============================================================
+// BOOKING SYSTEM
+// ============================================================
+//
+// SETUP REQUIRED (one-time, takes ~5 minutes):
+// 1. Go to https://www.emailjs.com and create a free account
+//    (free tier = 200 emails/month, no credit card needed)
+// 2. Add an Email Service: click "Email Services" > "Add New Service"
+//    > choose Gmail > connect your Google account
+// 3. Create a Template: click "Email Templates" > "Create New Template"
+//    Use these exact variable names in your template body:
+//      {{from_name}}   {{from_email}}   {{from_phone}}
+//      {{session_date}} {{session_time}} {{subject}}
+//      {{format}}       {{notes}}
+//    Example template body:
+//      New booking request from {{from_name}}
+//      Email: {{from_email}} | Phone: {{from_phone}}
+//      Date: {{session_date}} | Time: {{session_time}}
+//      Subject: {{subject}} | Format: {{format}}
+//      Notes: {{notes}}
+// 4. Copy your Public Key (Account > General), Service ID, and Template ID
+// 5. Paste them into the three lines below:
+//
+const EMAILJS_PUBLIC_KEY  = 'HubDZVI-Z-fSKEcds';   // Account > General
+const EMAILJS_SERVICE_ID  = 'service_extq99u';   // Email Services
+const EMAILJS_TEMPLATE_ID = 'template_7lb5s1j';  // Email Templates
+
+if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+
+// ------------------------------------------------------------------
+// AVAILABILITY  (24-hr, 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat)
+// To change your hours, edit the start/end values below.
+// ------------------------------------------------------------------
+const weeklyAvailability = {
+    0: [{ start: 9,  end: 19 }],  // Sunday    9am–7pm
+    1: [{ start: 8,  end: 12 }],  // Monday    8am–12pm
+    2: [{ start: 8,  end: 12 }],  // Tuesday   8am–12pm
+    3: [{ start: 9,  end: 17 }],  // Wednesday 9am–5pm
+    4: [{ start: 9,  end: 19 }],  // Thursday  9am–7pm
+    5: [{ start: 9,  end: 19 }],  // Friday    9am–7pm
+    6: [{ start: 9,  end: 19 }],  // Saturday  9am–7pm
+};
+
+const SESSION_MINS = 60;  // session length
+const BUFFER_MINS  = 30;  // gap required between sessions
+
+// Build list of slot start-times (in minutes from midnight) for a given day-of-week
+function generateSlots(dayOfWeek) {
+    const windows = weeklyAvailability[dayOfWeek] || [];
+    const slots = [];
+    for (const w of windows) {
+        let t = w.start * 60;
+        while (t + SESSION_MINS <= w.end * 60) {
+            slots.push(t);
+            t += SESSION_MINS + BUFFER_MINS;
+        }
+    }
+    return slots;
+}
+
+function toTime12(mins) {
+    const h  = Math.floor(mins / 60);
+    const m  = mins % 60;
+    const ap = h < 12 ? 'AM' : 'PM';
+    return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${ap}`;
+}
+
+// Week starts Monday
+function getMondayOf(date) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    const day = d.getDay();
+    d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
+    return d;
+}
+
+function fmtShort(date) {
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+let currentWeekMonday = getMondayOf(new Date());
+let selectedSlotData  = null;
+
+function renderCalendar() {
+    const grid = document.getElementById('calendar-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const now        = new Date();
+    const todayStart = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+
+    const weekEnd = new Date(currentWeekMonday);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    const rangeEl = document.getElementById('week-range');
+    if (rangeEl) rangeEl.textContent = `${fmtShort(currentWeekMonday)} – ${fmtShort(weekEnd)}`;
+
+    // Disable prev button when already on current week
+    const prevBtn = document.getElementById('prev-week');
+    if (prevBtn) {
+        const onOrBeforeToday = currentWeekMonday <= todayStart;
+        prevBtn.disabled     = onOrBeforeToday;
+        prevBtn.style.opacity = onOrBeforeToday ? '0.4' : '1';
+        prevBtn.style.cursor  = onOrBeforeToday ? 'not-allowed' : 'pointer';
+    }
+
+    // Mon Tue Wed Thu Fri Sat Sun  → day-of-week indices
+    const dayOrder = [1, 2, 3, 4, 5, 6, 0];
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    dayOrder.forEach((dow, i) => {
+        const date = new Date(currentWeekMonday);
+        date.setDate(date.getDate() + i);
+        date.setHours(0, 0, 0, 0);
+
+        const isPastDay = date < todayStart;
+        const isToday   = date.getTime() === todayStart.getTime();
+
+        const col = document.createElement('div');
+        col.className = 'day-column';
+
+        col.innerHTML = `
+            <div class="day-header">
+                <div class="day-name">${dayNames[i]}</div>
+                <div class="day-date${isToday ? ' today' : ''}">${date.getDate()}</div>
+            </div>`;
+
+        const slots = generateSlots(dow);
+
+        if (isPastDay || slots.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'no-slots';
+            empty.textContent = slots.length === 0 ? 'N/A' : '—';
+            col.appendChild(empty);
+        } else {
+            slots.forEach(slotMins => {
+                const slotDT = new Date(date);
+                slotDT.setHours(Math.floor(slotMins / 60), slotMins % 60, 0, 0);
+                const isPast = slotDT <= now;
+
+                const btn = document.createElement('button');
+                btn.type      = 'button';
+                btn.className = `time-slot${isPast ? ' unavailable' : ''}`;
+                btn.textContent = toTime12(slotMins);
+
+                if (!isPast) {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.time-slot.selected')
+                            .forEach(el => el.classList.remove('selected'));
+                        btn.classList.add('selected');
+
+                        selectedSlotData = {
+                            displayDate: date.toLocaleDateString('en-US', {
+                                weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+                            }),
+                            displayTime: toTime12(slotMins),
+                            displayEnd:  toTime12(slotMins + SESSION_MINS),
+                        };
+                        showBookingStep(2);
+                    });
+                }
+                col.appendChild(btn);
+            });
+        }
+        grid.appendChild(col);
+    });
+}
+
+function showBookingStep(step) {
+    document.querySelectorAll('.booking-panel')
+        .forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.booking-step-indicator')
+        .forEach(s => s.classList.remove('active'));
+
+    const panel     = document.getElementById(`booking-step-${step}`);
+    const indicator = document.getElementById(`step-indicator-${step}`);
+    if (panel)     panel.classList.add('active');
+    if (indicator) indicator.classList.add('active');
+
+    if (step === 2 && selectedSlotData) {
+        const display = document.getElementById('selected-slot-display');
+        if (display) {
+            display.textContent =
+                `${selectedSlotData.displayDate}  ·  ${selectedSlotData.displayTime} – ${selectedSlotData.displayEnd}`;
+        }
+    }
+
+    const section = document.getElementById('booking');
+    if (section) setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+}
+
+function resetBooking() {
+    selectedSlotData = null;
+    document.querySelectorAll('.time-slot.selected')
+        .forEach(el => el.classList.remove('selected'));
+    const form = document.getElementById('bookingRequestForm');
+    if (form) form.reset();
+    showBookingStep(1);
+}
+
+// Week navigation buttons
+const prevWeekBtn = document.getElementById('prev-week');
+const nextWeekBtn = document.getElementById('next-week');
+if (prevWeekBtn) {
+    prevWeekBtn.addEventListener('click', () => {
+        currentWeekMonday.setDate(currentWeekMonday.getDate() - 7);
+        renderCalendar();
+    });
+}
+if (nextWeekBtn) {
+    nextWeekBtn.addEventListener('click', () => {
+        currentWeekMonday.setDate(currentWeekMonday.getDate() + 7);
+        renderCalendar();
+    });
+}
+
+// Booking form submission
+const bookingForm = document.getElementById('bookingRequestForm');
+if (bookingForm) {
+    bookingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (!selectedSlotData) {
+            alert('Please select a time slot first.');
+            showBookingStep(1);
+            return;
+        }
+
+        const name    = document.getElementById('booking-name').value.trim();
+        const email   = document.getElementById('booking-email').value.trim();
+        const phone   = document.getElementById('booking-phone').value.trim();
+        const subject = document.getElementById('booking-subject').value;
+        const format  = document.getElementById('booking-format').value;
+        const notes   = document.getElementById('booking-notes').value.trim();
+
+        const submitBtn = document.getElementById('booking-submit-btn');
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled    = true;
+
+        const params = {
+            from_name:    name,
+            from_email:   email,
+            from_phone:   phone,
+            session_date: selectedSlotData.displayDate,
+            session_time: `${selectedSlotData.displayTime} – ${selectedSlotData.displayEnd}`,
+            subject:      subject,
+            format:       format,
+            notes:        notes || 'None provided',
+        };
+
+        // If EmailJS isn't configured yet, log and show confirmation anyway
+        if (typeof emailjs === 'undefined' || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+            console.log('Booking request (EmailJS not yet configured):', params);
+            document.getElementById('confirm-email').textContent = email;
+            showBookingStep(3);
+            this.reset();
+            submitBtn.textContent = 'Request Booking';
+            submitBtn.disabled    = false;
+            return;
+        }
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+            .then(() => {
+                document.getElementById('confirm-email').textContent = email;
+                showBookingStep(3);
+                this.reset();
+                submitBtn.textContent = 'Request Booking';
+                submitBtn.disabled    = false;
+            })
+            .catch(err => {
+                console.error('EmailJS error:', err);
+                alert('Something went wrong sending your request. Please try again or contact me directly at (714) 253-7235.');
+                submitBtn.textContent = 'Request Booking';
+                submitBtn.disabled    = false;
+            });
+    });
+}
+
+// Render calendar on load
+renderCalendar();
 
 console.log('Your Study Guide Tutor Website Loaded');
 console.log('Contact: (714) 253-7235');
