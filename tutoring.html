@@ -782,170 +782,55 @@ body {
     display: block;
 }
 
-/* Week navigation */
-.week-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
-
-.week-nav-btn {
-    background: none;
-    border: 1px solid var(--border);
-    padding: 0.5rem 1.2rem;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    color: var(--ink-mid);
-    transition: all 0.3s;
-}
-
-.week-nav-btn:hover:not(:disabled) {
-    border-color: var(--navy);
-    color: var(--navy);
-}
-
-.week-range {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--ink-mid);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    min-width: 200px;
-    text-align: center;
-}
-
-/* Calendar */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    overflow-x: auto;
-}
-
-.day-column {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.4rem;
-    min-width: 76px;
-}
-
-.day-header {
-    text-align: center;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 0.25rem;
-}
-
-.day-name {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--ink-light);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.day-date {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--ink);
-    margin-top: 0.2rem;
-}
-
-.day-date.today {
-    color: var(--navy);
-}
-
-.time-slot {
-    width: 100%;
-    padding: 0.45rem 0.25rem;
-    border: 1px solid var(--border);
-    background: var(--white);
-    font-size: 0.73rem;
-    font-family: 'DM Mono', monospace;
-    color: var(--ink-mid);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    line-height: 1.4;
-}
-
-.time-slot:hover {
-    border-color: var(--sage);
-    background: var(--sage-light);
-    color: var(--ink);
-}
-
-.time-slot.selected {
-    background: var(--navy);
-    border-color: var(--navy);
-    color: var(--white);
-}
-
-.time-slot.unavailable {
-    background: var(--panel);
-    color: var(--border);
-    cursor: not-allowed;
-    border-color: var(--border);
-    opacity: 0.5;
-}
-
-.no-slots {
-    font-size: 0.73rem;
-    color: var(--border-mid);
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-    padding: 0.5rem 0;
-}
-
-.calendar-note {
-    text-align: center;
-    font-size: 0.82rem;
-    color: var(--ink-light);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.3px;
-    margin-top: 0.75rem;
-}
-
-/* Booking form */
-.selected-slot-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--navy-light);
-    border: 1px solid #ccd4dc;
-    padding: 1rem 1.5rem;
+/* Availability reference card */
+.availability-ref {
     max-width: 600px;
     margin: 0 auto 2rem;
+    background: var(--navy-light);
+    border: 1px solid #ccd4dc;
+    padding: 1.25rem 1.5rem;
 }
 
-.slot-label {
+.avail-label {
+    display: block;
     font-family: 'DM Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     color: var(--navy);
-    line-height: 1.5;
+    margin-bottom: 0.75rem;
 }
 
-.change-slot-btn {
-    background: none;
-    border: 1px solid var(--navy);
-    color: var(--navy);
-    padding: 0.3rem 0.8rem;
-    font-size: 0.8rem;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.3s;
+.avail-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 2rem;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+}
+
+.avail-grid span:nth-child(odd) {
+    font-weight: 600;
+    color: var(--ink);
     white-space: nowrap;
-    margin-left: 1rem;
 }
 
-.change-slot-btn:hover {
-    background: var(--navy);
-    color: var(--white);
+/* Field labels for date/time inputs */
+.field-label {
+    display: block;
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.4rem;
+}
+
+/* Date / time / duration row */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
 }
 
 .booking-form {
@@ -1003,11 +888,30 @@ body {
     margin-bottom: 0.75rem;
 }
 
-@media (max-width: 768px) {
-    .calendar-grid {
-        grid-template-columns: repeat(7, minmax(70px, 1fr));
-    }
+.booking-conflict-msg {
+    max-width: 600px;
+    margin: -0.5rem auto 1rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 2px;
+    display: none;
+}
 
+.booking-conflict-msg.conflict {
+    display: block;
+    background: #fff0f0;
+    border-left: 3px solid #c0392b;
+    color: #c0392b;
+}
+
+.booking-conflict-msg.available {
+    display: block;
+    background: var(--sage-light);
+    border-left: 3px solid var(--sage);
+    color: var(--ink-mid);
+}
+
+@media (max-width: 768px) {
     .step-arrow {
         display: none;
     }
@@ -1017,14 +921,8 @@ body {
         font-size: 0.72rem;
     }
 
-    .selected-slot-banner {
-        flex-direction: column;
-        gap: 0.75rem;
-        text-align: center;
-    }
-
-    .change-slot-btn {
-        margin-left: 0;
+    .form-row {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -1148,7 +1046,7 @@ body {
             <div class="services-details">
                 <div class="service-item">
                     <h3>💰 Pricing</h3>
-                    <p><strong>$35–40/hour</strong> depending on subject and session type</p>
+                    <p><strong>$45–60/hour</strong> depending on subject and session type</p>
                 </div>
                 <div class="service-item">
                     <h3>📍 Flexible Location</h3>
@@ -1214,35 +1112,52 @@ body {
     <section id="booking" class="booking">
         <div class="container">
             <h2 class="section-title">Book a Session</h2>
-            <p class="booking-intro">Pick an available time slot below to send me a booking request. I'll confirm within 24 hours and send you a secure payment link via Stripe ($35–40/hr).</p>
+            <p class="booking-intro">Pick any date and time that works for you and send me a request. I'll get back to you within 24 hours to confirm or suggest a better time.</p>
 
             <!-- Step Indicators -->
             <div class="booking-steps">
-                <div class="booking-step-indicator active" id="step-indicator-1">1 · Choose a Time</div>
+                <div class="booking-step-indicator active" id="step-indicator-1">1 · Request Details</div>
                 <div class="step-arrow">→</div>
-                <div class="booking-step-indicator" id="step-indicator-2">2 · Your Details</div>
-                <div class="step-arrow">→</div>
-                <div class="booking-step-indicator" id="step-indicator-3">3 · Request Sent</div>
+                <div class="booking-step-indicator" id="step-indicator-2">2 · Request Sent</div>
             </div>
 
-            <!-- Step 1: Calendar -->
+            <!-- Step 1: Form -->
             <div class="booking-panel active" id="booking-step-1">
-                <div class="week-nav">
-                    <button class="week-nav-btn" id="prev-week" type="button">← Prev</button>
-                    <span class="week-range" id="week-range">Loading...</span>
-                    <button class="week-nav-btn" id="next-week" type="button">Next →</button>
+                <div class="availability-ref">
+                    <span class="avail-label">My typical availability</span>
+                    <div class="avail-grid">
+                        <span>Mon &amp; Tue</span><span>8:00 am – 12:00 pm</span>
+                        <span>Wed</span><span>9:00 am – 5:00 pm</span>
+                        <span>Thu – Sun</span><span>9:00 am – 7:00 pm</span>
+                    </div>
                 </div>
-                <div class="calendar-grid" id="calendar-grid"></div>
-                <p class="calendar-note">Times shown in your local timezone &nbsp;·&nbsp; Sessions are 1 hr &nbsp;·&nbsp; 30-min buffer between bookings</p>
-            </div>
 
-            <!-- Step 2: Booking Form -->
-            <div class="booking-panel" id="booking-step-2">
-                <div class="selected-slot-banner">
-                    <span class="slot-label" id="selected-slot-display">No time selected</span>
-                    <button class="change-slot-btn" type="button" onclick="showBookingStep(1)">Change</button>
-                </div>
                 <form class="booking-form" id="bookingRequestForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="field-label" for="booking-date">Date</label>
+                            <input type="date" id="booking-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" for="booking-time">Start Time</label>
+                            <input type="time" id="booking-time" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" for="booking-duration">Duration</label>
+                            <select id="booking-duration" required>
+                                <option value="">Select</option>
+                                <option value="1 hour">1 hour</option>
+                                <option value="1.5 hours">1.5 hours</option>
+                                <option value="2 hours">2 hours</option>
+                                <option value="2.5 hours">2.5 hours</option>
+                                <option value="3 hours">3 hours</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Conflict / availability message shown after all 3 date/time/duration fields are filled -->
+                    <div id="booking-conflict-msg" class="booking-conflict-msg"></div>
+
                     <div class="form-group">
                         <input type="text" id="booking-name" placeholder="Your Name" required>
                     </div>
@@ -1277,20 +1192,20 @@ body {
                         <textarea id="booking-notes" placeholder="Any notes: grade level, specific topics, school, etc." rows="4"></textarea>
                     </div>
                     <div class="booking-note">
-                        No payment now. Once I confirm your booking, I'll send a secure Stripe payment link for the session fee.
+                        No payment now. Once I confirm your booking, I'll send a secure Stripe payment link for the session fee ($35–40/hr).
                     </div>
-                    <button type="submit" class="submit-button" id="booking-submit-btn">Request Booking</button>
+                    <button type="submit" class="submit-button" id="booking-submit-btn">Send Booking Request</button>
                 </form>
             </div>
 
-            <!-- Step 3: Confirmation -->
-            <div class="booking-panel" id="booking-step-3">
+            <!-- Step 2: Confirmation -->
+            <div class="booking-panel" id="booking-step-2">
                 <div class="booking-confirmation">
                     <div class="confirmation-icon">✓</div>
                     <h3>Request Sent!</h3>
                     <p>Thanks! I received your booking request and will confirm within 24 hours.</p>
                     <p>Check <strong id="confirm-email"></strong> for my reply with confirmation and your Stripe payment link.</p>
-                    <button class="cta-button" type="button" onclick="resetBooking()" style="margin-top: 2rem;">Book Another Session</button>
+                    <button class="cta-button" type="button" onclick="resetBooking()" style="margin-top: 2rem;">Send Another Request</button>
                 </div>
             </div>
         </div>
@@ -1562,171 +1477,157 @@ if (!('behavior' in document.documentElement.style)) {
 // BOOKING SYSTEM
 // ============================================================
 //
-// SETUP REQUIRED (one-time, takes ~5 minutes):
-// 1. Go to https://www.emailjs.com and create a free account
-//    (free tier = 200 emails/month, no credit card needed)
-// 2. Add an Email Service: click "Email Services" > "Add New Service"
-//    > choose Gmail > connect your Google account
-// 3. Create a Template: click "Email Templates" > "Create New Template"
-//    Use these exact variable names in your template body:
-//      {{from_name}}   {{from_email}}   {{from_phone}}
-//      {{session_date}} {{session_time}} {{subject}}
-//      {{format}}       {{notes}}
-//    Example template body:
-//      New booking request from {{from_name}}
-//      Email: {{from_email}} | Phone: {{from_phone}}
-//      Date: {{session_date}} | Time: {{session_time}}
-//      Subject: {{subject}} | Format: {{format}}
-//      Notes: {{notes}}
-// 4. Copy your Public Key (Account > General), Service ID, and Template ID
-// 5. Paste them into the three lines below:
+// EmailJS setup (one-time, ~5 minutes):
+// 1. Create a free account at https://www.emailjs.com
+//    (free tier = 200 emails/month)
+// 2. Email Services > Add New Service > connect Gmail
+// 3. Email Templates > Create New Template
+//    Use these variable names in your template:
+//      {{from_name}}    {{from_email}}   {{from_phone}}
+//      {{session_date}} {{session_time}} {{duration}}
+//      {{subject}}      {{format}}       {{notes}}
+// 4. Replace the values below with your actual IDs:
 //
-const EMAILJS_PUBLIC_KEY  = 'HubDZVI-Z-fSKEcds';   // Account > General
-const EMAILJS_SERVICE_ID  = 'service_extq99u';   // Email Services
-const EMAILJS_TEMPLATE_ID = 'template_7lb5s1j';  // Email Templates
+const EMAILJS_PUBLIC_KEY  = 'HubDZVI-Z-fSKEcds';  // Account > General
+const EMAILJS_SERVICE_ID  = 'service_extq99u';     // Email Services
+const EMAILJS_TEMPLATE_ID = 'template_7lb5s1j';   // Email Templates
 
 if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 }
 
-// ------------------------------------------------------------------
-// AVAILABILITY  (24-hr, 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat)
-// To change your hours, edit the start/end values below.
-// ------------------------------------------------------------------
-const weeklyAvailability = {
-    0: [{ start: 9,  end: 19 }],  // Sunday    9am–7pm
-    1: [{ start: 8,  end: 12 }],  // Monday    8am–12pm
-    2: [{ start: 8,  end: 12 }],  // Tuesday   8am–12pm
-    3: [{ start: 9,  end: 17 }],  // Wednesday 9am–5pm
-    4: [{ start: 9,  end: 19 }],  // Thursday  9am–7pm
-    5: [{ start: 9,  end: 19 }],  // Friday    9am–7pm
-    6: [{ start: 9,  end: 19 }],  // Saturday  9am–7pm
-};
+// ============================================================
+// GOOGLE SHEETS — confirmed bookings (blocks conflicting slots)
+// ============================================================
+//
+// SETUP (one time, ~10 minutes):
+//
+// 1. Open the Google Sheet where you track confirmed bookings.
+//    Create a sheet tab named exactly: Bookings
+//    Give it these columns in row 1:
+//      A: Date          (text, YYYY-MM-DD format, e.g. 2026-03-20)
+//      B: Start Time    (text, 24-hr HH:MM format, e.g. 14:30)
+//      C: Duration      (number, hours, e.g. 1.5)
+//      D: Client Name   (text, optional — just for your reference)
+//
+// 2. In the sheet, go to Extensions > Apps Script.
+//    Paste this code exactly, then click Save (disk icon):
+//
+//    function doGet() {
+//      var sheet = SpreadsheetApp.getActiveSpreadsheet()
+//                    .getSheetByName('Bookings');
+//      var rows  = sheet.getDataRange().getValues();
+//      var bookings = [];
+//      for (var i = 1; i < rows.length; i++) {
+//        if (rows[i][0]) {
+//          bookings.push({
+//            date:     String(rows[i][0]),
+//            start:    String(rows[i][1]),
+//            duration: parseFloat(rows[i][2]) || 1
+//          });
+//        }
+//      }
+//      return ContentService
+//        .createTextOutput(JSON.stringify(bookings))
+//        .setMimeType(ContentService.MimeType.JSON);
+//    }
+//
+// 3. Click Deploy > New Deployment.
+//    - Type: Web App
+//    - Execute as: Me
+//    - Who has access: Anyone
+//    Click Deploy, then copy the Web App URL.
+//
+// 4. Paste that URL as the value of BOOKINGS_SCRIPT_URL below.
+//
+const BOOKINGS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS-Vh2MXC5yYSzGj5820rJZoYcmVbJboF59HYtMvS80UYdTaIp68La_8Q4d40xeTaK/exec'; // ← paste your URL here
 
-const SESSION_MINS = 60;  // session length
-const BUFFER_MINS  = 30;  // gap required between sessions
+let confirmedBookings = []; // populated on page load
 
-// Build list of slot start-times (in minutes from midnight) for a given day-of-week
-function generateSlots(dayOfWeek) {
-    const windows = weeklyAvailability[dayOfWeek] || [];
-    const slots = [];
-    for (const w of windows) {
-        let t = w.start * 60;
-        while (t + SESSION_MINS <= w.end * 60) {
-            slots.push(t);
-            t += SESSION_MINS + BUFFER_MINS;
+// Fetch confirmed bookings from Google Sheets (silently — never blocks the page)
+if (BOOKINGS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL') {
+    fetch(BOOKINGS_SCRIPT_URL)
+        .then(r => r.json())
+        .then(data => {
+            if (Array.isArray(data)) confirmedBookings = data;
+        })
+        .catch(() => {
+            // If fetch fails (offline, CORS, etc.) just leave confirmedBookings empty
+            // so the form still works — conflict checking simply won't run
+        });
+}
+
+// Returns null if no conflict, or an object describing the conflict
+function checkConflict(dateStr, timeStr, durationVal) {
+    if (!dateStr || !timeStr || !durationVal) return null;
+
+    // Parse duration string like "1 hour", "1.5 hours", "2 hours"
+    const durationHours = parseFloat(durationVal) || 1;
+    const [reqH, reqM]  = timeStr.split(':').map(Number);
+    const reqStart      = reqH * 60 + reqM;                    // minutes from midnight
+    const reqEnd        = reqStart + durationHours * 60;
+    const BUFFER        = 30;                                   // minutes
+
+    for (const b of confirmedBookings) {
+        if (b.date !== dateStr) continue;
+
+        const [bH, bM] = String(b.start).split(':').map(Number);
+        const bStart   = bH * 60 + bM;
+        const bEnd     = bStart + (b.duration || 1) * 60;
+
+        // Conflict if the requested window (with buffer) overlaps the booked window
+        if (reqStart < bEnd + BUFFER && reqEnd > bStart - BUFFER) {
+            return { bStart, bEnd, b };
         }
     }
-    return slots;
+    return null;
 }
 
-function toTime12(mins) {
-    const h  = Math.floor(mins / 60);
-    const m  = mins % 60;
-    const ap = h < 12 ? 'AM' : 'PM';
-    return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${ap}`;
-}
+function updateConflictMsg() {
+    const msgEl   = document.getElementById('booking-conflict-msg');
+    if (!msgEl) return;
 
-// Week starts Monday
-function getMondayOf(date) {
-    const d = new Date(date);
-    d.setHours(0, 0, 0, 0);
-    const day = d.getDay();
-    d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
-    return d;
-}
+    const dateVal = (document.getElementById('booking-date')     || {}).value;
+    const timeVal = (document.getElementById('booking-time')     || {}).value;
+    const durVal  = (document.getElementById('booking-duration') || {}).value;
 
-function fmtShort(date) {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
-
-let currentWeekMonday = getMondayOf(new Date());
-let selectedSlotData  = null;
-
-function renderCalendar() {
-    const grid = document.getElementById('calendar-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-
-    const now        = new Date();
-    const todayStart = new Date(now);
-    todayStart.setHours(0, 0, 0, 0);
-
-    const weekEnd = new Date(currentWeekMonday);
-    weekEnd.setDate(weekEnd.getDate() + 6);
-
-    const rangeEl = document.getElementById('week-range');
-    if (rangeEl) rangeEl.textContent = `${fmtShort(currentWeekMonday)} – ${fmtShort(weekEnd)}`;
-
-    // Disable prev button when already on current week
-    const prevBtn = document.getElementById('prev-week');
-    if (prevBtn) {
-        const onOrBeforeToday = currentWeekMonday <= todayStart;
-        prevBtn.disabled     = onOrBeforeToday;
-        prevBtn.style.opacity = onOrBeforeToday ? '0.4' : '1';
-        prevBtn.style.cursor  = onOrBeforeToday ? 'not-allowed' : 'pointer';
+    // Only run the check when all 3 fields have values
+    if (!dateVal || !timeVal || !durVal) {
+        msgEl.className = 'booking-conflict-msg';
+        msgEl.textContent = '';
+        return;
     }
 
-    // Mon Tue Wed Thu Fri Sat Sun  → day-of-week indices
-    const dayOrder = [1, 2, 3, 4, 5, 6, 0];
-    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const conflict = checkConflict(dateVal, timeVal, durVal);
+    if (conflict) {
+        const bookedStart = formatTime(
+            `${String(Math.floor(conflict.bStart / 60)).padStart(2,'0')}:${String(conflict.bStart % 60).padStart(2,'0')}`
+        );
+        const bookedEnd = formatTime(
+            `${String(Math.floor(conflict.bEnd / 60)).padStart(2,'0')}:${String(conflict.bEnd % 60).padStart(2,'0')}`
+        );
+        msgEl.className   = 'booking-conflict-msg conflict';
+        msgEl.textContent = `That time overlaps a confirmed booking (${bookedStart}–${bookedEnd}, including the 30-min buffer). Please choose a different time.`;
+    } else if (confirmedBookings.length > 0) {
+        // Only show the green "looks available" message if we actually loaded bookings
+        msgEl.className   = 'booking-conflict-msg available';
+        msgEl.textContent = '✓ That time looks available.';
+    } else {
+        msgEl.className = 'booking-conflict-msg';
+        msgEl.textContent = '';
+    }
+}
 
-    dayOrder.forEach((dow, i) => {
-        const date = new Date(currentWeekMonday);
-        date.setDate(date.getDate() + i);
-        date.setHours(0, 0, 0, 0);
+// Run the conflict check whenever any of the 3 scheduling fields change
+['booking-date', 'booking-time', 'booking-duration'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', updateConflictMsg);
+});
 
-        const isPastDay = date < todayStart;
-        const isToday   = date.getTime() === todayStart.getTime();
-
-        const col = document.createElement('div');
-        col.className = 'day-column';
-
-        col.innerHTML = `
-            <div class="day-header">
-                <div class="day-name">${dayNames[i]}</div>
-                <div class="day-date${isToday ? ' today' : ''}">${date.getDate()}</div>
-            </div>`;
-
-        const slots = generateSlots(dow);
-
-        if (isPastDay || slots.length === 0) {
-            const empty = document.createElement('div');
-            empty.className = 'no-slots';
-            empty.textContent = slots.length === 0 ? 'N/A' : '—';
-            col.appendChild(empty);
-        } else {
-            slots.forEach(slotMins => {
-                const slotDT = new Date(date);
-                slotDT.setHours(Math.floor(slotMins / 60), slotMins % 60, 0, 0);
-                const isPast = slotDT <= now;
-
-                const btn = document.createElement('button');
-                btn.type      = 'button';
-                btn.className = `time-slot${isPast ? ' unavailable' : ''}`;
-                btn.textContent = toTime12(slotMins);
-
-                if (!isPast) {
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.time-slot.selected')
-                            .forEach(el => el.classList.remove('selected'));
-                        btn.classList.add('selected');
-
-                        selectedSlotData = {
-                            displayDate: date.toLocaleDateString('en-US', {
-                                weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
-                            }),
-                            displayTime: toTime12(slotMins),
-                            displayEnd:  toTime12(slotMins + SESSION_MINS),
-                        };
-                        showBookingStep(2);
-                    });
-                }
-                col.appendChild(btn);
-            });
-        }
-        grid.appendChild(col);
-    });
+// Set minimum date to today
+const dateInput = document.getElementById('booking-date');
+if (dateInput) {
+    dateInput.min = new Date().toISOString().split('T')[0];
 }
 
 function showBookingStep(step) {
@@ -1740,40 +1641,32 @@ function showBookingStep(step) {
     if (panel)     panel.classList.add('active');
     if (indicator) indicator.classList.add('active');
 
-    if (step === 2 && selectedSlotData) {
-        const display = document.getElementById('selected-slot-display');
-        if (display) {
-            display.textContent =
-                `${selectedSlotData.displayDate}  ·  ${selectedSlotData.displayTime} – ${selectedSlotData.displayEnd}`;
-        }
-    }
-
     const section = document.getElementById('booking');
     if (section) setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 
 function resetBooking() {
-    selectedSlotData = null;
-    document.querySelectorAll('.time-slot.selected')
-        .forEach(el => el.classList.remove('selected'));
     const form = document.getElementById('bookingRequestForm');
     if (form) form.reset();
+    // Reset min date after reset
+    if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
     showBookingStep(1);
 }
 
-// Week navigation buttons
-const prevWeekBtn = document.getElementById('prev-week');
-const nextWeekBtn = document.getElementById('next-week');
-if (prevWeekBtn) {
-    prevWeekBtn.addEventListener('click', () => {
-        currentWeekMonday.setDate(currentWeekMonday.getDate() - 7);
-        renderCalendar();
-    });
+// Format a time input value (e.g. "14:30") to "2:30 PM"
+function formatTime(val) {
+    if (!val) return '';
+    const [h, m] = val.split(':').map(Number);
+    const ap = h < 12 ? 'AM' : 'PM';
+    return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${ap}`;
 }
-if (nextWeekBtn) {
-    nextWeekBtn.addEventListener('click', () => {
-        currentWeekMonday.setDate(currentWeekMonday.getDate() + 7);
-        renderCalendar();
+
+// Format a date input value (e.g. "2026-03-20") to "Friday, March 20, 2026"
+function formatDate(val) {
+    if (!val) return '';
+    const [y, mo, d] = val.split('-').map(Number);
+    return new Date(y, mo - 1, d).toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
     });
 }
 
@@ -1783,18 +1676,22 @@ if (bookingForm) {
     bookingForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        if (!selectedSlotData) {
-            alert('Please select a time slot first.');
-            showBookingStep(1);
+        const name     = document.getElementById('booking-name').value.trim();
+        const email    = document.getElementById('booking-email').value.trim();
+        const phone    = document.getElementById('booking-phone').value.trim();
+        const dateVal  = document.getElementById('booking-date').value;
+        const timeVal  = document.getElementById('booking-time').value;
+        const duration = document.getElementById('booking-duration').value;
+        const subject  = document.getElementById('booking-subject').value;
+        const format   = document.getElementById('booking-format').value;
+        const notes    = document.getElementById('booking-notes').value.trim();
+
+        // Block submission if the chosen time conflicts with a confirmed booking
+        if (checkConflict(dateVal, timeVal, duration)) {
+            updateConflictMsg();
+            document.getElementById('booking-conflict-msg').scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
-
-        const name    = document.getElementById('booking-name').value.trim();
-        const email   = document.getElementById('booking-email').value.trim();
-        const phone   = document.getElementById('booking-phone').value.trim();
-        const subject = document.getElementById('booking-subject').value;
-        const format  = document.getElementById('booking-format').value;
-        const notes   = document.getElementById('booking-notes').value.trim();
 
         const submitBtn = document.getElementById('booking-submit-btn');
         submitBtn.textContent = 'Sending...';
@@ -1804,20 +1701,22 @@ if (bookingForm) {
             from_name:    name,
             from_email:   email,
             from_phone:   phone,
-            session_date: selectedSlotData.displayDate,
-            session_time: `${selectedSlotData.displayTime} – ${selectedSlotData.displayEnd}`,
+            session_date: formatDate(dateVal),
+            session_time: formatTime(timeVal),
+            duration:     duration,
             subject:      subject,
             format:       format,
             notes:        notes || 'None provided',
         };
 
-        // If EmailJS isn't configured yet, log and show confirmation anyway
+        // If EmailJS isn't configured, log and still show confirmation (for testing)
         if (typeof emailjs === 'undefined' || EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
             console.log('Booking request (EmailJS not yet configured):', params);
             document.getElementById('confirm-email').textContent = email;
-            showBookingStep(3);
+            showBookingStep(2);
             this.reset();
-            submitBtn.textContent = 'Request Booking';
+            if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+            submitBtn.textContent = 'Send Booking Request';
             submitBtn.disabled    = false;
             return;
         }
@@ -1825,22 +1724,20 @@ if (bookingForm) {
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
             .then(() => {
                 document.getElementById('confirm-email').textContent = email;
-                showBookingStep(3);
+                showBookingStep(2);
                 this.reset();
-                submitBtn.textContent = 'Request Booking';
+                if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+                submitBtn.textContent = 'Send Booking Request';
                 submitBtn.disabled    = false;
             })
             .catch(err => {
                 console.error('EmailJS error:', err);
-                alert('Something went wrong sending your request. Please try again or contact me directly at (714) 253-7235.');
-                submitBtn.textContent = 'Request Booking';
+                alert('Something went wrong. Please try again or contact me directly at (714) 253-7235.');
+                submitBtn.textContent = 'Send Booking Request';
                 submitBtn.disabled    = false;
             });
     });
 }
-
-// Render calendar on load
-renderCalendar();
 
 console.log('Your Study Guide Tutor Website Loaded');
 console.log('Contact: (714) 253-7235');
