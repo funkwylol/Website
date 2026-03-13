@@ -1501,78 +1501,68 @@ if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') 
 // GOOGLE SHEETS — confirmed bookings (blocks conflicting slots)
 // ============================================================
 //
-// SETUP (one time, ~10 minutes):
+// SETUP (one time, ~5 minutes — no Apps Script needed):
 //
-// 1. Open the Google Sheet where you track confirmed bookings.
-//    Create a sheet tab named exactly: Bookings
-//    Give it these columns in row 1:
-//      A: Date          (text, YYYY-MM-DD format, e.g. 2026-03-20)
-//      B: Start Time    (text, 24-hr HH:MM format, e.g. 14:30)
-//      C: Duration      (number, hours, e.g. 1.5)
-//      D: Client Name   (text, optional — just for your reference)
+// 1. In your Google Sheet, make sure you have a tab named: Bookings
+//    Columns in row 1:
+//      A: Date        B: Start Time        C: Duration        D: Client Name
 //
-// 2. In the sheet, go to Extensions > Apps Script.
-//    Paste this code exactly, then click Save (disk icon):
+//    IMPORTANT: Format columns A and B as Plain Text so Sheets doesn't
+//    auto-convert them. Select both columns → Format → Number → Plain text.
+//    Then enter dates as YYYY-MM-DD (e.g. 2026-03-20)
+//    and times as HH:MM 24-hr (e.g. 14:30).
+//    Duration in column C is just a number (e.g. 1, 1.5, 2).
 //
-//    function doGet() {
-//      var sheet = SpreadsheetApp.getActiveSpreadsheet()
-//                    .getSheetByName('Bookings');
-//      var rows  = sheet.getDataRange().getValues();
-//      var bookings = [];
-//      for (var i = 1; i < rows.length; i++) {
-//        if (rows[i][0]) {
-//          bookings.push({
-//            date:     String(rows[i][0]),
-//            start:    String(rows[i][1]),
-//            duration: parseFloat(rows[i][2]) || 1
-//          });
-//        }
-//      }
-//      return ContentService
-//        .createTextOutput(JSON.stringify(bookings))
-//        .setMimeType(ContentService.MimeType.JSON);
-//    }
+// 2. Publish the sheet as CSV:
+//    File → Share → Publish to the web
+//    → Select the "Bookings" sheet (not "Entire Document")
+//    → Choose "Comma-separated values (.csv)"
+//    → Click Publish → copy the URL
 //
-// 3. Click Deploy > New Deployment.
-//    - Type: Web App
-//    - Execute as: Me
-//    - Who has access: Anyone
-//    Click Deploy, then copy the Web App URL.
+// 3. Paste that URL as the value of BOOKINGS_CSV_URL below.
 //
-// 4. Paste that URL as the value of BOOKINGS_SCRIPT_URL below.
-//
-const BOOKINGS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwS-Vh2MXC5yYSzGj5820rJZoYcmVbJboF59HYtMvS80UYdTaIp68La_8Q4d40xeTaK/exec'; // ← paste your URL here
+const BOOKINGS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRFr3YCPC7snSZjrnmG-12WHX0poCJxvNELU-F5kktkVJvUeCuaCpWIBCegO1T7UZfKLrgq5Ebxti8Z/pub?gid=0&single=true&output=csv'; // ← paste your published CSV URL here
 
 let confirmedBookings = []; // populated on page load
 
-// Load confirmed bookings from Google Sheets via JSONP (avoids CORS issues with Apps Script)
-function loadBookingsJSONP(url) {
-    var callbackName = '__bookingsCb_' + Date.now();
-    var script = document.createElement('script');
-    window[callbackName] = function(data) {
-        if (Array.isArray(data)) {
-            confirmedBookings = data;
-            var s = document.getElementById('bookings-status');
-            if (s) s.textContent = confirmedBookings.length + ' confirmed booking(s) on file — conflicts will be blocked.';
-        } else {
-            var s = document.getElementById('bookings-status');
-            if (s) s.textContent = 'Availability data loaded (no confirmed bookings yet).';
+function parseBookingsCSV(csv) {
+    var lines = csv.trim().split('\n');
+    var result = [];
+    for (var i = 1; i < lines.length; i++) { // skip header row
+        // Split on comma, strip surrounding quotes added by Sheets
+        var cols = lines[i].split(',').map(function(c) { return c.trim().replace(/^"|"$/g, ''); });
+        var dateVal = cols[0] || '';
+        var timeVal = cols[1] || '';
+        var durVal  = parseFloat(cols[2]) || 1;
+        if (dateVal && timeVal) {
+            result.push({ date: dateVal, start: timeVal, duration: durVal });
         }
-        delete window[callbackName];
-        if (script.parentNode) script.parentNode.removeChild(script);
-    };
-    script.onerror = function() {
-        var s = document.getElementById('bookings-status');
-        if (s) s.textContent = 'Could not load availability data — contact me directly if unsure.';
-        delete window[callbackName];
-        if (script.parentNode) script.parentNode.removeChild(script);
-    };
-    script.src = url + (url.indexOf('?') === -1 ? '?' : '&') + 'callback=' + callbackName;
-    document.head.appendChild(script);
+    }
+    return result;
 }
 
-if (BOOKINGS_SCRIPT_URL !== 'YOUR_APPS_SCRIPT_URL') {
-    loadBookingsJSONP(BOOKINGS_SCRIPT_URL);
+function updateBookingsStatus(msg) {
+    var s = document.getElementById('bookings-status');
+    if (s) s.textContent = msg;
+}
+
+if (BOOKINGS_CSV_URL !== 'YOUR_CSV_URL') {
+    fetch(BOOKINGS_CSV_URL)
+        .then(function(r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+        })
+        .then(function(csv) {
+            confirmedBookings = parseBookingsCSV(csv);
+            if (confirmedBookings.length > 0) {
+                updateBookingsStatus(confirmedBookings.length + ' confirmed booking(s) on file — conflicts will be blocked.');
+            } else {
+                updateBookingsStatus('Availability data loaded (no confirmed bookings yet).');
+            }
+        })
+        .catch(function(err) {
+            updateBookingsStatus('Could not load availability data — contact me directly if unsure.');
+        });
 }
 
 // Returns null if no conflict, or an object describing the conflict
