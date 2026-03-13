@@ -1615,7 +1615,7 @@ function updateConflictMsg() {
             `${String(Math.floor(conflict.bEnd / 60)).padStart(2,'0')}:${String(conflict.bEnd % 60).padStart(2,'0')}`
         );
         msgEl.className   = 'booking-conflict-msg conflict';
-        msgEl.textContent = `That time overlaps a confirmed booking (${bookedStart}–${bookedEnd}, including the 30-min buffer). Please choose a different time.`;
+        msgEl.textContent = `That time overlaps a confirmed booking (${bookedStart}–${bookedEnd}, including a 30-min buffer between sessions). Please choose a different time.`;
     } else if (confirmedBookings.length > 0) {
         // Only show the green "looks available" message if we actually loaded bookings
         msgEl.className   = 'booking-conflict-msg available';
