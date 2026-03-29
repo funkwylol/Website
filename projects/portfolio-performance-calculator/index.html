@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portfolio Performance Calculator | Isadore Garcia</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+        }
+        header {
+            background: #2d3e50;
+            color: #fff;
+            padding: 1.2rem 1rem;
+            text-align: center;
+        }
+        header nav a {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #2a5d84;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+            margin: 0 4px;
+        }
+        header nav a:hover {
+            background: #18405c;
+        }
+        .page-title {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            text-align: center;
+        }
+        .page-title h1 {
+            color: #2a5d84;
+            margin-bottom: 0.3rem;
+        }
+        .page-title p {
+            color: #555;
+            font-size: 1.05em;
+        }
+        .container {
+            max-width: 800px;
+            margin: 1.5rem auto 2rem;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+            padding: 30px;
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        @media (max-width: 600px) {
+            .input-grid { grid-template-columns: 1fr; }
+        }
+        .input-group {
+            margin-bottom: 4px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+        .input-group small {
+            display: block;
+            color: #888;
+            font-size: 0.82em;
+            margin-top: 2px;
+        }
+        .input-group input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .slider-row input[type="range"] {
+            flex: 1;
+        }
+        .slider-row input[type="number"] {
+            width: 70px;
+            padding: 6px 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        .btn-calculate {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #2a5d84;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-calculate:hover {
+            background: #18405c;
+        }
+        .results-box {
+            margin-top: 24px;
+            padding: 20px;
+            background: #f0f4f8;
+            border-radius: 8px;
+        }
+        .results-box h3 {
+            margin-top: 0;
+            color: #2a5d84;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 24px;
+        }
+        .results-grid p {
+            margin: 6px 0;
+            font-size: 0.95em;
+        }
+        .results-grid .label {
+            color: #666;
+            font-size: 0.85em;
+        }
+        .results-grid .value {
+            font-weight: 600;
+            font-size: 1.05em;
+            color: #222;
+        }
+        .chart-container {
+            margin-top: 24px;
+            width: 100%;
+        }
+        .chart-container > div {
+            width: 100%;
+            height: 320px;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 0.93em;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        .comparison-table th {
+            color: #2a5d84;
+            font-weight: 600;
+        }
+        .comparison-table td:last-child {
+            text-align: right;
+        }
+        .section-divider {
+            border: none;
+            border-top: 1px solid #dde;
+            margin: 20px 0;
+        }
+        footer {
+            text-align: center;
+            color: #888;
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../../">Home</a>
+            <a href="../../coursework/">Coursework</a>
+            <a href="../">Projects</a>
+            <a href="../../blog/">Blog</a>
+        </nav>
+    </header>
+
+    <div class="page-title">
+        <h1>Portfolio Performance Calculator</h1>
+        <p>Monte Carlo simulation tool for estimating trading strategy performance</p>
+    </div>
+
+    <div class="container">
+        <div class="input-grid">
+            <div class="input-group">
+                <label for="initialPortfolio">Initial Portfolio Value ($)</label>
+                <input type="number" id="initialPortfolio" value="100">
+            </div>
+            <div class="input-group">
+                <label for="riskFreeRate">Risk-Free Rate (%)</label>
+                <input type="number" id="riskFreeRate" value="5" min="0" max="20">
+            </div>
+            <div class="input-group">
+                <label>Risk per Trade (%)</label>
+                <div class="slider-row">
+                    <input type="range" id="riskSlider" min="1" max="20" value="5">
+                    <input type="number" id="riskValue" value="5" min="1" max="20">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Reward / Risk Ratio</label>
+                <div class="slider-row">
+                    <input type="range" id="rrSlider" min="0.5" max="5" step="0.1" value="2">
+                    <input type="number" id="rrValue" value="2" min="0.5" max="5" step="0.1">
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Win Probability (%)</label>
+                <div class="slider-row">
+                    <input type="range" id="winSlider" min="1" max="99" value="70">
+                    <input type="number" id="winValue" value="70" min="1" max="99">
+                </div>
+                <small>Win rates below 50% typically result in portfolio decline</small>
+            </div>
+            <div class="input-group">
+                <label for="tradesPerDay">Trades per Day</label>
+                <input type="number" id="tradesPerDay" value="5" min="1" max="50">
+                <small>Average number of trades you make per day</small>
+            </div>
+            <div class="input-group">
+                <label for="tradingDays">Trading Days per Year</label>
+                <input type="number" id="tradingDays" value="252" min="1" max="365">
+                <small>Standard market year has 252 trading days</small>
+            </div>
+            <div class="input-group">
+                <label for="numSimulations">Number of Simulations</label>
+                <input type="number" id="numSimulations" value="100" min="1" max="1000">
+                <small>More simulations = more accurate average</small>
+            </div>
+        </div>
+
+        <button class="btn-calculate" onclick="runSimulation()">Calculate</button>
+
+        <div class="results-box" id="resultsBox" style="display:none;">
+            <h3>Results</h3>
+            <div class="results-grid">
+                <div>
+                    <div class="label">Avg Daily Return</div>
+                    <div class="value" id="avgDailyReturn">-</div>
+                </div>
+                <div>
+                    <div class="label">Daily Volatility</div>
+                    <div class="value" id="stdDev">-</div>
+                </div>
+                <div>
+                    <div class="label">Best Case</div>
+                    <div class="value" id="bestCase">-</div>
+                </div>
+                <div>
+                    <div class="label">Worst Case</div>
+                    <div class="value" id="worstCase">-</div>
+                </div>
+                <div>
+                    <div class="label">Sharpe Ratio</div>
+                    <div class="value" id="sharpeRatio">-</div>
+                </div>
+                <div>
+                    <div class="label">Est. Annual Return</div>
+                    <div class="value" id="annualReturn">-</div>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+            <h3>S&amp;P 500 Comparison</h3>
+            <table class="comparison-table">
+                <tr>
+                    <th>Time Period</th>
+                    <th>S&amp;P 500 Avg</th>
+                    <th style="text-align:right;">Your Strategy</th>
+                </tr>
+                <tr>
+                    <td>Last 10 Years (2015-2025)</td>
+                    <td>10.7%</td>
+                    <td id="compare10">-</td>
+                </tr>
+                <tr>
+                    <td>Last 20 Years (2005-2025)</td>
+                    <td>9.8%</td>
+                    <td id="compare20">-</td>
+                </tr>
+                <tr>
+                    <td>Last 30 Years (1995-2025)</td>
+                    <td>10.2%</td>
+                    <td id="compare30">-</td>
+                </tr>
+                <tr>
+                    <td>Historical (1926-2025)</td>
+                    <td>10.1%</td>
+                    <td id="compareHist">-</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="chart-container">
+            <div id="histogramChart"></div>
+        </div>
+        <div class="chart-container">
+            <div id="sharpeChart"></div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Isadore Garcia. All rights reserved.
+    </footer>
+
+    <script>
+    // Link sliders to number inputs
+    function linkSlider(sliderId, inputId) {
+        const slider = document.getElementById(sliderId);
+        const input = document.getElementById(inputId);
+        slider.addEventListener('input', () => { input.value = slider.value; });
+        input.addEventListener('input', () => { slider.value = input.value; });
+    }
+    linkSlider('riskSlider', 'riskValue');
+    linkSlider('rrSlider', 'rrValue');
+    linkSlider('winSlider', 'winValue');
+
+    function runSimulation() {
+        const initialPortfolio = parseFloat(document.getElementById('initialPortfolio').value);
+        const risk = parseFloat(document.getElementById('riskValue').value) / 100;
+        const rrRatio = parseFloat(document.getElementById('rrValue').value);
+        const winProb = parseFloat(document.getElementById('winValue').value) / 100;
+        const riskFreeRate = parseFloat(document.getElementById('riskFreeRate').value);
+        const tradesPerDay = parseInt(document.getElementById('tradesPerDay').value);
+        const tradingDays = parseInt(document.getElementById('tradingDays').value);
+        const numSim = parseInt(document.getElementById('numSimulations').value);
+
+        // --- Monte Carlo simulation (ported from Python) ---
+        const allResults = [];
+        for (let s = 0; s < numSim; s++) {
+            let portfolio = initialPortfolio;
+            for (let t = 0; t < tradesPerDay; t++) {
+                if (Math.random() < winProb) {
+                    portfolio += portfolio * (rrRatio * risk);
+                } else {
+                    portfolio -= portfolio * risk;
+                }
+            }
+            const dailyReturn = ((portfolio - initialPortfolio) / initialPortfolio) * 100;
+            allResults.push(dailyReturn);
+        }
+
+        const avg = allResults.reduce((a, b) => a + b, 0) / allResults.length;
+        const best = Math.max(...allResults);
+        const worst = Math.min(...allResults);
+
+        // Sample standard deviation
+        const mean = avg;
+        const variance = allResults.reduce((sum, val) => sum + (val - mean) ** 2, 0) / (allResults.length - 1);
+        const stdDev = Math.sqrt(variance);
+
+        const sharpe = (avg - (riskFreeRate / 252)) / stdDev;
+        const annualReturn = (Math.pow(1 + avg / 100, tradingDays) - 1) * 100;
+
+        // --- Display results ---
+        document.getElementById('resultsBox').style.display = 'block';
+        document.getElementById('avgDailyReturn').textContent = avg.toFixed(2) + '%';
+        document.getElementById('stdDev').textContent = stdDev.toFixed(2) + '%';
+        document.getElementById('bestCase').textContent = best.toFixed(2) + '%';
+        document.getElementById('worstCase').textContent = worst.toFixed(2) + '%';
+        document.getElementById('sharpeRatio').textContent = sharpe.toFixed(2);
+        document.getElementById('annualReturn').textContent = annualReturn.toFixed(2) + '%';
+
+        // S&P comparison
+        function fmtCompare(annual, benchmark) {
+            const diff = annual - benchmark;
+            const sign = diff >= 0 ? '+' : '';
+            const color = diff >= 0 ? '#27ae60' : '#c0392b';
+            return '<span style="color:' + color + ';font-weight:600;">' + sign + diff.toFixed(1) + '%</span>';
+        }
+        document.getElementById('compare10').innerHTML = fmtCompare(annualReturn, 10.7);
+        document.getElementById('compare20').innerHTML = fmtCompare(annualReturn, 9.8);
+        document.getElementById('compare30').innerHTML = fmtCompare(annualReturn, 10.2);
+        document.getElementById('compareHist').innerHTML = fmtCompare(annualReturn, 10.1);
+
+        // --- Histogram chart ---
+        Plotly.newPlot('histogramChart', [{
+            x: allResults,
+            type: 'histogram',
+            nbinsx: 30,
+            opacity: 0.75,
+            marker: { color: '#2a5d84' }
+        }], {
+            title: 'Distribution of Daily Returns',
+            xaxis: { title: 'Daily Return (%)' },
+            yaxis: { title: 'Frequency' },
+            bargap: 0.05,
+            margin: { t: 40, b: 50, l: 50, r: 20 }
+        }, { responsive: true });
+
+        // --- Sharpe vs Risk curve ---
+        const riskValues = [];
+        const sharpeValues = [];
+        for (let r = 1; r <= 20; r++) {
+            const riskPct = r / 100;
+            const results = [];
+            for (let s = 0; s < numSim; s++) {
+                let p = initialPortfolio;
+                for (let t = 0; t < tradesPerDay; t++) {
+                    if (Math.random() < winProb) {
+                        p += p * (rrRatio * riskPct);
+                    } else {
+                        p -= p * riskPct;
+                    }
+                }
+                results.push(((p - initialPortfolio) / initialPortfolio) * 100);
+            }
+            const avgR = results.reduce((a, b) => a + b, 0) / results.length;
+            const varR = results.reduce((sum, val) => sum + (val - avgR) ** 2, 0) / (results.length - 1);
+            const sdR = Math.sqrt(varR);
+            const sh = sdR !== 0 ? (avgR - (riskFreeRate / 252)) / sdR : 0;
+            riskValues.push(r);
+            sharpeValues.push(parseFloat(sh.toFixed(2)));
+        }
+
+        Plotly.newPlot('sharpeChart', [{
+            x: riskValues,
+            y: sharpeValues,
+            type: 'scatter',
+            mode: 'lines+markers',
+            line: { width: 2, color: '#2a5d84' },
+            marker: { size: 6 }
+        }], {
+            title: 'Sharpe Ratio vs. Risk (%)',
+            xaxis: { title: 'Risk (%)' },
+            yaxis: { title: 'Sharpe Ratio' },
+            margin: { t: 40, b: 50, l: 50, r: 20 }
+        }, { responsive: true });
+    }
+    </script>
+</body>
+</html>
