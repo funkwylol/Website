@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<!-- saved from url=(0215)file:///C:/Users/taker/AppData/Roaming/Claude/local-agent-mode-sessions/02aa7c69-1990-4c17-a38c-6a7873f681b8/ae7e6224-bb78-43d5-ab3b-304cc742e06e/local_7d93af3b-5996-46c8-af69-12aead04dcd2/outputs/class_tracker.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Progress Tracker - Econ 2 &amp; Geog 14</title>
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2E5090;
+    --light-blue: #E8EEF6;
+    --accent: #D4A84B;
+    --green: #2D7D46;
+    --light-green: #E6F4EA;
+    --red: #C0392B;
+    --light-red: #FDEDEC;
+    --gray: #F5F5F5;
+    --dark: #333;
+    --med-gray: #888;
+    --border: #DDD;
+    --todo-bg: #F8F9FA;
+    --progress-bg: #FFF8E1;
+    --done-bg: #E8F5E9;
+    --econ-color: #2E5090;
+    --geog-color: #2D7D46;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; }
+  .header-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+  .stat-badge {
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-align: center;
+    min-width: 100px;
+  }
+  .stat-badge .stat-num { font-size: 22px; font-weight: 700; }
+  .stat-badge .stat-label { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* TABS */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    background: white;
+    border-bottom: 2px solid var(--border);
+    padding: 0 20px;
+  }
+  .tab {
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: var(--med-gray);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .tab:hover { color: var(--dark); }
+  .tab.active-econ { color: var(--econ-color); border-bottom-color: var(--econ-color); }
+  .tab.active-geog { color: var(--geog-color); border-bottom-color: var(--geog-color); }
+  .tab.active-all { color: var(--navy); border-bottom-color: var(--navy); }
+
+  /* PROGRESS OVERVIEW */
+  .progress-section {
+    padding: 20px 24px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .progress-card {
+    flex: 1;
+    min-width: 250px;
+    background: var(--gray);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+  }
+  .progress-card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .progress-card.econ h3 { color: var(--econ-color); }
+  .progress-card.geog h3 { color: var(--geog-color); }
+  .progress-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+  }
+  .progress-card.econ .progress-bar-fill { background: var(--econ-color); }
+  .progress-card.geog .progress-bar-fill { background: var(--geog-color); }
+  .progress-pct { font-size: 13px; color: var(--med-gray); }
+
+  /* CHARTS SECTION */
+  .charts-section {
+    padding: 20px 24px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+  }
+  .charts-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .chart-card {
+    flex: 1;
+    min-width: 280px;
+    background: var(--gray);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    position: relative;
+  }
+  .chart-card h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; color: var(--dark); }
+  canvas { max-width: 100%; }
+
+  /* KANBAN BOARD */
+  .board {
+    display: flex;
+    gap: 16px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    min-height: 500px;
+    align-items: flex-start;
+  }
+  .column {
+    flex: 1;
+    min-width: 280px;
+    max-width: 380px;
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .column-header {
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .col-todo .column-header { background: var(--todo-bg); color: var(--med-gray); border-bottom: 2px solid var(--border); }
+  .col-progress .column-header { background: var(--progress-bg); color: #E65100; border-bottom: 2px solid #FFB74D; }
+  .col-done .column-header { background: var(--done-bg); color: var(--green); border-bottom: 2px solid #81C784; }
+  .col-count {
+    background: rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 12px;
+  }
+  .column-body {
+    padding: 10px;
+    flex: 1;
+    min-height: 100px;
+    transition: background 0.2s;
+  }
+  .column-body.drag-over { background: #F0F4FF; }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: grab;
+    transition: box-shadow 0.2s, transform 0.15s;
+    position: relative;
+  }
+  .card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.12); transform: translateY(-1px); }
+  .card.dragging { opacity: 0.5; transform: rotate(2deg); }
+  .card-class {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .card-class.econ { background: var(--light-blue); color: var(--econ-color); }
+  .card-class.geog { background: var(--light-green); color: var(--geog-color); }
+  .card-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+  .card-desc { font-size: 11px; color: var(--med-gray); line-height: 1.4; }
+  .card-type {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .type-study { background: #E3F2FD; color: #1565C0; }
+  .type-quiz { background: #FFF3E0; color: #E65100; }
+  .type-assignment { background: #F3E5F5; color: #7B1FA2; }
+  .type-discussion { background: #E8F5E9; color: #2E7D32; }
+  .type-exam { background: #FFEBEE; color: #C62828; }
+  .type-map { background: #E0F2F1; color: #00695C; }
+
+  .card-delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    color: #CCC;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.2s;
+  }
+  .card:hover .card-delete { opacity: 1; }
+  .card-delete:hover { color: var(--red); background: var(--light-red); }
+
+  /* ADD TASK */
+  .add-task-btn {
+    margin: 8px 10px 14px;
+    padding: 10px;
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    background: none;
+    color: var(--med-gray);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    width: calc(100% - 20px);
+  }
+  .add-task-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--light-blue); }
+
+  .add-form {
+    margin: 0 10px 14px;
+    padding: 12px;
+    background: var(--gray);
+    border-radius: 8px;
+    display: none;
+  }
+  .add-form.show { display: block; }
+  .add-form input, .add-form select, .add-form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    margin-bottom: 8px;
+    font-family: inherit;
+  }
+  .add-form textarea { resize: vertical; min-height: 50px; }
+  .add-form-actions { display: flex; gap: 8px; }
+  .btn-add {
+    padding: 6px 16px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .btn-cancel {
+    padding: 6px 16px;
+    background: white;
+    color: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 800px) {
+    .board { flex-direction: column; }
+    .column { max-width: 100%; min-width: 100%; }
+    .header { padding: 15px 20px; }
+    .progress-row, .charts-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Class Progress Tracker</h1>
+  <div class="header-stats">
+    <div class="stat-badge">
+      <div class="stat-num" id="stat-total">111</div>
+      <div class="stat-label">Total Tasks</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-num" id="stat-done">0</div>
+      <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-num" id="stat-progress">0</div>
+      <div class="stat-label">In Progress</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-num" id="stat-remaining">111</div>
+      <div class="stat-label">Remaining</div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active-all" data-filter="all" onclick="setFilter(&#39;all&#39;, this)">All Tasks</div>
+  <div class="tab" data-filter="econ" onclick="setFilter(&#39;econ&#39;, this)">Econ 2</div>
+  <div class="tab" data-filter="geog" onclick="setFilter(&#39;geog&#39;, this)">Geog 14</div>
+</div>
+
+<div class="progress-section">
+  <div class="progress-row">
+    <div class="progress-card econ">
+      <h3>Econ 2: Macroeconomics</h3>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="econ-bar" style="width:0%"></div></div>
+      <div class="progress-pct" id="econ-pct">0% complete (0/60 tasks)</div>
+    </div>
+    <div class="progress-card geog">
+      <h3>Geog 14: Geography of California</h3>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="geog-bar" style="width:0%"></div></div>
+      <div class="progress-pct" id="geog-pct">0% complete (0/51 tasks)</div>
+    </div>
+  </div>
+</div>
+
+<div class="charts-section">
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Tasks by Type</h3>
+      <canvas id="typeChart" height="180" width="879"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Completion by Chapter/Unit</h3>
+      <canvas id="chapterChart" height="180" width="879"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="board">
+  <div class="column col-todo">
+    <div class="column-header">To Do <span class="col-count" id="count-todo">111</span></div>
+    <div class="column-body" id="col-todo" ondragover="onDragOver(event)" ondrop="onDrop(event, &#39;todo&#39;)">
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e1&#39;)" ondragend="onDragEnd(event)" id="card-e1">
+        <button class="card-delete" onclick="deleteTask(&#39;e1&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapter 5: Intro to Macroeconomics</div>
+        <div class="card-desc">Study GDP, circular flow model, nominal vs real GDP, GDP deflator</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e2&#39;)" ondragend="onDragEnd(event)" id="card-e2">
+        <button class="card-delete" onclick="deleteTask(&#39;e2&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lecture: Measuring Production</div>
+        <div class="card-desc">HTML lecture on Canvas under Discussions. Take notes on GDP components.</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e3&#39;)" ondragend="onDragEnd(event)" id="card-e3">
+        <button class="card-delete" onclick="deleteTask(&#39;e3&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 5 Class Work Exercises</div>
+        <div class="card-desc">All practice problems for Measuring Production lecture</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e4&#39;)" ondragend="onDragEnd(event)" id="card-e4">
+        <button class="card-delete" onclick="deleteTask(&#39;e4&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Post: Ch 5</div>
+        <div class="card-desc">Post solution to one Class Work problem. Show full work.</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e5&#39;)" ondragend="onDragEnd(event)" id="card-e5">
+        <button class="card-delete" onclick="deleteTask(&#39;e5&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quiz: Measuring Production</div>
+        <div class="card-desc">Timed, one attempt. Only take when fully prepared.</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e6&#39;)" ondragend="onDragEnd(event)" id="card-e6">
+        <button class="card-delete" onclick="deleteTask(&#39;e6&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 5</div>
+        <div class="card-desc">15 multiple choice from textbook. One attempt only.</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e7&#39;)" ondragend="onDragEnd(event)" id="card-e7">
+        <button class="card-delete" onclick="deleteTask(&#39;e7&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignment: Ch 5</div>
+        <div class="card-desc">Cengage homework. Only do "counts toward grade" assignments.</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e8&#39;)" ondragend="onDragEnd(event)" id="card-e8">
+        <button class="card-delete" onclick="deleteTask(&#39;e8&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapter 6: Goals of Macro Policy</div>
+        <div class="card-desc">CPI, inflation, unemployment types, Fisher equation</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e9&#39;)" ondragend="onDragEnd(event)" id="card-e9">
+        <button class="card-delete" onclick="deleteTask(&#39;e9&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lectures: Inflation &amp; Unemployment</div>
+        <div class="card-desc">Three lectures: Measuring Inflation, Inflation Costs, Measuring Unemployment</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e10&#39;)" ondragend="onDragEnd(event)" id="card-e10">
+        <button class="card-delete" onclick="deleteTask(&#39;e10&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 6 Class Work Exercises</div>
+        <div class="card-desc">Practice problems for all three Ch 6 lectures</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e11&#39;)" ondragend="onDragEnd(event)" id="card-e11">
+        <button class="card-delete" onclick="deleteTask(&#39;e11&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Posts: Ch 6 (3 lectures)</div>
+        <div class="card-desc">One post per lecture. Pick unanswered problems.</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e12&#39;)" ondragend="onDragEnd(event)" id="card-e12">
+        <button class="card-delete" onclick="deleteTask(&#39;e12&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quizzes: Ch 6 (3 quizzes)</div>
+        <div class="card-desc">Measuring Inflation, Inflation Costs, Unemployment</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e13&#39;)" ondragend="onDragEnd(event)" id="card-e13">
+        <button class="card-delete" onclick="deleteTask(&#39;e13&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 6</div>
+        <div class="card-desc">15 multiple choice. Take after all Ch 6 lecture quizzes.</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e14&#39;)" ondragend="onDragEnd(event)" id="card-e14">
+        <button class="card-delete" onclick="deleteTask(&#39;e14&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignment: Ch 6</div>
+        <div class="card-desc">Cengage graded homework for Chapter 6</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e15&#39;)" ondragend="onDragEnd(event)" id="card-e15">
+        <button class="card-delete" onclick="deleteTask(&#39;e15&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapters 7 &amp; 8: Aggregate Demand</div>
+        <div class="card-desc">Consumption function, MPC/MPS, multiplier, AD curve</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 7-8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e16&#39;)" ondragend="onDragEnd(event)" id="card-e16">
+        <button class="card-delete" onclick="deleteTask(&#39;e16&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lectures: Consumption &amp; AD Components</div>
+        <div class="card-desc">Two lectures covering aggregate demand concepts</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 7-8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e17&#39;)" ondragend="onDragEnd(event)" id="card-e17">
+        <button class="card-delete" onclick="deleteTask(&#39;e17&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 7-8 Class Work Exercises</div>
+        <div class="card-desc">Multiplier calculations, AD curve shifts, consumption function</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 7-8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e18&#39;)" ondragend="onDragEnd(event)" id="card-e18">
+        <button class="card-delete" onclick="deleteTask(&#39;e18&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Posts: Ch 7-8 (2 lectures)</div>
+        <div class="card-desc">Post solutions for Consumption and Components of AD</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 7-8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e19&#39;)" ondragend="onDragEnd(event)" id="card-e19">
+        <button class="card-delete" onclick="deleteTask(&#39;e19&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quizzes: Ch 7-8 (2 quizzes)</div>
+        <div class="card-desc">Consumption quiz and Components of Aggregate Demand quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 7-8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e20&#39;)" ondragend="onDragEnd(event)" id="card-e20">
+        <button class="card-delete" onclick="deleteTask(&#39;e20&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 8</div>
+        <div class="card-desc">Take after completing both lecture quizzes for these chapters</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 7-8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e21&#39;)" ondragend="onDragEnd(event)" id="card-e21">
+        <button class="card-delete" onclick="deleteTask(&#39;e21&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignments: Ch 7 &amp; 8</div>
+        <div class="card-desc">Cengage graded homework for both chapters</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 7-8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e22&#39;)" ondragend="onDragEnd(event)" id="card-e22">
+        <button class="card-delete" onclick="deleteTask(&#39;e22&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapter 9: Demand-Side Equilibrium</div>
+        <div class="card-desc">Equilibrium GDP, recessionary/inflationary gaps, multiplier to close gaps</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e23&#39;)" ondragend="onDragEnd(event)" id="card-e23">
+        <button class="card-delete" onclick="deleteTask(&#39;e23&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lectures: Equilibrium &amp; Gaps</div>
+        <div class="card-desc">Equilibrium lecture and Inflationary/Recessionary Gaps lecture</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e24&#39;)" ondragend="onDragEnd(event)" id="card-e24">
+        <button class="card-delete" onclick="deleteTask(&#39;e24&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 9 Class Work Exercises</div>
+        <div class="card-desc">Gap calculations, Keynesian cross diagrams</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e25&#39;)" ondragend="onDragEnd(event)" id="card-e25">
+        <button class="card-delete" onclick="deleteTask(&#39;e25&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Posts: Ch 9</div>
+        <div class="card-desc">Post for Equilibrium and Gaps lectures</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e26&#39;)" ondragend="onDragEnd(event)" id="card-e26">
+        <button class="card-delete" onclick="deleteTask(&#39;e26&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quizzes: Ch 9</div>
+        <div class="card-desc">Equilibrium quiz + Inflationary/Recessionary Gaps quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e27&#39;)" ondragend="onDragEnd(event)" id="card-e27">
+        <button class="card-delete" onclick="deleteTask(&#39;e27&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 9</div>
+        <div class="card-desc">15 MC questions from textbook</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e28&#39;)" ondragend="onDragEnd(event)" id="card-e28">
+        <button class="card-delete" onclick="deleteTask(&#39;e28&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignment: Ch 9</div>
+        <div class="card-desc">Cengage graded homework</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e29&#39;)" ondragend="onDragEnd(event)" id="card-e29">
+        <button class="card-delete" onclick="deleteTask(&#39;e29&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapter 10: AD and AS</div>
+        <div class="card-desc">Short-run vs long-run AS, AD-AS model, demand/supply shocks, stagflation</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e30&#39;)" ondragend="onDragEnd(event)" id="card-e30">
+        <button class="card-delete" onclick="deleteTask(&#39;e30&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lecture: Aggregate Demand &amp; Supply</div>
+        <div class="card-desc">Full AD-AS model lecture</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e31&#39;)" ondragend="onDragEnd(event)" id="card-e31">
+        <button class="card-delete" onclick="deleteTask(&#39;e31&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 10 Class Work Exercises</div>
+        <div class="card-desc">AD-AS diagrams, shifting curves, identifying shocks</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e32&#39;)" ondragend="onDragEnd(event)" id="card-e32">
+        <button class="card-delete" onclick="deleteTask(&#39;e32&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Post: Ch 10</div>
+        <div class="card-desc">Post solution for AD-AS lecture Class Work</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e33&#39;)" ondragend="onDragEnd(event)" id="card-e33">
+        <button class="card-delete" onclick="deleteTask(&#39;e33&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quiz: AD and AS</div>
+        <div class="card-desc">Timed quiz on aggregate demand and supply</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e34&#39;)" ondragend="onDragEnd(event)" id="card-e34">
+        <button class="card-delete" onclick="deleteTask(&#39;e34&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 10</div>
+        <div class="card-desc">Take after lecture quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e35&#39;)" ondragend="onDragEnd(event)" id="card-e35">
+        <button class="card-delete" onclick="deleteTask(&#39;e35&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignment: Ch 10</div>
+        <div class="card-desc">Cengage graded homework</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e36&#39;)" ondragend="onDragEnd(event)" id="card-e36">
+        <button class="card-delete" onclick="deleteTask(&#39;e36&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapter 11: Fiscal Policy</div>
+        <div class="card-desc">Expansionary/contractionary policy, spending &amp; tax multipliers, crowding out</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e37&#39;)" ondragend="onDragEnd(event)" id="card-e37">
+        <button class="card-delete" onclick="deleteTask(&#39;e37&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lecture: Fiscal Policy</div>
+        <div class="card-desc">Government spending and taxation tools</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e38&#39;)" ondragend="onDragEnd(event)" id="card-e38">
+        <button class="card-delete" onclick="deleteTask(&#39;e38&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 11 Class Work Exercises</div>
+        <div class="card-desc">Multiplier problems, policy prescriptions</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e39&#39;)" ondragend="onDragEnd(event)" id="card-e39">
+        <button class="card-delete" onclick="deleteTask(&#39;e39&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Post: Ch 11</div>
+        <div class="card-desc">Post solution for Fiscal Policy Class Work</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e40&#39;)" ondragend="onDragEnd(event)" id="card-e40">
+        <button class="card-delete" onclick="deleteTask(&#39;e40&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quiz: Fiscal Policy</div>
+        <div class="card-desc">Timed quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e41&#39;)" ondragend="onDragEnd(event)" id="card-e41">
+        <button class="card-delete" onclick="deleteTask(&#39;e41&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 11</div>
+        <div class="card-desc">Take after lecture quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e42&#39;)" ondragend="onDragEnd(event)" id="card-e42">
+        <button class="card-delete" onclick="deleteTask(&#39;e42&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignment: Ch 11</div>
+        <div class="card-desc">Cengage graded homework</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e43&#39;)" ondragend="onDragEnd(event)" id="card-e43">
+        <button class="card-delete" onclick="deleteTask(&#39;e43&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapter 12: Money &amp; Banking</div>
+        <div class="card-desc">Money multiplier, fractional reserve banking, T-accounts, the Fed</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e44&#39;)" ondragend="onDragEnd(event)" id="card-e44">
+        <button class="card-delete" onclick="deleteTask(&#39;e44&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lecture: Money Creation</div>
+        <div class="card-desc">How banks create money, deposit expansion</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e45&#39;)" ondragend="onDragEnd(event)" id="card-e45">
+        <button class="card-delete" onclick="deleteTask(&#39;e45&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 12 Class Work Exercises</div>
+        <div class="card-desc">T-account problems, money multiplier calculations</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e46&#39;)" ondragend="onDragEnd(event)" id="card-e46">
+        <button class="card-delete" onclick="deleteTask(&#39;e46&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Post: Ch 12</div>
+        <div class="card-desc">Post solution for Money Creation Class Work</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e47&#39;)" ondragend="onDragEnd(event)" id="card-e47">
+        <button class="card-delete" onclick="deleteTask(&#39;e47&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quiz: Money Creation</div>
+        <div class="card-desc">Timed quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e48&#39;)" ondragend="onDragEnd(event)" id="card-e48">
+        <button class="card-delete" onclick="deleteTask(&#39;e48&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 12</div>
+        <div class="card-desc">Take after lecture quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e49&#39;)" ondragend="onDragEnd(event)" id="card-e49">
+        <button class="card-delete" onclick="deleteTask(&#39;e49&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignment: Ch 12</div>
+        <div class="card-desc">Cengage graded homework</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e50&#39;)" ondragend="onDragEnd(event)" id="card-e50">
+        <button class="card-delete" onclick="deleteTask(&#39;e50&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Read Chapter 13: Monetary Policy</div>
+        <div class="card-desc">Open market operations, federal funds rate, transmission mechanism</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e51&#39;)" ondragend="onDragEnd(event)" id="card-e51">
+        <button class="card-delete" onclick="deleteTask(&#39;e51&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Watch Lecture: Monetary Policy</div>
+        <div class="card-desc">Fed tools and how monetary policy affects the economy</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e52&#39;)" ondragend="onDragEnd(event)" id="card-e52">
+        <button class="card-delete" onclick="deleteTask(&#39;e52&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Complete Ch 13 Class Work Exercises</div>
+        <div class="card-desc">Money market diagrams, policy chain tracing</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e53&#39;)" ondragend="onDragEnd(event)" id="card-e53">
+        <button class="card-delete" onclick="deleteTask(&#39;e53&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Discussion Post: Ch 13</div>
+        <div class="card-desc">Post solution for Monetary Policy Class Work</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e54&#39;)" ondragend="onDragEnd(event)" id="card-e54">
+        <button class="card-delete" onclick="deleteTask(&#39;e54&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Lecture Quiz: Monetary Policy</div>
+        <div class="card-desc">Timed quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e55&#39;)" ondragend="onDragEnd(event)" id="card-e55">
+        <button class="card-delete" onclick="deleteTask(&#39;e55&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Textbook Quiz: Chapter 13</div>
+        <div class="card-desc">Take after lecture quiz</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e56&#39;)" ondragend="onDragEnd(event)" id="card-e56">
+        <button class="card-delete" onclick="deleteTask(&#39;e56&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">MindTap Assignment: Ch 13</div>
+        <div class="card-desc">Cengage graded homework</div>
+        <span class="card-type type-assignment">ASSIGNMENT</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Ch 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e57&#39;)" ondragend="onDragEnd(event)" id="card-e57">
+        <button class="card-delete" onclick="deleteTask(&#39;e57&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Final Exam Review: Redo all Ch 9-13 Class Work</div>
+        <div class="card-desc">Work through every problem without looking at answers first</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e58&#39;)" ondragend="onDragEnd(event)" id="card-e58">
+        <button class="card-delete" onclick="deleteTask(&#39;e58&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Final Exam Review: Practice all diagrams</div>
+        <div class="card-desc">Keynesian cross, AD-AS, money market. Draw from memory.</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e59&#39;)" ondragend="onDragEnd(event)" id="card-e59">
+        <button class="card-delete" onclick="deleteTask(&#39;e59&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Final Exam Review: Memorize all formulas</div>
+        <div class="card-desc">Spending multiplier, tax multiplier, money multiplier, Fisher equation</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;e60&#39;)" ondragend="onDragEnd(event)" id="card-e60">
+        <button class="card-delete" onclick="deleteTask(&#39;e60&#39;)" title="Remove task">×</button>
+        <span class="card-class econ">Econ 2</span>
+        <div class="card-title">Take Final Exam</div>
+        <div class="card-desc">Chapters 9-13. Timed, multiple choice and fill-in.</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g1&#39;)" ondragend="onDragEnd(event)" id="card-g1">
+        <button class="card-delete" onclick="deleteTask(&#39;g1&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 1 Lecture: CA Myths &amp; Realities</div>
+        <div class="card-desc">Read online lecture presentation. Note all keywords.</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 1</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g2&#39;)" ondragend="onDragEnd(event)" id="card-g2">
+        <button class="card-delete" onclick="deleteTask(&#39;g2&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 1 chapter</div>
+        <div class="card-desc">Take notes on myth vs. reality themes</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 1</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g3&#39;)" ondragend="onDragEnd(event)" id="card-g3">
+        <button class="card-delete" onclick="deleteTask(&#39;g3&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 1</div>
+        <div class="card-desc">Post responses + engage with classmates. Early posts earn more.</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 1</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g4&#39;)" ondragend="onDragEnd(event)" id="card-g4">
+        <button class="card-delete" onclick="deleteTask(&#39;g4&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Map Assignment: Unit 1-2</div>
+        <div class="card-desc">Online map assignment on California regions</div>
+        <span class="card-type type-map">MAP</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 1</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g5&#39;)" ondragend="onDragEnd(event)" id="card-g5">
+        <button class="card-delete" onclick="deleteTask(&#39;g5&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 2 Lecture: Many Californias</div>
+        <div class="card-desc">Diverse regions of the state. Note keywords.</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 2</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g6&#39;)" ondragend="onDragEnd(event)" id="card-g6">
+        <button class="card-delete" onclick="deleteTask(&#39;g6&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 2 chapter</div>
+        <div class="card-desc">Regional diversity and identity themes</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 2</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g7&#39;)" ondragend="onDragEnd(event)" id="card-g7">
+        <button class="card-delete" onclick="deleteTask(&#39;g7&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 2</div>
+        <div class="card-desc">Post + replies on regional diversity</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 2</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g8&#39;)" ondragend="onDragEnd(event)" id="card-g8">
+        <button class="card-delete" onclick="deleteTask(&#39;g8&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 3 Lecture: CA Geology - Processes</div>
+        <div class="card-desc">Plate tectonics, San Andreas Fault, earthquakes</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 3</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g9&#39;)" ondragend="onDragEnd(event)" id="card-g9">
+        <button class="card-delete" onclick="deleteTask(&#39;g9&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 3 chapter</div>
+        <div class="card-desc">Geological processes and landscape formation</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 3</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g10&#39;)" ondragend="onDragEnd(event)" id="card-g10">
+        <button class="card-delete" onclick="deleteTask(&#39;g10&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 3</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 3</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g11&#39;)" ondragend="onDragEnd(event)" id="card-g11">
+        <button class="card-delete" onclick="deleteTask(&#39;g11&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Map Assignment: Unit 3-4</div>
+        <div class="card-desc">Geological features map</div>
+        <span class="card-type type-map">MAP</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 3</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g12&#39;)" ondragend="onDragEnd(event)" id="card-g12">
+        <button class="card-delete" onclick="deleteTask(&#39;g12&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 4 Lecture: CA Geology - Resources</div>
+        <div class="card-desc">Gold, oil, minerals, water as geologic resource</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 4</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g13&#39;)" ondragend="onDragEnd(event)" id="card-g13">
+        <button class="card-delete" onclick="deleteTask(&#39;g13&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 4 chapter</div>
+        <div class="card-desc">Resources and historical development</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 4</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g14&#39;)" ondragend="onDragEnd(event)" id="card-g14">
+        <button class="card-delete" onclick="deleteTask(&#39;g14&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 4</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 4</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g15&#39;)" ondragend="onDragEnd(event)" id="card-g15">
+        <button class="card-delete" onclick="deleteTask(&#39;g15&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 5 Lecture: Landforms &amp; Hazards</div>
+        <div class="card-desc">Sierra Nevada, Coast Ranges, wildfires, earthquakes</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g16&#39;)" ondragend="onDragEnd(event)" id="card-g16">
+        <button class="card-delete" onclick="deleteTask(&#39;g16&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 5 chapter</div>
+        <div class="card-desc">Living with natural hazards</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g17&#39;)" ondragend="onDragEnd(event)" id="card-g17">
+        <button class="card-delete" onclick="deleteTask(&#39;g17&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 5</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g18&#39;)" ondragend="onDragEnd(event)" id="card-g18">
+        <button class="card-delete" onclick="deleteTask(&#39;g18&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Map Assignment: Unit 5-6</div>
+        <div class="card-desc">Landforms and hazards map</div>
+        <span class="card-type type-map">MAP</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 5</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g19&#39;)" ondragend="onDragEnd(event)" id="card-g19">
+        <button class="card-delete" onclick="deleteTask(&#39;g19&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Review Quiz 1: Units 1-5</div>
+        <div class="card-desc">Timed multiple choice. Study all keywords from Units 1-5.</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Quiz 1</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g20&#39;)" ondragend="onDragEnd(event)" id="card-g20">
+        <button class="card-delete" onclick="deleteTask(&#39;g20&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 6 Lecture: California Weather</div>
+        <div class="card-desc">Mediterranean climate, Pacific High, Santa Ana winds, atmospheric rivers</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g21&#39;)" ondragend="onDragEnd(event)" id="card-g21">
+        <button class="card-delete" onclick="deleteTask(&#39;g21&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 6 chapter</div>
+        <div class="card-desc">Weather patterns and their impact</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g22&#39;)" ondragend="onDragEnd(event)" id="card-g22">
+        <button class="card-delete" onclick="deleteTask(&#39;g22&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 6</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 6</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g23&#39;)" ondragend="onDragEnd(event)" id="card-g23">
+        <button class="card-delete" onclick="deleteTask(&#39;g23&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 7 Lecture: Climates &amp; Biomes</div>
+        <div class="card-desc">Climate zones, chaparral, forests, deserts, fire ecology</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 7</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g24&#39;)" ondragend="onDragEnd(event)" id="card-g24">
+        <button class="card-delete" onclick="deleteTask(&#39;g24&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 7 chapter</div>
+        <div class="card-desc">Natural environments and ecosystems</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 7</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g25&#39;)" ondragend="onDragEnd(event)" id="card-g25">
+        <button class="card-delete" onclick="deleteTask(&#39;g25&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 7</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 7</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g26&#39;)" ondragend="onDragEnd(event)" id="card-g26">
+        <button class="card-delete" onclick="deleteTask(&#39;g26&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Map Assignment: Unit 7-8</div>
+        <div class="card-desc">Climate and biomes map</div>
+        <span class="card-type type-map">MAP</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 7</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g27&#39;)" ondragend="onDragEnd(event)" id="card-g27">
+        <button class="card-delete" onclick="deleteTask(&#39;g27&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 8 Lecture: Rivers &amp; Aquifers</div>
+        <div class="card-desc">Major rivers, groundwater, snowpack, Central Valley aquifer</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g28&#39;)" ondragend="onDragEnd(event)" id="card-g28">
+        <button class="card-delete" onclick="deleteTask(&#39;g28&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 8 chapter</div>
+        <div class="card-desc">Water geography challenges</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g29&#39;)" ondragend="onDragEnd(event)" id="card-g29">
+        <button class="card-delete" onclick="deleteTask(&#39;g29&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 8</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 8</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g30&#39;)" ondragend="onDragEnd(event)" id="card-g30">
+        <button class="card-delete" onclick="deleteTask(&#39;g30&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 9 Lecture: Irrigation &amp; Flood Control</div>
+        <div class="card-desc">State Water Project, aqueducts, dams, water politics</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g31&#39;)" ondragend="onDragEnd(event)" id="card-g31">
+        <button class="card-delete" onclick="deleteTask(&#39;g31&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Read California Exposures: Unit 9 chapter</div>
+        <div class="card-desc">Water infrastructure and its transformation of CA</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g32&#39;)" ondragend="onDragEnd(event)" id="card-g32">
+        <button class="card-delete" onclick="deleteTask(&#39;g32&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 9</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g33&#39;)" ondragend="onDragEnd(event)" id="card-g33">
+        <button class="card-delete" onclick="deleteTask(&#39;g33&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Map Assignment: Unit 9-10</div>
+        <div class="card-desc">Water infrastructure map</div>
+        <span class="card-type type-map">MAP</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 9</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g34&#39;)" ondragend="onDragEnd(event)" id="card-g34">
+        <button class="card-delete" onclick="deleteTask(&#39;g34&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Review Quiz 2: Units 6-9</div>
+        <div class="card-desc">Timed MC. Study weather, climate, and water keywords.</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Quiz 2</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g35&#39;)" ondragend="onDragEnd(event)" id="card-g35">
+        <button class="card-delete" onclick="deleteTask(&#39;g35&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 10 Lecture: Historical Population</div>
+        <div class="card-desc">Indigenous peoples, Spanish colonization, Gold Rush, migrations</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g36&#39;)" ondragend="onDragEnd(event)" id="card-g36">
+        <button class="card-delete" onclick="deleteTask(&#39;g36&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 10</div>
+        <div class="card-desc">Post + replies on migration history</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 10</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g37&#39;)" ondragend="onDragEnd(event)" id="card-g37">
+        <button class="card-delete" onclick="deleteTask(&#39;g37&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 11 Lecture: Many Peoples</div>
+        <div class="card-desc">Demographics, immigration, diversity, inequality</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g38&#39;)" ondragend="onDragEnd(event)" id="card-g38">
+        <button class="card-delete" onclick="deleteTask(&#39;g38&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 11</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g39&#39;)" ondragend="onDragEnd(event)" id="card-g39">
+        <button class="card-delete" onclick="deleteTask(&#39;g39&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Map Assignment: Unit 11-12</div>
+        <div class="card-desc">Population and demographics map</div>
+        <span class="card-type type-map">MAP</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 11</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g40&#39;)" ondragend="onDragEnd(event)" id="card-g40">
+        <button class="card-delete" onclick="deleteTask(&#39;g40&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 12 Lecture: Rural California</div>
+        <div class="card-desc">Agriculture, Central Valley, land use, farm labor</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g41&#39;)" ondragend="onDragEnd(event)" id="card-g41">
+        <button class="card-delete" onclick="deleteTask(&#39;g41&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 12</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 12</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g42&#39;)" ondragend="onDragEnd(event)" id="card-g42">
+        <button class="card-delete" onclick="deleteTask(&#39;g42&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 13 Lecture: Urban CA - Innovation</div>
+        <div class="card-desc">Silicon Valley, Hollywood, ports, tech economy</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g43&#39;)" ondragend="onDragEnd(event)" id="card-g43">
+        <button class="card-delete" onclick="deleteTask(&#39;g43&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 13</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g44&#39;)" ondragend="onDragEnd(event)" id="card-g44">
+        <button class="card-delete" onclick="deleteTask(&#39;g44&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Map Assignment: Unit 13-14</div>
+        <div class="card-desc">Urban California map</div>
+        <span class="card-type type-map">MAP</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 13</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g45&#39;)" ondragend="onDragEnd(event)" id="card-g45">
+        <button class="card-delete" onclick="deleteTask(&#39;g45&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Unit 14 Lecture: Metro Transformation</div>
+        <div class="card-desc">Suburbanization, housing crisis, gentrification, future</div>
+        <span class="card-type type-study">STUDY</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 14</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g46&#39;)" ondragend="onDragEnd(event)" id="card-g46">
+        <button class="card-delete" onclick="deleteTask(&#39;g46&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Discussion Assignment: Unit 14</div>
+        <div class="card-desc">Post + replies</div>
+        <span class="card-type type-discussion">DISCUSSION</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Unit 14</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g47&#39;)" ondragend="onDragEnd(event)" id="card-g47">
+        <button class="card-delete" onclick="deleteTask(&#39;g47&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Review Quiz 3: Units 10-14</div>
+        <div class="card-desc">Timed MC. Population, agriculture, urban keywords.</div>
+        <span class="card-type type-quiz">QUIZ</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Quiz 3</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g48&#39;)" ondragend="onDragEnd(event)" id="card-g48">
+        <button class="card-delete" onclick="deleteTask(&#39;g48&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Final Review: Compile all keywords</div>
+        <div class="card-desc">Master list of keywords from all 14 units</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g49&#39;)" ondragend="onDragEnd(event)" id="card-g49">
+        <button class="card-delete" onclick="deleteTask(&#39;g49&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Final Review: Review all maps</div>
+        <div class="card-desc">Go through every map assignment for geographic features</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g50&#39;)" ondragend="onDragEnd(event)" id="card-g50">
+        <button class="card-delete" onclick="deleteTask(&#39;g50&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Final Review: Re-read discussion posts</div>
+        <div class="card-desc">Your California Exposures posts are great study material</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div>
+      <div class="card" draggable="true" ondragstart="onDragStart(event,&#39;g51&#39;)" ondragend="onDragEnd(event)" id="card-g51">
+        <button class="card-delete" onclick="deleteTask(&#39;g51&#39;)" title="Remove task">×</button>
+        <span class="card-class geog">Geog 14</span>
+        <div class="card-title">Take Final Exam</div>
+        <div class="card-desc">All 14 units. Short-answer and multiple choice.</div>
+        <span class="card-type type-exam">EXAM</span>
+        <span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">Final</span>
+      </div></div>
+    <button class="add-task-btn" onclick="toggleAddForm(&#39;todo&#39;)">+ Add Task</button>
+    <div class="add-form" id="form-todo">
+      <input type="text" placeholder="Task title" id="title-todo">
+      <textarea placeholder="Description (optional)" id="desc-todo"></textarea>
+      <select id="class-todo"><option value="econ">Econ 2</option><option value="geog">Geog 14</option></select>
+      <select id="type-todo">
+        <option value="study">Study</option><option value="quiz">Quiz</option>
+        <option value="assignment">Assignment</option><option value="discussion">Discussion</option>
+        <option value="exam">Exam</option><option value="map">Map</option>
+      </select>
+      <input type="text" placeholder="Chapter/Unit (e.g. Ch 5 or Unit 3)" id="chapter-todo">
+      <div class="add-form-actions">
+        <button class="btn-add" onclick="addTask(&#39;todo&#39;)">Add</button>
+        <button class="btn-cancel" onclick="toggleAddForm(&#39;todo&#39;)">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="column col-progress">
+    <div class="column-header">In Progress <span class="col-count" id="count-progress">0</span></div>
+    <div class="column-body" id="col-progress" ondragover="onDragOver(event)" ondrop="onDrop(event, &#39;progress&#39;)"></div>
+    <button class="add-task-btn" onclick="toggleAddForm(&#39;progress&#39;)">+ Add Task</button>
+    <div class="add-form" id="form-progress">
+      <input type="text" placeholder="Task title" id="title-progress">
+      <textarea placeholder="Description (optional)" id="desc-progress"></textarea>
+      <select id="class-progress"><option value="econ">Econ 2</option><option value="geog">Geog 14</option></select>
+      <select id="type-progress">
+        <option value="study">Study</option><option value="quiz">Quiz</option>
+        <option value="assignment">Assignment</option><option value="discussion">Discussion</option>
+        <option value="exam">Exam</option><option value="map">Map</option>
+      </select>
+      <input type="text" placeholder="Chapter/Unit (e.g. Ch 5 or Unit 3)" id="chapter-progress">
+      <div class="add-form-actions">
+        <button class="btn-add" onclick="addTask(&#39;progress&#39;)">Add</button>
+        <button class="btn-cancel" onclick="toggleAddForm(&#39;progress&#39;)">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="column col-done">
+    <div class="column-header">Done <span class="col-count" id="count-done">0</span></div>
+    <div class="column-body" id="col-done" ondragover="onDragOver(event)" ondrop="onDrop(event, &#39;done&#39;)"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA - All tasks from both syllabi
+// ============================================================
+const defaultTasks = [
+  // ECON 2 - Chapter 5
+  {id:'e1',cls:'econ',title:'Read Chapter 5: Intro to Macroeconomics',desc:'Study GDP, circular flow model, nominal vs real GDP, GDP deflator',type:'study',chapter:'Ch 5',col:'todo'},
+  {id:'e2',cls:'econ',title:'Watch Lecture: Measuring Production',desc:'HTML lecture on Canvas under Discussions. Take notes on GDP components.',type:'study',chapter:'Ch 5',col:'todo'},
+  {id:'e3',cls:'econ',title:'Complete Ch 5 Class Work Exercises',desc:'All practice problems for Measuring Production lecture',type:'assignment',chapter:'Ch 5',col:'todo'},
+  {id:'e4',cls:'econ',title:'Discussion Post: Ch 5',desc:'Post solution to one Class Work problem. Show full work.',type:'discussion',chapter:'Ch 5',col:'todo'},
+  {id:'e5',cls:'econ',title:'Lecture Quiz: Measuring Production',desc:'Timed, one attempt. Only take when fully prepared.',type:'quiz',chapter:'Ch 5',col:'todo'},
+  {id:'e6',cls:'econ',title:'Textbook Quiz: Chapter 5',desc:'15 multiple choice from textbook. One attempt only.',type:'quiz',chapter:'Ch 5',col:'todo'},
+  {id:'e7',cls:'econ',title:'MindTap Assignment: Ch 5',desc:'Cengage homework. Only do "counts toward grade" assignments.',type:'assignment',chapter:'Ch 5',col:'todo'},
+
+  // ECON 2 - Chapter 6
+  {id:'e8',cls:'econ',title:'Read Chapter 6: Goals of Macro Policy',desc:'CPI, inflation, unemployment types, Fisher equation',type:'study',chapter:'Ch 6',col:'todo'},
+  {id:'e9',cls:'econ',title:'Watch Lectures: Inflation & Unemployment',desc:'Three lectures: Measuring Inflation, Inflation Costs, Measuring Unemployment',type:'study',chapter:'Ch 6',col:'todo'},
+  {id:'e10',cls:'econ',title:'Complete Ch 6 Class Work Exercises',desc:'Practice problems for all three Ch 6 lectures',type:'assignment',chapter:'Ch 6',col:'todo'},
+  {id:'e11',cls:'econ',title:'Discussion Posts: Ch 6 (3 lectures)',desc:'One post per lecture. Pick unanswered problems.',type:'discussion',chapter:'Ch 6',col:'todo'},
+  {id:'e12',cls:'econ',title:'Lecture Quizzes: Ch 6 (3 quizzes)',desc:'Measuring Inflation, Inflation Costs, Unemployment',type:'quiz',chapter:'Ch 6',col:'todo'},
+  {id:'e13',cls:'econ',title:'Textbook Quiz: Chapter 6',desc:'15 multiple choice. Take after all Ch 6 lecture quizzes.',type:'quiz',chapter:'Ch 6',col:'todo'},
+  {id:'e14',cls:'econ',title:'MindTap Assignment: Ch 6',desc:'Cengage graded homework for Chapter 6',type:'assignment',chapter:'Ch 6',col:'todo'},
+
+  // ECON 2 - Chapters 7 & 8
+  {id:'e15',cls:'econ',title:'Read Chapters 7 & 8: Aggregate Demand',desc:'Consumption function, MPC/MPS, multiplier, AD curve',type:'study',chapter:'Ch 7-8',col:'todo'},
+  {id:'e16',cls:'econ',title:'Watch Lectures: Consumption & AD Components',desc:'Two lectures covering aggregate demand concepts',type:'study',chapter:'Ch 7-8',col:'todo'},
+  {id:'e17',cls:'econ',title:'Complete Ch 7-8 Class Work Exercises',desc:'Multiplier calculations, AD curve shifts, consumption function',type:'assignment',chapter:'Ch 7-8',col:'todo'},
+  {id:'e18',cls:'econ',title:'Discussion Posts: Ch 7-8 (2 lectures)',desc:'Post solutions for Consumption and Components of AD',type:'discussion',chapter:'Ch 7-8',col:'todo'},
+  {id:'e19',cls:'econ',title:'Lecture Quizzes: Ch 7-8 (2 quizzes)',desc:'Consumption quiz and Components of Aggregate Demand quiz',type:'quiz',chapter:'Ch 7-8',col:'todo'},
+  {id:'e20',cls:'econ',title:'Textbook Quiz: Chapter 8',desc:'Take after completing both lecture quizzes for these chapters',type:'quiz',chapter:'Ch 7-8',col:'todo'},
+  {id:'e21',cls:'econ',title:'MindTap Assignments: Ch 7 & 8',desc:'Cengage graded homework for both chapters',type:'assignment',chapter:'Ch 7-8',col:'todo'},
+
+  // ECON 2 - Chapter 9 (FINAL EXAM)
+  {id:'e22',cls:'econ',title:'Read Chapter 9: Demand-Side Equilibrium',desc:'Equilibrium GDP, recessionary/inflationary gaps, multiplier to close gaps',type:'study',chapter:'Ch 9',col:'todo'},
+  {id:'e23',cls:'econ',title:'Watch Lectures: Equilibrium & Gaps',desc:'Equilibrium lecture and Inflationary/Recessionary Gaps lecture',type:'study',chapter:'Ch 9',col:'todo'},
+  {id:'e24',cls:'econ',title:'Complete Ch 9 Class Work Exercises',desc:'Gap calculations, Keynesian cross diagrams',type:'assignment',chapter:'Ch 9',col:'todo'},
+  {id:'e25',cls:'econ',title:'Discussion Posts: Ch 9',desc:'Post for Equilibrium and Gaps lectures',type:'discussion',chapter:'Ch 9',col:'todo'},
+  {id:'e26',cls:'econ',title:'Lecture Quizzes: Ch 9',desc:'Equilibrium quiz + Inflationary/Recessionary Gaps quiz',type:'quiz',chapter:'Ch 9',col:'todo'},
+  {id:'e27',cls:'econ',title:'Textbook Quiz: Chapter 9',desc:'15 MC questions from textbook',type:'quiz',chapter:'Ch 9',col:'todo'},
+  {id:'e28',cls:'econ',title:'MindTap Assignment: Ch 9',desc:'Cengage graded homework',type:'assignment',chapter:'Ch 9',col:'todo'},
+
+  // ECON 2 - Chapter 10 (FINAL EXAM)
+  {id:'e29',cls:'econ',title:'Read Chapter 10: AD and AS',desc:'Short-run vs long-run AS, AD-AS model, demand/supply shocks, stagflation',type:'study',chapter:'Ch 10',col:'todo'},
+  {id:'e30',cls:'econ',title:'Watch Lecture: Aggregate Demand & Supply',desc:'Full AD-AS model lecture',type:'study',chapter:'Ch 10',col:'todo'},
+  {id:'e31',cls:'econ',title:'Complete Ch 10 Class Work Exercises',desc:'AD-AS diagrams, shifting curves, identifying shocks',type:'assignment',chapter:'Ch 10',col:'todo'},
+  {id:'e32',cls:'econ',title:'Discussion Post: Ch 10',desc:'Post solution for AD-AS lecture Class Work',type:'discussion',chapter:'Ch 10',col:'todo'},
+  {id:'e33',cls:'econ',title:'Lecture Quiz: AD and AS',desc:'Timed quiz on aggregate demand and supply',type:'quiz',chapter:'Ch 10',col:'todo'},
+  {id:'e34',cls:'econ',title:'Textbook Quiz: Chapter 10',desc:'Take after lecture quiz',type:'quiz',chapter:'Ch 10',col:'todo'},
+  {id:'e35',cls:'econ',title:'MindTap Assignment: Ch 10',desc:'Cengage graded homework',type:'assignment',chapter:'Ch 10',col:'todo'},
+
+  // ECON 2 - Chapter 11 (FINAL EXAM)
+  {id:'e36',cls:'econ',title:'Read Chapter 11: Fiscal Policy',desc:'Expansionary/contractionary policy, spending & tax multipliers, crowding out',type:'study',chapter:'Ch 11',col:'todo'},
+  {id:'e37',cls:'econ',title:'Watch Lecture: Fiscal Policy',desc:'Government spending and taxation tools',type:'study',chapter:'Ch 11',col:'todo'},
+  {id:'e38',cls:'econ',title:'Complete Ch 11 Class Work Exercises',desc:'Multiplier problems, policy prescriptions',type:'assignment',chapter:'Ch 11',col:'todo'},
+  {id:'e39',cls:'econ',title:'Discussion Post: Ch 11',desc:'Post solution for Fiscal Policy Class Work',type:'discussion',chapter:'Ch 11',col:'todo'},
+  {id:'e40',cls:'econ',title:'Lecture Quiz: Fiscal Policy',desc:'Timed quiz',type:'quiz',chapter:'Ch 11',col:'todo'},
+  {id:'e41',cls:'econ',title:'Textbook Quiz: Chapter 11',desc:'Take after lecture quiz',type:'quiz',chapter:'Ch 11',col:'todo'},
+  {id:'e42',cls:'econ',title:'MindTap Assignment: Ch 11',desc:'Cengage graded homework',type:'assignment',chapter:'Ch 11',col:'todo'},
+
+  // ECON 2 - Chapter 12 (FINAL EXAM)
+  {id:'e43',cls:'econ',title:'Read Chapter 12: Money & Banking',desc:'Money multiplier, fractional reserve banking, T-accounts, the Fed',type:'study',chapter:'Ch 12',col:'todo'},
+  {id:'e44',cls:'econ',title:'Watch Lecture: Money Creation',desc:'How banks create money, deposit expansion',type:'study',chapter:'Ch 12',col:'todo'},
+  {id:'e45',cls:'econ',title:'Complete Ch 12 Class Work Exercises',desc:'T-account problems, money multiplier calculations',type:'assignment',chapter:'Ch 12',col:'todo'},
+  {id:'e46',cls:'econ',title:'Discussion Post: Ch 12',desc:'Post solution for Money Creation Class Work',type:'discussion',chapter:'Ch 12',col:'todo'},
+  {id:'e47',cls:'econ',title:'Lecture Quiz: Money Creation',desc:'Timed quiz',type:'quiz',chapter:'Ch 12',col:'todo'},
+  {id:'e48',cls:'econ',title:'Textbook Quiz: Chapter 12',desc:'Take after lecture quiz',type:'quiz',chapter:'Ch 12',col:'todo'},
+  {id:'e49',cls:'econ',title:'MindTap Assignment: Ch 12',desc:'Cengage graded homework',type:'assignment',chapter:'Ch 12',col:'todo'},
+
+  // ECON 2 - Chapter 13 (FINAL EXAM)
+  {id:'e50',cls:'econ',title:'Read Chapter 13: Monetary Policy',desc:'Open market operations, federal funds rate, transmission mechanism',type:'study',chapter:'Ch 13',col:'todo'},
+  {id:'e51',cls:'econ',title:'Watch Lecture: Monetary Policy',desc:'Fed tools and how monetary policy affects the economy',type:'study',chapter:'Ch 13',col:'todo'},
+  {id:'e52',cls:'econ',title:'Complete Ch 13 Class Work Exercises',desc:'Money market diagrams, policy chain tracing',type:'assignment',chapter:'Ch 13',col:'todo'},
+  {id:'e53',cls:'econ',title:'Discussion Post: Ch 13',desc:'Post solution for Monetary Policy Class Work',type:'discussion',chapter:'Ch 13',col:'todo'},
+  {id:'e54',cls:'econ',title:'Lecture Quiz: Monetary Policy',desc:'Timed quiz',type:'quiz',chapter:'Ch 13',col:'todo'},
+  {id:'e55',cls:'econ',title:'Textbook Quiz: Chapter 13',desc:'Take after lecture quiz',type:'quiz',chapter:'Ch 13',col:'todo'},
+  {id:'e56',cls:'econ',title:'MindTap Assignment: Ch 13',desc:'Cengage graded homework',type:'assignment',chapter:'Ch 13',col:'todo'},
+
+  // ECON 2 - Final Exam
+  {id:'e57',cls:'econ',title:'Final Exam Review: Redo all Ch 9-13 Class Work',desc:'Work through every problem without looking at answers first',type:'exam',chapter:'Final',col:'todo'},
+  {id:'e58',cls:'econ',title:'Final Exam Review: Practice all diagrams',desc:'Keynesian cross, AD-AS, money market. Draw from memory.',type:'exam',chapter:'Final',col:'todo'},
+  {id:'e59',cls:'econ',title:'Final Exam Review: Memorize all formulas',desc:'Spending multiplier, tax multiplier, money multiplier, Fisher equation',type:'exam',chapter:'Final',col:'todo'},
+  {id:'e60',cls:'econ',title:'Take Final Exam',desc:'Chapters 9-13. Timed, multiple choice and fill-in.',type:'exam',chapter:'Final',col:'todo'},
+
+  // GEOG 14 - Unit 1
+  {id:'g1',cls:'geog',title:'Unit 1 Lecture: CA Myths & Realities',desc:'Read online lecture presentation. Note all keywords.',type:'study',chapter:'Unit 1',col:'todo'},
+  {id:'g2',cls:'geog',title:'Read California Exposures: Unit 1 chapter',desc:'Take notes on myth vs. reality themes',type:'study',chapter:'Unit 1',col:'todo'},
+  {id:'g3',cls:'geog',title:'Discussion Assignment: Unit 1',desc:'Post responses + engage with classmates. Early posts earn more.',type:'discussion',chapter:'Unit 1',col:'todo'},
+  {id:'g4',cls:'geog',title:'Map Assignment: Unit 1-2',desc:'Online map assignment on California regions',type:'map',chapter:'Unit 1',col:'todo'},
+
+  // GEOG 14 - Unit 2
+  {id:'g5',cls:'geog',title:'Unit 2 Lecture: Many Californias',desc:'Diverse regions of the state. Note keywords.',type:'study',chapter:'Unit 2',col:'todo'},
+  {id:'g6',cls:'geog',title:'Read California Exposures: Unit 2 chapter',desc:'Regional diversity and identity themes',type:'study',chapter:'Unit 2',col:'todo'},
+  {id:'g7',cls:'geog',title:'Discussion Assignment: Unit 2',desc:'Post + replies on regional diversity',type:'discussion',chapter:'Unit 2',col:'todo'},
+
+  // GEOG 14 - Unit 3
+  {id:'g8',cls:'geog',title:'Unit 3 Lecture: CA Geology - Processes',desc:'Plate tectonics, San Andreas Fault, earthquakes',type:'study',chapter:'Unit 3',col:'todo'},
+  {id:'g9',cls:'geog',title:'Read California Exposures: Unit 3 chapter',desc:'Geological processes and landscape formation',type:'study',chapter:'Unit 3',col:'todo'},
+  {id:'g10',cls:'geog',title:'Discussion Assignment: Unit 3',desc:'Post + replies',type:'discussion',chapter:'Unit 3',col:'todo'},
+  {id:'g11',cls:'geog',title:'Map Assignment: Unit 3-4',desc:'Geological features map',type:'map',chapter:'Unit 3',col:'todo'},
+
+  // GEOG 14 - Unit 4
+  {id:'g12',cls:'geog',title:'Unit 4 Lecture: CA Geology - Resources',desc:'Gold, oil, minerals, water as geologic resource',type:'study',chapter:'Unit 4',col:'todo'},
+  {id:'g13',cls:'geog',title:'Read California Exposures: Unit 4 chapter',desc:'Resources and historical development',type:'study',chapter:'Unit 4',col:'todo'},
+  {id:'g14',cls:'geog',title:'Discussion Assignment: Unit 4',desc:'Post + replies',type:'discussion',chapter:'Unit 4',col:'todo'},
+
+  // GEOG 14 - Unit 5
+  {id:'g15',cls:'geog',title:'Unit 5 Lecture: Landforms & Hazards',desc:'Sierra Nevada, Coast Ranges, wildfires, earthquakes',type:'study',chapter:'Unit 5',col:'todo'},
+  {id:'g16',cls:'geog',title:'Read California Exposures: Unit 5 chapter',desc:'Living with natural hazards',type:'study',chapter:'Unit 5',col:'todo'},
+  {id:'g17',cls:'geog',title:'Discussion Assignment: Unit 5',desc:'Post + replies',type:'discussion',chapter:'Unit 5',col:'todo'},
+  {id:'g18',cls:'geog',title:'Map Assignment: Unit 5-6',desc:'Landforms and hazards map',type:'map',chapter:'Unit 5',col:'todo'},
+  {id:'g19',cls:'geog',title:'Review Quiz 1: Units 1-5',desc:'Timed multiple choice. Study all keywords from Units 1-5.',type:'quiz',chapter:'Quiz 1',col:'todo'},
+
+  // GEOG 14 - Unit 6
+  {id:'g20',cls:'geog',title:'Unit 6 Lecture: California Weather',desc:'Mediterranean climate, Pacific High, Santa Ana winds, atmospheric rivers',type:'study',chapter:'Unit 6',col:'todo'},
+  {id:'g21',cls:'geog',title:'Read California Exposures: Unit 6 chapter',desc:'Weather patterns and their impact',type:'study',chapter:'Unit 6',col:'todo'},
+  {id:'g22',cls:'geog',title:'Discussion Assignment: Unit 6',desc:'Post + replies',type:'discussion',chapter:'Unit 6',col:'todo'},
+
+  // GEOG 14 - Unit 7
+  {id:'g23',cls:'geog',title:'Unit 7 Lecture: Climates & Biomes',desc:'Climate zones, chaparral, forests, deserts, fire ecology',type:'study',chapter:'Unit 7',col:'todo'},
+  {id:'g24',cls:'geog',title:'Read California Exposures: Unit 7 chapter',desc:'Natural environments and ecosystems',type:'study',chapter:'Unit 7',col:'todo'},
+  {id:'g25',cls:'geog',title:'Discussion Assignment: Unit 7',desc:'Post + replies',type:'discussion',chapter:'Unit 7',col:'todo'},
+  {id:'g26',cls:'geog',title:'Map Assignment: Unit 7-8',desc:'Climate and biomes map',type:'map',chapter:'Unit 7',col:'todo'},
+
+  // GEOG 14 - Unit 8
+  {id:'g27',cls:'geog',title:'Unit 8 Lecture: Rivers & Aquifers',desc:'Major rivers, groundwater, snowpack, Central Valley aquifer',type:'study',chapter:'Unit 8',col:'todo'},
+  {id:'g28',cls:'geog',title:'Read California Exposures: Unit 8 chapter',desc:'Water geography challenges',type:'study',chapter:'Unit 8',col:'todo'},
+  {id:'g29',cls:'geog',title:'Discussion Assignment: Unit 8',desc:'Post + replies',type:'discussion',chapter:'Unit 8',col:'todo'},
+
+  // GEOG 14 - Unit 9
+  {id:'g30',cls:'geog',title:'Unit 9 Lecture: Irrigation & Flood Control',desc:'State Water Project, aqueducts, dams, water politics',type:'study',chapter:'Unit 9',col:'todo'},
+  {id:'g31',cls:'geog',title:'Read California Exposures: Unit 9 chapter',desc:'Water infrastructure and its transformation of CA',type:'study',chapter:'Unit 9',col:'todo'},
+  {id:'g32',cls:'geog',title:'Discussion Assignment: Unit 9',desc:'Post + replies',type:'discussion',chapter:'Unit 9',col:'todo'},
+  {id:'g33',cls:'geog',title:'Map Assignment: Unit 9-10',desc:'Water infrastructure map',type:'map',chapter:'Unit 9',col:'todo'},
+  {id:'g34',cls:'geog',title:'Review Quiz 2: Units 6-9',desc:'Timed MC. Study weather, climate, and water keywords.',type:'quiz',chapter:'Quiz 2',col:'todo'},
+
+  // GEOG 14 - Units 10-14
+  {id:'g35',cls:'geog',title:'Unit 10 Lecture: Historical Population',desc:'Indigenous peoples, Spanish colonization, Gold Rush, migrations',type:'study',chapter:'Unit 10',col:'todo'},
+  {id:'g36',cls:'geog',title:'Discussion Assignment: Unit 10',desc:'Post + replies on migration history',type:'discussion',chapter:'Unit 10',col:'todo'},
+  {id:'g37',cls:'geog',title:'Unit 11 Lecture: Many Peoples',desc:'Demographics, immigration, diversity, inequality',type:'study',chapter:'Unit 11',col:'todo'},
+  {id:'g38',cls:'geog',title:'Discussion Assignment: Unit 11',desc:'Post + replies',type:'discussion',chapter:'Unit 11',col:'todo'},
+  {id:'g39',cls:'geog',title:'Map Assignment: Unit 11-12',desc:'Population and demographics map',type:'map',chapter:'Unit 11',col:'todo'},
+  {id:'g40',cls:'geog',title:'Unit 12 Lecture: Rural California',desc:'Agriculture, Central Valley, land use, farm labor',type:'study',chapter:'Unit 12',col:'todo'},
+  {id:'g41',cls:'geog',title:'Discussion Assignment: Unit 12',desc:'Post + replies',type:'discussion',chapter:'Unit 12',col:'todo'},
+  {id:'g42',cls:'geog',title:'Unit 13 Lecture: Urban CA - Innovation',desc:'Silicon Valley, Hollywood, ports, tech economy',type:'study',chapter:'Unit 13',col:'todo'},
+  {id:'g43',cls:'geog',title:'Discussion Assignment: Unit 13',desc:'Post + replies',type:'discussion',chapter:'Unit 13',col:'todo'},
+  {id:'g44',cls:'geog',title:'Map Assignment: Unit 13-14',desc:'Urban California map',type:'map',chapter:'Unit 13',col:'todo'},
+  {id:'g45',cls:'geog',title:'Unit 14 Lecture: Metro Transformation',desc:'Suburbanization, housing crisis, gentrification, future',type:'study',chapter:'Unit 14',col:'todo'},
+  {id:'g46',cls:'geog',title:'Discussion Assignment: Unit 14',desc:'Post + replies',type:'discussion',chapter:'Unit 14',col:'todo'},
+  {id:'g47',cls:'geog',title:'Review Quiz 3: Units 10-14',desc:'Timed MC. Population, agriculture, urban keywords.',type:'quiz',chapter:'Quiz 3',col:'todo'},
+
+  // GEOG 14 - Final
+  {id:'g48',cls:'geog',title:'Final Review: Compile all keywords',desc:'Master list of keywords from all 14 units',type:'exam',chapter:'Final',col:'todo'},
+  {id:'g49',cls:'geog',title:'Final Review: Review all maps',desc:'Go through every map assignment for geographic features',type:'exam',chapter:'Final',col:'todo'},
+  {id:'g50',cls:'geog',title:'Final Review: Re-read discussion posts',desc:'Your California Exposures posts are great study material',type:'exam',chapter:'Final',col:'todo'},
+  {id:'g51',cls:'geog',title:'Take Final Exam',desc:'All 14 units. Short-answer and multiple choice.',type:'exam',chapter:'Final',col:'todo'},
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let tasks = [];
+let currentFilter = 'all';
+let draggedId = null;
+let nextId = 200;
+
+function loadTasks() {
+  try {
+    const saved = sessionStorage.getItem('classTasks');
+    if (saved) { tasks = JSON.parse(saved); return; }
+  } catch(e) {}
+  tasks = JSON.parse(JSON.stringify(defaultTasks));
+}
+
+function saveTasks() {
+  try { sessionStorage.setItem('classTasks', JSON.stringify(tasks)); } catch(e) {}
+}
+
+// Use in-memory storage as primary, sessionStorage as backup
+loadTasks();
+
+// ============================================================
+// RENDERING
+// ============================================================
+function render() {
+  const cols = {todo: '', progress: '', done: ''};
+  const counts = {todo: 0, progress: 0, done: 0};
+  const filtered = currentFilter === 'all' ? tasks : tasks.filter(t => t.cls === currentFilter);
+
+  filtered.forEach(t => {
+    const typeClass = 'type-' + t.type;
+    cols[t.col] += `
+      <div class="card" draggable="true" ondragstart="onDragStart(event,'${t.id}')" ondragend="onDragEnd(event)" id="card-${t.id}">
+        <button class="card-delete" onclick="deleteTask('${t.id}')" title="Remove task">&times;</button>
+        <span class="card-class ${t.cls}">${t.cls === 'econ' ? 'Econ 2' : 'Geog 14'}</span>
+        <div class="card-title">${t.title}</div>
+        <div class="card-desc">${t.desc}</div>
+        <span class="card-type ${typeClass}">${t.type.toUpperCase()}</span>
+        ${t.chapter ? `<span class="card-type" style="background:#F5F5F5;color:#666;margin-left:4px">${t.chapter}</span>` : ''}
+      </div>`;
+    counts[t.col]++;
+  });
+
+  document.getElementById('col-todo').innerHTML = cols.todo;
+  document.getElementById('col-progress').innerHTML = cols.progress;
+  document.getElementById('col-done').innerHTML = cols.done;
+  document.getElementById('count-todo').textContent = counts.todo;
+  document.getElementById('count-progress').textContent = counts.progress;
+  document.getElementById('count-done').textContent = counts.done;
+
+  updateStats();
+  updateCharts();
+  saveTasks();
+}
+
+function updateStats() {
+  const total = tasks.length;
+  const done = tasks.filter(t => t.col === 'done').length;
+  const prog = tasks.filter(t => t.col === 'progress').length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-progress').textContent = prog;
+  document.getElementById('stat-remaining').textContent = total - done - prog;
+
+  // Class-specific progress
+  const econTasks = tasks.filter(t => t.cls === 'econ');
+  const econDone = econTasks.filter(t => t.col === 'done').length;
+  const econPct = econTasks.length ? Math.round(econDone / econTasks.length * 100) : 0;
+  document.getElementById('econ-bar').style.width = econPct + '%';
+  document.getElementById('econ-pct').textContent = `${econPct}% complete (${econDone}/${econTasks.length} tasks)`;
+
+  const geogTasks = tasks.filter(t => t.cls === 'geog');
+  const geogDone = geogTasks.filter(t => t.col === 'done').length;
+  const geogPct = geogTasks.length ? Math.round(geogDone / geogTasks.length * 100) : 0;
+  document.getElementById('geog-bar').style.width = geogPct + '%';
+  document.getElementById('geog-pct').textContent = `${geogPct}% complete (${geogDone}/${geogTasks.length} tasks)`;
+}
+
+// ============================================================
+// CHARTS (pure canvas, no libraries)
+// ============================================================
+function updateCharts() {
+  drawTypeChart();
+  drawChapterChart();
+}
+
+function drawTypeChart() {
+  const canvas = document.getElementById('typeChart');
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width = canvas.parentElement.clientWidth - 40;
+  const h = canvas.height = 180;
+  ctx.clearRect(0, 0, w, h);
+
+  const types = ['study','quiz','assignment','discussion','exam','map'];
+  const colors = ['#1565C0','#E65100','#7B1FA2','#2E7D32','#C62828','#00695C'];
+  const labels = ['Study','Quiz','Assignment','Discussion','Exam','Map'];
+
+  const data = types.map(type => {
+    const ofType = tasks.filter(t => t.type === type);
+    return {
+      total: ofType.length,
+      done: ofType.filter(t => t.col === 'done').length
+    };
+  });
+
+  const maxVal = Math.max(...data.map(d => d.total), 1);
+  const barW = Math.min(40, (w - 60) / types.length - 10);
+  const chartH = h - 40;
+
+  data.forEach((d, i) => {
+    const x = 40 + i * ((w - 60) / types.length);
+    const totalH = (d.total / maxVal) * (chartH - 10);
+    const doneH = (d.done / maxVal) * (chartH - 10);
+
+    // Total bar (light)
+    ctx.fillStyle = colors[i] + '33';
+    ctx.fillRect(x, chartH - totalH, barW, totalH);
+    // Done bar (solid)
+    ctx.fillStyle = colors[i];
+    ctx.fillRect(x, chartH - doneH, barW, doneH);
+
+    // Label
+    ctx.fillStyle = '#666';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(labels[i], x + barW/2, h - 5);
+    // Count
+    ctx.fillText(`${d.done}/${d.total}`, x + barW/2, chartH - totalH - 5);
+  });
+}
+
+function drawChapterChart() {
+  const canvas = document.getElementById('chapterChart');
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width = canvas.parentElement.clientWidth - 40;
+  const h = canvas.height = 180;
+  ctx.clearRect(0, 0, w, h);
+
+  // Get unique chapters in order
+  const chapters = [];
+  const seen = new Set();
+  tasks.forEach(t => {
+    if (!seen.has(t.chapter)) { seen.add(t.chapter); chapters.push(t.chapter); }
+  });
+
+  if (chapters.length === 0) return;
+
+  const data = chapters.map(ch => {
+    const ofCh = tasks.filter(t => t.chapter === ch);
+    return {
+      label: ch,
+      total: ofCh.length,
+      done: ofCh.filter(t => t.col === 'done').length,
+      cls: ofCh[0].cls
+    };
+  });
+
+  const chartH = h - 35;
+  const barW = Math.min(20, (w - 30) / chapters.length - 2);
+  const maxVal = Math.max(...data.map(d => d.total), 1);
+
+  data.forEach((d, i) => {
+    const x = 20 + i * ((w - 30) / data.length);
+    const totalH = (d.total / maxVal) * (chartH - 10);
+    const doneH = (d.done / maxVal) * (chartH - 10);
+    const color = d.cls === 'econ' ? '#2E5090' : '#2D7D46';
+
+    ctx.fillStyle = color + '33';
+    ctx.fillRect(x, chartH - totalH, barW, totalH);
+    ctx.fillStyle = color;
+    ctx.fillRect(x, chartH - doneH, barW, doneH);
+
+    // Label (rotate for small bars)
+    ctx.save();
+    ctx.fillStyle = '#666';
+    ctx.font = '8px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.translate(x + barW/2 + 3, h - 3);
+    ctx.rotate(-Math.PI/4);
+    ctx.fillText(d.label, 0, 0);
+    ctx.restore();
+  });
+}
+
+// ============================================================
+// DRAG AND DROP
+// ============================================================
+function onDragStart(e, id) {
+  draggedId = id;
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragEnd(e) {
+  e.target.classList.remove('dragging');
+  document.querySelectorAll('.column-body').forEach(el => el.classList.remove('drag-over'));
+}
+function onDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+function onDrop(e, col) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (!draggedId) return;
+  const task = tasks.find(t => t.id === draggedId);
+  if (task) { task.col = col; render(); }
+  draggedId = null;
+}
+
+// ============================================================
+// FILTER
+// ============================================================
+function setFilter(filter, el) {
+  currentFilter = filter;
+  document.querySelectorAll('.tab').forEach(t => {
+    t.className = 'tab';
+  });
+  if (filter === 'all') el.classList.add('active-all');
+  else if (filter === 'econ') el.classList.add('active-econ');
+  else el.classList.add('active-geog');
+  render();
+}
+
+// ============================================================
+// ADD / DELETE
+// ============================================================
+function toggleAddForm(col) {
+  const form = document.getElementById('form-' + col);
+  form.classList.toggle('show');
+}
+
+function addTask(col) {
+  const title = document.getElementById('title-' + col).value.trim();
+  if (!title) return;
+  const desc = document.getElementById('desc-' + col).value.trim();
+  const cls = document.getElementById('class-' + col).value;
+  const type = document.getElementById('type-' + col).value;
+  const chapter = document.getElementById('chapter-' + col).value.trim();
+
+  tasks.push({
+    id: 'custom-' + (nextId++),
+    cls, title, desc, type, chapter,
+    col: col === 'progress' ? 'progress' : 'todo'
+  });
+
+  // Clear form
+  document.getElementById('title-' + col).value = '';
+  document.getElementById('desc-' + col).value = '';
+  document.getElementById('chapter-' + col).value = '';
+  toggleAddForm(col);
+  render();
+}
+
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
+  render();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+render();
+window.addEventListener('resize', () => { updateCharts(); });
+</script>
+
+
+</body></html>
