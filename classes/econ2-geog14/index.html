@@ -56,6 +56,17 @@
   }
   .stat-badge .stat-num { font-size: 22px; font-weight: 700; }
   .stat-badge .stat-label { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+  .reset-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.6);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { background: rgba(192,57,43,0.4); color: white; border-color: rgba(192,57,43,0.6); }
 
   /* TABS */
   .tab-bar {
@@ -326,6 +337,7 @@
       <div class="stat-num" id="stat-remaining">111</div>
       <div class="stat-label">Remaining</div>
     </div>
+    <button class="reset-btn" onclick="resetAllTasks()">Reset All</button>
   </div>
 </div>
 
@@ -1467,17 +1479,24 @@ let nextId = 200;
 
 function loadTasks() {
   try {
-    const saved = sessionStorage.getItem('classTasks');
+    const saved = localStorage.getItem('classTasks');
     if (saved) { tasks = JSON.parse(saved); return; }
   } catch(e) {}
   tasks = JSON.parse(JSON.stringify(defaultTasks));
 }
 
 function saveTasks() {
-  try { sessionStorage.setItem('classTasks', JSON.stringify(tasks)); } catch(e) {}
+  try { localStorage.setItem('classTasks', JSON.stringify(tasks)); } catch(e) {}
 }
 
-// Use in-memory storage as primary, sessionStorage as backup
+function resetAllTasks() {
+  if (confirm('This will reset ALL tasks back to the original list and undo any changes. Are you sure?')) {
+    localStorage.removeItem('classTasks');
+    tasks = JSON.parse(JSON.stringify(defaultTasks));
+    render();
+  }
+}
+
 loadTasks();
 
 // ============================================================
