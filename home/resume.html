@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isadore Garcia — Mechanical Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f0;
+    --white: #ffffff;
+    --black: #111111;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: #e0e0d8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---- ACCENT BAR TOP ---- */
+  .accent-bar {
+    height: 6px;
+    background: var(--accent);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed;
+    top: 6px;
+    width: 100%;
+    z-index: 100;
+    background: rgba(245, 245, 240, 0.92);
+    backdrop-filter: blur(12px);
+  }
+
+  nav .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 3.5rem;
+  }
+
+  nav a {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--black);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); text-decoration: none; }
+
+  /* ---- HERO ---- */
+  .hero {
+    padding: 10rem 3rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    max-width: 900px;
+    margin: 0 auto 2rem;
+  }
+
+  .hero h1 .hl {
+    color: var(--accent);
+  }
+
+  .hero-divider {
+    width: 3px;
+    height: 60px;
+    background: var(--accent);
+    margin: 0 auto 0;
+  }
+
+  /* ---- FULL BLEED IMAGE ---- */
+  .full-image {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .full-image img {
+    width: 100%;
+    display: block;
+    filter: grayscale(85%) contrast(1.1);
+    transition: filter 0.4s;
+  }
+
+  .full-image:hover img {
+    filter: grayscale(40%) contrast(1.05);
+  }
+
+  .full-image .img-caption {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.5);
+    padding: 0.3em 0.8em;
+    border-radius: 3px;
+  }
+
+  /* ---- SECTIONS ---- */
+  .section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 5rem 3rem;
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 2.5rem;
+    line-height: 1.05;
+  }
+
+  /* ---- ABOUT GRID ---- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+
+  .about-text strong { color: var(--text); font-weight: 600; }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    border-radius: 8px;
+  }
+
+  .stat-card .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-card .stat-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  /* ---- PROJECT ROWS ---- */
+  .project-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-row:last-child { border-bottom: none; }
+
+  .project-img {
+    overflow: hidden;
+    background: #1a1a1a;
+    min-height: 300px;
+    position: relative;
+  }
+
+  .project-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.9;
+    transition: transform 0.4s ease, opacity 0.4s;
+  }
+
+  .project-row:hover .project-img img {
+    transform: scale(1.03);
+    opacity: 1;
+  }
+
+  .project-info {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--white);
+  }
+
+  .project-info .proj-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .project-info h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+  }
+
+  .project-info p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tech-tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 500;
+    padding: 0.3em 0.7em;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 4px;
+  }
+
+  .project-row.flip .project-img { order: 2; }
+  .project-row.flip .project-info { order: 1; }
+
+  /* ---- EXPERIENCE ---- */
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .exp-item:last-child { border-bottom: none; }
+
+  .exp-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-top: 0.35rem;
+  }
+
+  .exp-content h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+  }
+
+  .exp-content .company {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ---- SKILLS STRIP ---- */
+  .skills-strip {
+    background: var(--black);
+    color: #fff;
+    padding: 4rem 3rem;
+  }
+
+  .skills-strip-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .skills-strip .section-label { color: var(--accent); }
+  .skills-strip .section-heading { color: #fff; }
+
+  .skills-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .skills-cols h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #333;
+  }
+
+  .skills-cols ul { list-style: none; }
+  .skills-cols li {
+    font-size: 0.88rem;
+    color: #aaa;
+    padding: 0.25rem 0;
+    font-weight: 300;
+  }
+
+  /* ---- EDUCATION ---- */
+  .edu-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .edu-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    border-left: 4px solid var(--accent);
+  }
+
+  .edu-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .edu-card .edu-sub { font-size: 0.88rem; color: var(--text-muted); }
+  .edu-card .edu-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    margin-top: 0.6rem;
+  }
+
+  /* ---- CONTACT ---- */
+  .contact {
+    background: var(--accent);
+    color: #fff;
+    text-align: center;
+    padding: 5rem 3rem;
+  }
+
+  .contact h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact p {
+    font-size: 1rem;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+  }
+
+  .contact-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-btns a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .contact-btns a:hover {
+    background: #fff;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 768px) {
+    .hero { padding: 8rem 1.5rem 3rem; }
+    .hero h1 { font-size: 2.2rem; }
+    nav .nav-inner { padding: 0.75rem 1.5rem; gap: 2rem; }
+    .section { padding: 3rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .project-row { grid-template-columns: 1fr; }
+    .project-row.flip .project-img { order: 0; }
+    .project-row.flip .project-info { order: 0; }
+    .project-info { padding: 2rem 1.5rem; }
+    .skills-cols { grid-template-columns: 1fr 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.25rem; }
+    .edu-row { grid-template-columns: 1fr; }
+    .skills-strip { padding: 3rem 1.5rem; }
+    .contact { padding: 3rem 1.5rem; }
+    .contact h2 { font-size: 2.2rem; }
+  }
+
+  @media (max-width: 480px) {
+    nav .nav-inner { gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
+    nav a { font-size: 0.7rem; letter-spacing: 0.12em; }
+    .skills-cols { grid-template-columns: 1fr; }
+  }
+
+  /* ---- SCROLL REVEAL ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="accent-bar"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#about">About Me</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Resume</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>
+    Hi, I'm Isadore Garcia<br>
+    a <span class="hl">Mechanical Engineering</span> student
+    in Los Angeles. I build electronics,
+    write <span class="hl">physics simulations</span>,
+    and prototype from scratch.
+  </h1>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- FULL BLEED IMAGE 1 -->
+<div class="full-image">
+  <img src="img-ds1-layout.png" alt="Boss DS-1 stripboard layout">
+  <span class="img-caption">Boss DS-1 Distortion — Stripboard Layout</span>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="section-label">About Me</div>
+  <h2 class="section-heading reveal">Engineer, Builder, Problem Solver</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      I'm a freshman at <strong>Santa Monica College</strong> studying mechanical engineering, planning to transfer to a CSU or UC by Fall 2027. I've spent most of my life learning about <strong>electronics, programming, design</strong>, and building things from the ground up.
+      <br><br>
+      Right now I'm designing analog guitar pedals on breadboard, writing physics engines in C/C++, and building a Telecaster guitar from individual parts. I also run a tutoring business and teach math at Mathnasium.
+      <br><br>
+      I speak <strong>English</strong> and <strong>Spanish</strong> fluently, and I'm picking up French.
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card">
+        <div class="stat-num">6+</div>
+        <div class="stat-label">Programming languages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">9</div>
+        <div class="stat-label">GitHub repositories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Active businesses/projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Languages fluent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL BLEED IMAGE 2 -->
+<div class="full-image">
+  <img src="img-oscilloscope.png" alt="Oscilloscope probing breadboard circuit" style="object-fit:cover; height:400px;">
+  <span class="img-caption">Erica Synths EDU Oscilloscope — Signal Debugging</span>
+</div>
+
+<!-- PROJECTS -->
+<section class="section" id="projects" style="padding-bottom:0;">
+  <div class="section-label">Projects</div>
+  <h2 class="section-heading reveal">What I've Built</h2>
+</section>
+
+<div class="project-row reveal">
+  <div class="project-img">
+    <img src="img-opamp-schematic.png" alt="Op-amp circuit schematic">
+  </div>
+  <div class="project-info">
+    <div class="proj-tag">Electronics / Circuit Design</div>
+    <h3>Guitar Distortion Pedal</h3>
+    <p>Building an analog distortion circuit based on the Boss DS-1 topology. Single-supply op-amp biasing, virtual ground references, and clipping stages, all prototyped on breadboard with oscilloscope verification.</p>
+    <div class="tech-tags">
+      <span>Op-Amps</span><span>Breadboard</span><span>Signal Chain</span><span>Schematic Reading</span>
+    </div>
+  </div>
+</div>
+
+<div class="project-row flip reveal">
+  <div class="project-img">
+    <img src="img-dyna-comp.png" alt="MXR Dyna Comp schematic blocks">
+  </div>
+  <div class="project-info">
+    <div class="proj-tag">Electronics / Analysis</div>
+    <h3>Analog Circuit Study</h3>
+    <p>Studying complex analog systems like the MXR Dyna Comp: OTA-based variable gain (CA3080), envelope detection, power supply design, and block-level signal flow analysis for audio compression circuits.</p>
+    <div class="tech-tags">
+      <span>OTA</span><span>Envelope Detection</span><span>CA3080</span><span>Block Diagrams</span>
+    </div>
+  </div>
+</div>
+
+<div class="project-row reveal">
+  <div class="project-img" style="background:var(--black);display:flex;align-items:center;justify-content:center;">
+    <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+      <rect x="30" y="30" width="50" height="50" rx="6" stroke="#2563eb" stroke-width="2.5" fill="none"/>
+      <rect x="120" y="30" width="50" height="50" rx="6" stroke="#2563eb" stroke-width="2.5" fill="none"/>
+      <rect x="30" y="120" width="50" height="50" rx="6" stroke="#2563eb" stroke-width="2.5" fill="none"/>
+      <rect x="120" y="120" width="50" height="50" rx="6" stroke="#2563eb" stroke-width="2.5" fill="none"/>
+      <line x1="80" y1="55" x2="120" y2="55" stroke="#2563eb" stroke-width="2"/>
+      <line x1="55" y1="80" x2="55" y2="120" stroke="#2563eb" stroke-width="2"/>
+      <line x1="145" y1="80" x2="145" y2="120" stroke="#2563eb" stroke-width="2"/>
+      <line x1="80" y1="145" x2="120" y2="145" stroke="#2563eb" stroke-width="2"/>
+      <circle cx="100" cy="100" r="12" fill="#2563eb" opacity="0.15"/>
+      <circle cx="100" cy="100" r="5" fill="#2563eb"/>
+    </svg>
+  </div>
+  <div class="project-info">
+    <div class="proj-tag">Software / Physics</div>
+    <h3>2D Physics Engine</h3>
+    <p>Built rigid-body physics simulations from scratch in C and C++. Collision detection, gravity, and force calculations with CMake build system. Structured with proper include/src separation and docs.</p>
+    <div class="tech-tags">
+      <span>C</span><span>C++</span><span>CMake</span><span>Physics Sim</span>
+    </div>
+  </div>
+</div>
+
+<div class="project-row flip reveal">
+  <div class="project-img" style="background:var(--black);display:flex;align-items:center;justify-content:center;">
+    <svg width="240" height="140" viewBox="0 0 240 140" fill="none">
+      <rect x="10" y="25" width="220" height="90" rx="10" stroke="#2563eb" stroke-width="2" fill="none"/>
+      <circle cx="55" cy="70" r="18" stroke="#2563eb" stroke-width="2" fill="none"/>
+      <circle cx="55" cy="70" r="7" fill="#2563eb" opacity="0.2"/>
+      <circle cx="55" cy="70" r="3" fill="#2563eb"/>
+      <rect x="95" y="44" width="60" height="10" rx="2" fill="#2563eb" opacity="0.15"/>
+      <rect x="95" y="60" width="50" height="10" rx="2" fill="#2563eb" opacity="0.1"/>
+      <rect x="95" y="76" width="40" height="10" rx="2" fill="#2563eb" opacity="0.08"/>
+      <rect x="175" y="48" width="38" height="32" rx="5" stroke="#2563eb" stroke-width="2" fill="none"/>
+      <line x1="184" y1="64" x2="203" y2="64" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="193.5" y1="54.5" x2="193.5" y2="73.5" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="project-info">
+    <div class="proj-tag">Mechanical / Assembly</div>
+    <h3>Telecaster Guitar Build</h3>
+    <p>Full custom build from individual parts. Tracked BOM with specs, managed component fitment and tolerancing, planned assembly sequence. Built a web app to track every part and cost.</p>
+    <div class="tech-tags">
+      <span>BOM</span><span>Assembly</span><span>Tolerancing</span><span>Web App</span>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="skills-strip">
+  <div class="skills-strip-inner">
+    <div class="section-label">Skills</div>
+    <h2 class="section-heading reveal" style="color:#fff;">What I Work With</h2>
+    <div class="skills-cols reveal">
+      <div>
+        <h4>Programming</h4>
+        <ul><li>C / C++</li><li>Python</li><li>JavaScript</li><li>HTML / CSS</li><li>C# (.NET)</li><li>Ruby</li><li>Dart (Flutter)</li></ul>
+      </div>
+      <div>
+        <h4>Engineering</h4>
+        <ul><li>Analog circuit design</li><li>Breadboard prototyping</li><li>Schematic reading</li><li>Soldering</li><li>Fusion 360</li><li>Physics simulation</li></ul>
+      </div>
+      <div>
+        <h4>Tools</h4>
+        <ul><li>Git / GitHub</li><li>CMake</li><li>Linux CLI</li><li>VS Code</li><li>Obsidian</li><li>Hostinger</li></ul>
+      </div>
+      <div>
+        <h4>Languages</h4>
+        <ul><li>English (native)</li><li>Spanish (fluent)</li><li>French (beginner)</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="section-label">Experience</div>
+  <h2 class="section-heading reveal">Where I've Worked</h2>
+
+  <div class="exp-item reveal">
+    <div class="exp-date">Oct 2025 — Now</div>
+    <div class="exp-content">
+      <h3>Math Instructor</h3>
+      <div class="company">Mathnasium, Manhattan Beach</div>
+      <p>Teach K-12 students from arithmetic through calculus. Adapt instruction across learning styles in one-on-one and small group settings.</p>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-date">2025 — Now</div>
+    <div class="exp-content">
+      <h3>Owner / Tutor</h3>
+      <div class="company">Your Study Guide</div>
+      <p>Independent tutoring business covering math, science, and AP coursework. Built session tracking, parent reports, and marketing from scratch.</p>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-date">Oct 2024 — Now</div>
+    <div class="exp-content">
+      <h3>Cadet Member</h3>
+      <div class="company">Civil Air Patrol, Downey</div>
+      <p>Structured team environment. Group coordination and peer mentoring.</p>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-date">2024 — 2025</div>
+    <div class="exp-content">
+      <h3>Spanish Club President</h3>
+      <div class="company">Mayfair High School</div>
+      <p>Managed events, finances, and officer coordination.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="section" style="padding-top:0;">
+  <div class="section-label">Education</div>
+  <h2 class="section-heading reveal">Where I've Studied</h2>
+  <div class="edu-row reveal">
+    <div class="edu-card">
+      <h3>Santa Monica College</h3>
+      <div class="edu-sub">Mechanical Engineering, transfer track (CSU/UC Fall 2027)</div>
+      <div class="edu-sub" style="margin-top:0.2rem;">Calculus, Physics, Economics, Geography</div>
+      <div class="edu-date">Sep 2025 — Present</div>
+    </div>
+    <div class="edu-card">
+      <h3>Mayfair High School</h3>
+      <div class="edu-sub">MESA & SkillsUSA competitor</div>
+      <div class="edu-date">Aug 2023 — Apr 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <h2>Let's Work Together</h2>
+  <p>Bellflower, CA — open to engineering internships, projects, and collaboration.</p>
+  <div class="contact-btns">
+    <a href="mailto:isadoregarcia@gmail.com">isadoregarcia@gmail.com</a>
+    <a href="https://github.com/funkwylol" target="_blank">GitHub</a>
+    <a href="tel:9499423154">(949) 942-3154</a>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
