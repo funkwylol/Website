@@ -16,6 +16,13 @@
     --text: #1a1a1a;
     --text-muted: #6b6b6b;
     --border: #e0e0d8;
+    --code-bg: #1a1a2e;
+    --code-text: #e2e8f0;
+    --code-comment: #64748b;
+    --code-keyword: #7dd3fc;
+    --code-string: #86efac;
+    --code-fn: #c084fc;
+    --code-num: #fbbf24;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -71,6 +78,7 @@
   nav a:hover { color: var(--accent); text-decoration: none; }
   nav a.active { color: var(--accent); }
 
+  /* PAGE HEADER */
   .page-header {
     padding: 9rem 3rem 3rem;
     max-width: 1000px;
@@ -107,96 +115,249 @@
     margin: 2rem 0 0;
   }
 
-  .content-section {
+  /* MAIN CONTENT */
+  .content {
     max-width: 1000px;
     margin: 0 auto;
     padding: 3rem 3rem 6rem;
   }
 
-  .content-section > p {
-    font-size: 1rem;
+  /* COURSE BLOCK */
+  .course-block {
+    margin-bottom: 5rem;
+  }
+
+  .course-block:last-child { margin-bottom: 0; }
+
+  .course-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .course-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    background: var(--accent-light);
+    padding: 0.25em 0.65em;
+    border-radius: 4px;
+  }
+
+  .course-block h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 0.02em;
+    line-height: 1.05;
+  }
+
+  .course-desc {
+    font-size: 0.95rem;
     color: var(--text-muted);
-    line-height: 1.75;
-    margin-bottom: 3rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 700px;
   }
 
-  .courses-grid {
+  .course-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 2rem;
+  }
+
+  /* TOPICS LIST (Calc 1 / Econ) */
+  .topics-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
   }
 
-  .course-card {
+  .topic-card {
     background: var(--white);
     border: 1px solid var(--border);
-    border-left: 4px solid var(--accent);
     border-radius: 8px;
-    padding: 1.75rem 2rem;
+    padding: 1.25rem 1.5rem;
   }
 
-  .course-card h3 {
+  .topic-card h4 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 0.04em;
-    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
     color: var(--text);
   }
 
-  .course-card ul {
+  .topic-card ul {
     list-style: none;
     padding: 0;
   }
 
-  .course-card ul li {
-    font-size: 0.9rem;
+  .topic-card ul li {
+    font-size: 0.85rem;
     color: var(--text-muted);
-    padding: 0.3rem 0;
+    padding: 0.2rem 0;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
-  .course-card ul li:last-child { border-bottom: none; }
+  .topic-card ul li:last-child { border-bottom: none; }
 
-  .course-card ul li::before {
+  .topic-card ul li::before {
     content: '';
     display: inline-block;
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
     background: var(--accent);
     flex-shrink: 0;
   }
 
-  .skills-heading {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.5rem;
+  /* PROJECT CARDS (C Programming) */
+  .project-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .project-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .project-card-header {
+    padding: 1.75rem 2rem 1.25rem;
     border-bottom: 1px solid var(--border);
   }
 
-  .skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  .proj-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
   }
 
-  .skills-list span {
+  .project-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-card .proj-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 0.75rem;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tech-tags span {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
+    font-size: 0.6rem;
     font-weight: 500;
-    padding: 0.35em 0.85em;
+    padding: 0.25em 0.65em;
     background: var(--accent-light);
     color: var(--accent);
     border-radius: 4px;
   }
 
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--code-bg);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .code-block-bar {
+    background: #16213e;
+    padding: 0.5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .code-block-bar .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #febc2e; }
+  .dot-green { background: #28c840; }
+
+  .code-block-bar .filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: #64748b;
+    margin-left: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .code-block pre {
+    padding: 1.5rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--code-text);
+    tab-size: 4;
+  }
+
+  .kw { color: var(--code-keyword); }
+  .fn { color: var(--code-fn); }
+  .st { color: var(--code-string); }
+  .nm { color: var(--code-num); }
+  .cm { color: var(--code-comment); font-style: italic; }
+  .pp { color: #fb923c; }
+
+  /* HW1 MINI CARDS */
+  .hw1-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: #f9f9f4;
+    border-top: 1px solid var(--border);
+  }
+
+  .hw1-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+  }
+
+  .hw1-card h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.3rem;
+  }
+
+  .hw1-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* SCROLL REVEAL */
   .reveal {
     opacity: 0;
     transform: translateY(20px);
@@ -207,13 +368,18 @@
   @media (max-width: 768px) {
     nav .nav-inner { padding: 0.75rem 1.5rem; gap: 1.5rem; }
     .page-header { padding: 7rem 1.5rem 2rem; }
-    .content-section { padding: 2rem 1.5rem 4rem; }
-    .courses-grid { grid-template-columns: 1fr; }
+    .content { padding: 2rem 1.5rem 4rem; }
+    .topics-grid { grid-template-columns: 1fr 1fr; }
+    .hw1-grid { grid-template-columns: 1fr 1fr; }
+    .project-card-header { padding: 1.25rem 1.25rem 1rem; }
+    .hw1-grid { padding: 1.25rem; }
   }
 
   @media (max-width: 480px) {
     nav a { font-size: 0.7rem; letter-spacing: 0.12em; }
     nav .nav-inner { gap: 1rem; }
+    .topics-grid { grid-template-columns: 1fr; }
+    .hw1-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -235,68 +401,241 @@
 <div class="page-header">
   <div class="section-label">Coursework</div>
   <h1>College Coursework</h1>
-  <p>Projects, assignments, and skills developed at Santa Monica College.</p>
+  <p>Courses completed at Santa Monica College — Fall 2025 & Spring 2026.</p>
   <div class="header-divider"></div>
 </div>
 
-<div class="content-section">
-  <p>This page showcases the coursework I am completing as part of my Mechanical Engineering transfer track at Santa Monica College. It includes projects, assignments, and skills I am developing across my studies.</p>
+<div class="content">
 
-  <div class="courses-grid">
-    <div class="course-card reveal">
-      <h3>Web Development</h3>
-      <ul>
-        <li>Personal Portfolio Website</li>
-        <li>Responsive Design Project</li>
-        <li>JavaScript Interactive Quiz</li>
-      </ul>
+  <!-- ===== INTRO TO C PROGRAMMING ===== -->
+  <div class="course-block reveal">
+    <div class="course-header">
+      <span class="course-number">CS 50</span>
+      <h2>Intro to C Programming</h2>
     </div>
+    <p class="course-desc">
+      Fundamentals of programming in C: variables, control flow, functions, arrays, pointers, and memory. Assignments built real programs from scratch — culminating in a complete terminal-based game.
+    </p>
+    <div class="course-divider"></div>
 
-    <div class="course-card reveal">
-      <h3>Programming Fundamentals</h3>
-      <ul>
-        <li>Python Data Analysis Assignment</li>
-        <li>Object-Oriented Programming Project</li>
-      </ul>
-    </div>
+    <div class="project-cards">
 
-    <div class="course-card reveal">
-      <h3>Database Systems</h3>
-      <ul>
-        <li>SQL Database Design</li>
-        <li>CRUD Application Project</li>
-      </ul>
-    </div>
+      <!-- COSMIC CRYSTALS -->
+      <div class="project-card reveal">
+        <div class="project-card-header">
+          <div class="proj-tag">Homework 3 — Game</div>
+          <h3>Cosmic Crystals</h3>
+          <p class="proj-desc">
+            Terminal-based exploration game on a 5×5 grid. Three crystals and three black holes are randomly placed on a hidden board. Navigate with W/A/S/D — collect all crystals before running out of moves or stepping into a black hole. Uses 2D arrays, rand() with time-based seeding, and modular functions for board init, rendering, and collision.
+          </p>
+          <div class="tech-tags">
+            <span>C</span><span>2D Arrays</span><span>rand() / srand()</span><span>Functions</span><span>Game Loop</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <div class="code-block-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="filename">cosmic_crystals.c</span>
+          </div>
+          <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;time.h&gt;</span>
 
-    <div class="course-card reveal">
-      <h3>Mathematics & Science</h3>
-      <ul>
-        <li>Calculus I &amp; II</li>
-        <li>Physics (Mechanics)</li>
-        <li>Economics</li>
-        <li>Geography</li>
-      </ul>
+<span class="pp">#define</span> ROWS <span class="nm">5</span>
+<span class="pp">#define</span> COLS <span class="nm">5</span>
+<span class="pp">#define</span> CRYSTAL <span class="st">'C'</span>
+<span class="pp">#define</span> HOLE    <span class="st">'B'</span>
+
+<span class="kw">int</span> <span class="fn">main</span>(<span class="kw">void</span>) {
+    <span class="kw">char</span> hidden[ROWS][COLS];   <span class="cm">// actual contents: C, B, or .</span>
+    <span class="kw">char</span> display[ROWS][COLS];  <span class="cm">// what the player sees: P or .</span>
+    <span class="kw">int</span> playerRow = ROWS - <span class="nm">1</span>, playerCol = <span class="nm">0</span>;
+    <span class="kw">int</span> movesLeft = <span class="nm">15</span>, crystalsCollected = <span class="nm">0</span>;
+
+    <span class="fn">srand</span>((<span class="kw">unsigned int</span>)<span class="fn">time</span>(NULL));
+    <span class="fn">placeItems</span>(hidden, CRYSTAL, <span class="nm">3</span>);
+    <span class="fn">placeItems</span>(hidden, HOLE, <span class="nm">3</span>);
+
+    <span class="kw">while</span> (movesLeft &gt; <span class="nm">0</span>) {
+        <span class="fn">printBoard</span>(display);
+        <span class="cm">// check hidden[newRow][newCol] for CRYSTAL or HOLE</span>
+        <span class="kw">if</span> (hidden[newRow][newCol] == HOLE) {
+            <span class="fn">printf</span>(<span class="st">"You fell into a black hole. Game over!\n"</span>);
+            <span class="kw">break</span>;
+        } <span class="kw">else if</span> (hidden[newRow][newCol] == CRYSTAL) {
+            <span class="fn">printf</span>(<span class="st">"Crystal collected! (+1)\n"</span>);
+            hidden[newRow][newCol] = EMPTY;
+        }
+    }
+}</pre>
+        </div>
+      </div>
+
+      <!-- HOMEWORK 1 -->
+      <div class="project-card reveal">
+        <div class="project-card-header">
+          <div class="proj-tag">Homework 1 — Six Programs</div>
+          <h3>Foundational C Programs</h3>
+          <p class="proj-desc">
+            Six programs covering core C concepts: math functions, formatted I/O, user input, ASCII art, and loops. Each included a challenge extension applying the same concepts in more complex ways.
+          </p>
+          <div class="tech-tags">
+            <span>printf / scanf</span><span>math.h</span><span>for loops</span><span>2D arrays</span><span>ASCII art</span>
+          </div>
+        </div>
+
+        <div class="hw1-grid">
+          <div class="hw1-card">
+            <h4>Circle Area</h4>
+            <p>Computes area from radius using <code>M_PI</code>. Challenge: reverse-solves radius from a given area and circumference using <code>sqrt()</code>.</p>
+          </div>
+          <div class="hw1-card">
+            <h4>TicTacShmoe</h4>
+            <p>Prints three winning tic-tac-toe boards with <code>printf</code> and <code>\t</code>. Challenge: uses a 2D char array and nested loops to generate boards dynamically.</p>
+          </div>
+          <div class="hw1-card">
+            <h4>Triangle Area</h4>
+            <p>Computes area = 0.5 × base × height. Takes both values on one line using <code>scanf("%f %f", ...)</code>.</p>
+          </div>
+          <div class="hw1-card">
+            <h4>Miles → Kilometers</h4>
+            <p>Converts user-entered miles to km using factor 1.60934. Tested with 60 mi and 30 mi inputs.</p>
+          </div>
+          <div class="hw1-card">
+            <h4>ASCII Initials</h4>
+            <p>Renders "IG" in block-letter ASCII art followed by a framed smiley face, all built from <code>printf</code> strings.</p>
+          </div>
+          <div class="hw1-card">
+            <h4>Up It Calculator</h4>
+            <p>Prints double and quadruple of a user's input. Challenge: <code>for</code> loop prints the same output for every number 1–10.</p>
+          </div>
+        </div>
+
+        <div class="code-block" style="border-top:1px solid #1e293b;">
+          <div class="code-block-bar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <span class="filename">homework1part5.c — ASCII initials</span>
+          </div>
+          <pre><span class="pp">#include</span><span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="fn">printf</span>(<span class="st">"IIIIIII   GGGGGG \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"   I      G      \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"   I      G  GGG \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"   I      G    G \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"IIIIIII   GGGGG  \n"</span>);
+
+    <span class="fn">printf</span>(<span class="st">"      *****      \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"    *       *    \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"   *  O   O  *   \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"   *  \\___/  *   \n"</span>);
+    <span class="fn">printf</span>(<span class="st">"      *****      \n"</span>);
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="skills-heading reveal">Skills Developed</div>
-  <div class="skills-list reveal">
-    <span>HTML / CSS</span>
-    <span>JavaScript</span>
-    <span>Python</span>
-    <span>SQL</span>
-    <span>Database Design</span>
-    <span>Problem Solving</span>
-    <span>Calculus</span>
-    <span>Physics</span>
-    <span>Teamwork</span>
+  <!-- ===== CALCULUS 1 ===== -->
+  <div class="course-block reveal">
+    <div class="course-header">
+      <span class="course-number">Math 7</span>
+      <h2>Calculus 1</h2>
+    </div>
+    <p class="course-desc">
+      Introduction to differential calculus. Covers limits, continuity, derivatives, and their applications — optimization, related rates, and curve sketching.
+    </p>
+    <div class="course-divider"></div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h4>Limits & Continuity</h4>
+        <ul>
+          <li>Definition of a limit</li>
+          <li>One-sided limits</li>
+          <li>Limit laws</li>
+          <li>Squeeze theorem</li>
+          <li>Continuity & discontinuities</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <h4>Derivatives</h4>
+        <ul>
+          <li>Definition via difference quotient</li>
+          <li>Power, product, quotient rules</li>
+          <li>Chain rule</li>
+          <li>Implicit differentiation</li>
+          <li>Trig &amp; exponential derivatives</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <h4>Applications</h4>
+        <ul>
+          <li>Optimization problems</li>
+          <li>Related rates</li>
+          <li>L'Hôpital's rule</li>
+          <li>Mean Value Theorem</li>
+          <li>Curve sketching</li>
+        </ul>
+      </div>
+    </div>
   </div>
+
+  <!-- ===== MACRO ECON ===== -->
+  <div class="course-block reveal">
+    <div class="course-header">
+      <span class="course-number">Econ 2</span>
+      <h2>Macroeconomics</h2>
+    </div>
+    <p class="course-desc">
+      Principles of macroeconomics — how economies function at the national level. Covers GDP measurement, inflation, unemployment, fiscal policy, and monetary policy.
+    </p>
+    <div class="course-divider"></div>
+    <div class="topics-grid">
+      <div class="topic-card">
+        <h4>Measuring the Economy</h4>
+        <ul>
+          <li>GDP by income &amp; expenditure</li>
+          <li>Nominal vs. real GDP</li>
+          <li>GDP deflator &amp; CPI</li>
+          <li>Net Domestic Product</li>
+          <li>GNP vs. NNP</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <h4>Labor &amp; Production</h4>
+        <ul>
+          <li>Labor productivity</li>
+          <li>Potential GDP</li>
+          <li>Production function</li>
+          <li>Unemployment rate</li>
+          <li>Full employment</li>
+        </ul>
+      </div>
+      <div class="topic-card">
+        <h4>Policy &amp; Inflation</h4>
+        <ul>
+          <li>Fiscal policy (taxes, spending)</li>
+          <li>Monetary policy (interest rates)</li>
+          <li>Four factors of production</li>
+          <li>Inflation measurement</li>
+          <li>Market equilibrium</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 
