@@ -1,39 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Projects Portfolio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
-        header { background: #2d3e50; color: #fff; padding: 2rem 1rem; text-align: center; }
-        main { max-width: 800px; margin: 2rem auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
-        h1 { margin-bottom: 0.5rem; }
-        section { margin-bottom: 2rem; }
-        .project { margin-bottom: 1.5rem; }
-        .project-title { font-size: 1.2em; color: #2a5d84; margin-bottom: 0.3em; }
-        .project-summary { color: #444; margin-bottom: 0.5em; }
-        .back-btn { margin-top:1rem;padding:0.5rem 1.2rem;font-size:1rem;background:#3498db;color:#fff;border:none;border-radius:4px;cursor:pointer; }
-        footer { text-align: center; color: #888; padding: 1rem 0; font-size: 0.9rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Isadore Garcia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f0;
+    --white: #ffffff;
+    --black: #111111;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --border: #e0e0d8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .accent-bar {
+    height: 6px;
+    background: var(--accent);
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+  }
+
+  nav {
+    position: fixed;
+    top: 6px;
+    width: 100%;
+    z-index: 100;
+    background: rgba(245, 245, 240, 0.92);
+    backdrop-filter: blur(12px);
+  }
+
+  nav .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--black);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); text-decoration: none; }
+  nav a.active { color: var(--accent); }
+
+  .page-header {
+    padding: 9rem 3rem 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    letter-spacing: 0.02em;
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-header p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .header-divider {
+    width: 3px;
+    height: 40px;
+    background: var(--accent);
+    margin: 2rem 0 0;
+  }
+
+  .projects-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 3rem 6rem;
+  }
+
+  .projects-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.25rem;
+    transition: border-left-color 0.2s, transform 0.2s;
+  }
+
+  .project-card:hover {
+    border-left-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .proj-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .project-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+
+  .project-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .project-card h3 a:hover { color: var(--accent); text-decoration: none; }
+
+  .project-card p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .tech-tags span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 500;
+    padding: 0.3em 0.7em;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: 4px;
+  }
+
+  .project-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+  .project-link:hover { text-decoration: underline; }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav .nav-inner { padding: 0.75rem 1.5rem; gap: 1.5rem; }
+    .page-header { padding: 7rem 1.5rem 2rem; }
+    .projects-section { padding: 2rem 1.5rem 4rem; }
+    .project-card { padding: 1.5rem; }
+  }
+
+  @media (max-width: 480px) {
+    nav a { font-size: 0.7rem; letter-spacing: 0.12em; }
+    nav .nav-inner { gap: 1rem; }
+  }
+</style>
 </head>
 <body>
-    <header>
-        <h1>My Projects</h1>
-        <p>Summaries of my engineering and coding projects</p>
-        <button onclick="window.location.href='../'" class="back-btn">Back to Main Page</button>
-    </header>
-    <main>
-        <section>
-            <h2>Featured Projects</h2>
-            <div class="project">
-                <div class="project-title"><a href="portfolio-performance-calculator/" style="color:#2a5d84;text-decoration:none;">Portfolio Performance Calculator</a></div>
-                <div class="project-summary">
-                    A Monte Carlo simulation tool that estimates trading strategy performance. Input your risk parameters, win rate, and reward/risk ratio to see projected daily and annual returns, Sharpe ratios, and how your strategy compares to the S&P 500. Built with JavaScript and Plotly.js.
-                    <br><a href="portfolio-performance-calculator/" style="color:#2a5d84;font-weight:500;">Try it out &rarr;</a>
-                </div>
-            </div>
-        </section>
-    </main>
+
+<div class="accent-bar"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../">Home</a>
+    <a href="../#projects" class="active">Projects</a>
+    <a href="../blog/">Blog</a>
+    <a href="../coursework/">Coursework</a>
+    <a href="../#experience">Resume</a>
+    <a href="../#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="section-label">Projects</div>
+  <h1>What I've Built</h1>
+  <p>Engineering and software projects — from analog circuits to physics simulations.</p>
+  <div class="header-divider"></div>
+</div>
+
+<div class="projects-section">
+  <h2>Featured</h2>
+
+  <div class="project-card reveal">
+    <div class="proj-tag">Software / Finance</div>
+    <h3><a href="portfolio-performance-calculator/">Portfolio Performance Calculator</a></h3>
+    <p>A Monte Carlo simulation tool that estimates trading strategy performance. Input your risk parameters, win rate, and reward/risk ratio to see projected daily and annual returns, Sharpe ratios, and how your strategy compares to the S&P 500.</p>
+    <div class="tech-tags">
+      <span>JavaScript</span><span>Plotly.js</span><span>Monte Carlo</span><span>Statistics</span>
+    </div>
+    <a href="portfolio-performance-calculator/" class="project-link">Try it out →</a>
+  </div>
+
+  <div class="project-card reveal">
+    <div class="proj-tag">Electronics / Circuit Design</div>
+    <h3>Guitar Distortion Pedal</h3>
+    <p>Building an analog distortion circuit based on the Boss DS-1 topology. Single-supply op-amp biasing, virtual ground references, and clipping stages, all prototyped on breadboard with oscilloscope verification.</p>
+    <div class="tech-tags">
+      <span>Op-Amps</span><span>Breadboard</span><span>Signal Chain</span><span>Schematic Reading</span>
+    </div>
+  </div>
+
+  <div class="project-card reveal">
+    <div class="proj-tag">Software / Physics</div>
+    <h3>2D Physics Engine</h3>
+    <p>Built rigid-body physics simulations from scratch in C and C++. Collision detection, gravity, and force calculations with CMake build system. Structured with proper include/src separation and docs.</p>
+    <div class="tech-tags">
+      <span>C</span><span>C++</span><span>CMake</span><span>Physics Sim</span>
+    </div>
+  </div>
+
+  <div class="project-card reveal">
+    <div class="proj-tag">Mechanical / Assembly</div>
+    <h3>Telecaster Guitar Build</h3>
+    <p>Full custom build from individual parts. Tracked BOM with specs, managed component fitment and tolerancing, planned assembly sequence. Built a web app to track every part and cost.</p>
+    <div class="tech-tags">
+      <span>BOM</span><span>Assembly</span><span>Tolerancing</span><span>Web App</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
 </body>
 </html>
