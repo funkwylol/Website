@@ -427,6 +427,56 @@ body {
     box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
+/* Quizlet button */
+.btn-quizlet {
+    background: #4255ff;
+    color: #fff;
+    padding: 13px 32px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-quizlet:hover {
+    background: #3347f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66,85,255,0.3);
+}
+
+/* Quizlet banner */
+.quizlet-banner {
+    background: #f0f1ff;
+    border: 1.5px solid #c5caff;
+    border-radius: 6px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.quizlet-banner-text h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+}
+
+.quizlet-banner-text p {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+}
+
 /* Footer */
 footer {
     background: var(--white);
@@ -469,6 +519,7 @@ footer a:hover { color: var(--ink); }
         <p class="hero-subtitle">Master urban models, land use patterns, and the forces shaping cities worldwide. Everything you need to ace Unit 6.</p>
         <div class="hero-actions">
             <a href="unit_6_exam.html" class="btn-primary">Take Practice Exam</a>
+            <a href="https://quizlet.com/1169030128/chapter-6-uc-scout-ap-hug-flash-cards/?new" target="_blank" rel="noopener" class="btn-quizlet">Quizlet Flashcards</a>
             <a href="#concepts" class="btn-outline">Study Resources</a>
         </div>
     </div>
@@ -574,6 +625,16 @@ footer a:hover { color: var(--ink); }
         <p class="section-label">Terminology</p>
         <h2 class="section-title">Essential Vocabulary</h2>
         <p class="section-desc">Know these terms cold — definitions alone won't cut it, understand how to use them in context.</p>
+        <div class="quizlet-banner">
+            <div class="quizlet-banner-text">
+                <h3>Practice with Flashcards</h3>
+                <p>Custom Quizlet set built for this unit — study, test yourself, or play a match game.</p>
+            </div>
+            <a href="https://quizlet.com/1169030128/chapter-6-uc-scout-ap-hug-flash-cards/?new" target="_blank" rel="noopener" class="btn-quizlet">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                Open Quizlet
+            </a>
+        </div>
         <div class="vocab-grid">
             <div class="vocab-card">
                 <p class="vocab-term">Rank-Size Rule</p>
