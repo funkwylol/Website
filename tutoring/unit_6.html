@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP HUG Unit 6 — Cities & Urban Land Use</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+    --ink: #1c1b18;
+    --ink-mid: #4a4844;
+    --ink-light: #9a9790;
+    --white: #ffffff;
+    --bg: #fafaf8;
+    --panel: #f5f4f1;
+    --border: #e8e6e1;
+    --border-mid: #d4d1ca;
+    --navy: #1e2d40;
+    --navy-light: #e8ecf0;
+    --sage: #6b7c6e;
+    --sage-light: #edf0ed;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background: var(--bg);
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Navigation */
+.navbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 24px;
+}
+
+.nav-brand {
+    text-decoration: none;
+}
+
+.nav-brand h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--ink);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--ink-mid);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover { color: var(--navy); }
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--sage);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after { width: 100%; }
+
+/* Hero */
+.hero {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 72px 24px 64px;
+}
+
+.hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 1rem;
+}
+
+.hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.6rem;
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--ink-mid);
+    max-width: 560px;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary {
+    background: var(--navy);
+    color: var(--white);
+    padding: 13px 32px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--navy);
+    padding: 13px 32px;
+    border: 1.5px solid var(--border-mid);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    border-color: var(--navy);
+    background: var(--navy-light);
+}
+
+/* Section shared */
+.section {
+    padding: 72px 0;
+}
+
+.section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 0.75rem;
+}
+
+.section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+}
+
+.section-desc {
+    color: var(--ink-mid);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 3rem;
+}
+
+/* Key Concepts grid */
+.concepts-section {
+    background: var(--bg);
+}
+
+.concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+.concept-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--navy);
+    padding: 1.5rem;
+    transition: all 0.25s ease;
+}
+
+.concept-card:hover {
+    transform: translateX(3px);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.concept-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+}
+
+.concept-card p {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 1.6;
+}
+
+/* Urban Models */
+.models-section {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.models-table-wrap {
+    overflow-x: auto;
+}
+
+.models-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.models-table thead th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.models-table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink-mid);
+    vertical-align: top;
+    line-height: 1.55;
+}
+
+.models-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.models-table tbody tr:hover td {
+    background: var(--panel);
+}
+
+.models-table td.model-name {
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+}
+
+/* Vocab */
+.vocab-section {
+    background: var(--bg);
+}
+
+.vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.vocab-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+    transition: box-shadow 0.2s ease;
+}
+
+.vocab-card:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+.vocab-term {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--sage);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+.vocab-def {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+}
+
+/* FRQ Tips */
+.tips-section {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 740px;
+}
+
+.tip-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--sage);
+}
+
+.tip-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--sage);
+    min-width: 24px;
+    padding-top: 2px;
+}
+
+.tip-text {
+    font-size: 0.93rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+}
+
+.tip-text strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+/* CTA */
+.cta-section {
+    background: var(--navy);
+    padding: 72px 24px;
+    text-align: center;
+}
+
+.cta-section .section-label {
+    color: rgba(255,255,255,0.5);
+}
+
+.cta-section .section-title {
+    color: var(--white);
+    margin-bottom: 0.75rem;
+}
+
+.cta-section p {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+}
+
+.btn-white {
+    background: var(--white);
+    color: var(--navy);
+    padding: 14px 40px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+.btn-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Footer */
+footer {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 2rem 24px;
+    text-align: center;
+    color: var(--ink-light);
+    font-size: 0.85rem;
+}
+
+footer a {
+    color: var(--ink-mid);
+    text-decoration: none;
+}
+
+footer a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="navbar">
+    <div class="container">
+        <a href="index.html" class="nav-brand">
+            <h1>Your Study Guide</h1>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="index.html#coursework" class="nav-link">Coursework</a></li>
+            <li><a href="unit_6_exam.html" class="nav-link btn-primary" style="color:#fff; padding:8px 20px;">Practice Exam</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <p class="hero-eyebrow">AP Human Geography &mdash; Unit 6</p>
+        <h1 class="hero-title">Cities &amp; Urban<br>Land Use</h1>
+        <p class="hero-subtitle">Master urban models, land use patterns, and the forces shaping cities worldwide. Everything you need to ace Unit 6.</p>
+        <div class="hero-actions">
+            <a href="unit_6_exam.html" class="btn-primary">Take Practice Exam</a>
+            <a href="#concepts" class="btn-outline">Study Resources</a>
+        </div>
+    </div>
+</section>
+
+<!-- Key Concepts -->
+<section class="section concepts-section" id="concepts">
+    <div class="container">
+        <p class="section-label">Core Ideas</p>
+        <h2 class="section-title">Key Concepts</h2>
+        <p class="section-desc">The six big ideas you need to understand before diving into the details.</p>
+        <div class="concepts-grid">
+            <div class="concept-card">
+                <h3>Urbanization</h3>
+                <p>The process by which an increasing proportion of a population lives in cities. Driven by rural-to-urban migration and natural increase in urban areas.</p>
+            </div>
+            <div class="concept-card">
+                <h3>Central Business District (CBD)</h3>
+                <p>The commercial and business core of a city. Highest land values, greatest building density, and most accessible by transportation networks.</p>
+            </div>
+            <div class="concept-card">
+                <h3>Urban Models</h3>
+                <p>Theoretical representations of city structure — Concentric Zone, Sector, Multiple Nuclei, and Galactic City models each explain how land use is organized spatially.</p>
+            </div>
+            <div class="concept-card">
+                <h3>Suburbanization &amp; Sprawl</h3>
+                <p>The outward growth of cities into surrounding rural areas. Enabled by automobiles, highways, and cheap land; associated with car-dependence and increased commutes.</p>
+            </div>
+            <div class="concept-card">
+                <h3>Gentrification</h3>
+                <p>The reinvestment in and revitalization of older urban neighborhoods, often displacing lower-income residents as property values and rents rise.</p>
+            </div>
+            <div class="concept-card">
+                <h3>Primate Cities &amp; World Cities</h3>
+                <p>A primate city is disproportionately large vs. the next-largest cities. World cities (global cities) are command centers of the global economy: NYC, London, Tokyo.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Urban Models Table -->
+<section class="section models-section" id="models">
+    <div class="container">
+        <p class="section-label">Spatial Structure</p>
+        <h2 class="section-title">Urban Land Use Models</h2>
+        <p class="section-desc">Know each model's author, structure, assumptions, and critiques — these appear frequently on the AP exam.</p>
+        <div class="models-table-wrap">
+            <table class="models-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Author &amp; Year</th>
+                        <th>Structure</th>
+                        <th>Key Assumption</th>
+                        <th>Limitation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="model-name">Concentric Zone</td>
+                        <td>Burgess, 1925</td>
+                        <td>Rings expanding outward from CBD; zone of transition, working-class, middle-class, commuter zone</td>
+                        <td>City grows uniformly in all directions on flat terrain</td>
+                        <td>Ignores physical barriers, transportation corridors, and historical patterns</td>
+                    </tr>
+                    <tr>
+                        <td class="model-name">Sector (Hoyt)</td>
+                        <td>Hoyt, 1939</td>
+                        <td>Wedge-shaped sectors radiating from CBD along transportation routes</td>
+                        <td>Land use extends outward along rail/road axes; high-income housing follows desirable corridors</td>
+                        <td>Still assumes a monocentric city; less applicable in polycentric metros</td>
+                    </tr>
+                    <tr>
+                        <td class="model-name">Multiple Nuclei</td>
+                        <td>Harris &amp; Ullman, 1945</td>
+                        <td>Multiple nodes of activity, not just one CBD; specialized districts form around each nucleus</td>
+                        <td>Cities develop around several growth centers (ports, universities, airports)</td>
+                        <td>Hard to predict where nuclei form; doesn't specify spatial arrangement</td>
+                    </tr>
+                    <tr>
+                        <td class="model-name">Galactic / Edge City</td>
+                        <td>Harris, 1997 / Garreau</td>
+                        <td>Dispersed low-density development; edge cities around peripheral highway interchanges; CBD declines in dominance</td>
+                        <td>Automobile-dependent sprawl creates suburban employment centers and retail nodes</td>
+                        <td>Primarily describes U.S. cities post-WWII; less applicable globally</td>
+                    </tr>
+                    <tr>
+                        <td class="model-name">Latin American City</td>
+                        <td>Griffin &amp; Ford</td>
+                        <td>CBD + commercial spine; elite residential sector along spine; zones of maturity, in situ accretion, and squatter settlements outward</td>
+                        <td>Colonial history, rapid growth, and inequality shape land use differently than in North American cities</td>
+                        <td>Generalizes across very diverse cities; updated by Ford (1996) to add gentrification</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Vocabulary -->
+<section class="section vocab-section" id="vocab">
+    <div class="container">
+        <p class="section-label">Terminology</p>
+        <h2 class="section-title">Essential Vocabulary</h2>
+        <p class="section-desc">Know these terms cold — definitions alone won't cut it, understand how to use them in context.</p>
+        <div class="vocab-grid">
+            <div class="vocab-card">
+                <p class="vocab-term">Rank-Size Rule</p>
+                <p class="vocab-def">The nth-largest city in a country is 1/n the size of the largest city. Indicates a well-integrated national urban system.</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Primate City</p>
+                <p class="vocab-def">A city at least twice as large as the next-largest city, dominating the national economy, politics, and culture (e.g., Mexico City, Bangkok).</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Blockbusting</p>
+                <p class="vocab-def">Convincing white homeowners to sell cheaply by warning that minorities were moving in, then reselling to minorities at inflated prices.</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Redlining</p>
+                <p class="vocab-def">Discriminatory practice of denying mortgages and services to residents of minority neighborhoods, reinforcing segregation.</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Edge City</p>
+                <p class="vocab-def">A large suburban node with significant office, retail, and entertainment functions that rivals the traditional CBD (e.g., Tysons Corner, VA).</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Urban Renewal</p>
+                <p class="vocab-def">Government-sponsored demolition and redevelopment of "blighted" urban areas, often displacing poor communities (mid-20th century U.S.).</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">New Urbanism</p>
+                <p class="vocab-def">Urban design movement emphasizing walkable neighborhoods, mixed-use zoning, and transit access as an alternative to auto-dependent sprawl.</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Urban Heat Island</p>
+                <p class="vocab-def">Cities are warmer than surrounding rural areas due to impervious surfaces, waste heat, and reduced vegetation.</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Squatter Settlements</p>
+                <p class="vocab-def">Informal housing built on land without legal title, common in rapidly growing cities in the Global South (e.g., favelas, shanty towns).</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Zoning</p>
+                <p class="vocab-def">Municipal regulations that designate land for specific uses (residential, commercial, industrial) to organize urban space and separate incompatible uses.</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Smart Growth</p>
+                <p class="vocab-def">Planning strategy that promotes compact, transit-oriented, walkable, and environmentally sensitive development to counter urban sprawl.</p>
+            </div>
+            <div class="vocab-card">
+                <p class="vocab-term">Metacities / Megacities</p>
+                <p class="vocab-def">Megacities have 10M+ residents (e.g., Tokyo, Delhi). Metacities exceed 20M. Growth concentrated in Global South.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FRQ Tips -->
+<section class="section tips-section" id="frq">
+    <div class="container">
+        <p class="section-label">Exam Strategy</p>
+        <h2 class="section-title">FRQ Tips</h2>
+        <p class="section-desc">Unit 6 FRQs often ask you to apply a model, compare cities, or explain a process. Here's how to score every point.</p>
+        <div class="tips-list">
+            <div class="tip-item">
+                <span class="tip-num">01</span>
+                <p class="tip-text"><strong>Always name the specific model.</strong> Don't just say "a model" — say "the Concentric Zone Model (Burgess)" and then explain its structure. The AP rubric awards points for precise identification.</p>
+            </div>
+            <div class="tip-item">
+                <span class="tip-num">02</span>
+                <p class="tip-text"><strong>Link processes to outcomes.</strong> If asked about gentrification, explain the cause (reinvestment, rising land values) AND the consequence (displacement of lower-income residents). Causal chains earn full credit.</p>
+            </div>
+            <div class="tip-item">
+                <span class="tip-num">03</span>
+                <p class="tip-text"><strong>Use real-world examples.</strong> Support every claim with a named city, region, or country. Vague answers like "in developing countries" score lower than "in Lagos, Nigeria" or "São Paulo's favelas."</p>
+            </div>
+            <div class="tip-item">
+                <span class="tip-num">04</span>
+                <p class="tip-text"><strong>Distinguish Global North vs. Global South.</strong> Urban processes differ dramatically. American cities followed suburbanization; many Global South cities experience rapid in-migration and informal housing. Show you know the difference.</p>
+            </div>
+            <div class="tip-item">
+                <span class="tip-num">05</span>
+                <p class="tip-text"><strong>Answer every part of the prompt.</strong> Multi-part FRQs (A, B, C) are scored independently. A brilliant answer to part A won't compensate for a missing part C — always attempt every section.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="exam">
+    <div class="container">
+        <p class="section-label">Ready to Test Yourself?</p>
+        <h2 class="section-title">Unit 6 Practice Exam</h2>
+        <p>Challenging multiple-choice questions that mirror the real AP exam. Track your score and review detailed explanations for every answer.</p>
+        <a href="unit_6_exam.html" class="btn-white">Start Practice Exam &rarr;</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <p><a href="index.html">Your Study Guide</a> &mdash; AP Human Geography Unit 6</p>
+    </div>
+</footer>
+
+</body>
+</html>
