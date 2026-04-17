@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)file:///C:/Users/taker/Downloads/unit6_hard_exam.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP Human Geo — Unit 6 Hard Exam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./unit 6 exam_files/css2" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --border: #222;
+    --border-bright: #333;
+    --text: #e8e8e8;
+    --text-dim: #666;
+    --text-dimmer: #3a3a3a;
+    --white: #fff;
+    --correct: #e8e8e8;
+    --incorrect: #e8e8e8;
+    --correct-bg: #0f1f0f;
+    --incorrect-bg: #1f0f0f;
+    --correct-border: #2a5a2a;
+    --incorrect-border: #5a2a2a;
+    --correct-dot: #4caf50;
+    --incorrect-dot: #f44336;
+    --accent: #fff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .header-inner {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  #score-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* INTRO */
+  .intro {
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .intro h1 {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    color: var(--white);
+  }
+
+  .intro p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    max-width: 480px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .meta-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+  }
+
+  .meta-item span {
+    display: block;
+    color: var(--text-dim);
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+  }
+
+  /* SECTION */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    margin-bottom: 2.5rem;
+    margin-top: 4rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label:first-of-type { margin-top: 0; }
+
+  /* QUESTION */
+  .question-block {
+    margin-bottom: 3.5rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .question-block:last-child {
+    border-bottom: none;
+  }
+
+  .q-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dimmer);
+    margin-bottom: 0.75rem;
+  }
+
+  .q-text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+
+  /* CHOICES */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .choice-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.5;
+    transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--border-bright);
+    background: #161616;
+  }
+
+  .choice-btn:disabled { cursor: default; }
+
+  .choice-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    min-width: 1rem;
+    margin-top: 0.15rem;
+    letter-spacing: 0.05em;
+    transition: color 0.15s;
+  }
+
+  /* RESULT STATES */
+  .choice-btn.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct-border);
+  }
+
+  .choice-btn.correct .choice-letter { color: var(--correct-dot); }
+
+  .choice-btn.incorrect {
+    background: var(--incorrect-bg);
+    border-color: var(--incorrect-border);
+  }
+
+  .choice-btn.incorrect .choice-letter { color: var(--incorrect-dot); }
+
+  .choice-btn.revealed {
+    opacity: 0.35;
+  }
+
+  /* EXPLANATION */
+  .explanation {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-left: 2px solid var(--border-bright);
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .explanation.show { display: block; }
+
+  .explanation .verdict {
+    font-style: normal;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .verdict.correct-label { color: var(--correct-dot); }
+  .verdict.incorrect-label { color: var(--incorrect-dot); }
+
+  /* RESULTS PANEL */
+  #results-panel {
+    display: none;
+    margin-top: 4rem;
+    padding: 2.5rem;
+    border: 1px solid var(--border-bright);
+    text-align: center;
+  }
+
+  #results-panel.show { display: block; }
+
+  #results-panel h2 {
+    font-family: 'DM Mono', monospace;
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  #results-panel p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+  }
+
+  .results-bar {
+    height: 2px;
+    background: var(--border);
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .results-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: var(--white);
+    transition: width 1s ease;
+    width: 0%;
+  }
+
+  .results-grade {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .retake-btn {
+    margin-top: 2rem;
+    background: none;
+    border: 1px solid var(--border-bright);
+    color: var(--text-dim);
+    padding: 0.75rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .retake-btn:hover {
+    border-color: var(--white);
+    color: var(--white);
+  }
+
+  /* PROGRESS BAR */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 1px;
+    background: var(--white);
+    width: 0%;
+    transition: width 0.4s ease;
+    z-index: 200;
+  }
+
+  @media (max-width: 600px) {
+    .header-inner, main { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .intro h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<header>
+  <div class="header-inner">
+    <div class="header-label">AP Hum Geo — Unit 6 / Hard Mode</div>
+    <div id="score-display">0 / 0 answered</div>
+  </div>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>Unit 6<br>Hard Practice Exam</h1>
+    <p>Questions are harder than AP standard — designed to expose gaps, not just test recall. Read carefully.</p>
+    <div class="meta-row">
+      <div class="meta-item">Questions<span>40</span></div>
+      <div class="meta-item">Difficulty<span>Hard</span></div>
+      <div class="meta-item">Format<span>Multiple Choice</span></div>
+    </div>
+  </div>
+
+  <div id="exam-container"><div class="section-label">Industrial Revolution</div><div class="question-block" id="q0"><div class="q-number">01 / 40</div><div class="q-text">Britain's coal reserves were essential for industrialization — but which factor made coal extraction and distribution actually viable at scale?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>A strong navy that protected coal trade routes from foreign competition</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Political stability that allowed infrastructure investment in roads, canals, and rail</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>A large rural peasant class willing to work in dangerous mine conditions</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>The enclosure movement that freed up land for mining operations</span></button></div><div class="explanation" id="exp0"></div></div><div class="question-block" id="q1"><div class="q-number">02 / 40</div><div class="q-text">The flying shuttle (1733) was invented before the spinning jenny (1764). What does this sequence reveal about technological development during the Industrial Revolution?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Inventions occurred randomly with no relationship to one another</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Each invention created a bottleneck that motivated the next invention — faster weaving needed faster spinning</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>British inventors worked in isolation and were unaware of each other's work</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Government planning determined the order in which textile inventions appeared</span></button></div><div class="explanation" id="exp1"></div></div><div class="question-block" id="q2"><div class="q-number">03 / 40</div><div class="q-text">Eli Whitney's cotton gin is noted in the lesson as likely prolonging slavery. Which economic logic best explains this?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>The cotton gin was too expensive for small farms, concentrating wealth among large slave-owning plantations</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>By making cotton processing far more efficient, it made large-scale cotton agriculture vastly more profitable, increasing demand for field labor</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Whitney intentionally designed the machine to require slave operators</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>The cotton gin replaced skilled artisan work, driving workers into plantation labor</span></button></div><div class="explanation" id="exp2"></div></div><div class="question-block" id="q3"><div class="q-number">04 / 40</div><div class="q-text">A student argues: 'The Industrial Revolution improved life for most British people immediately.' Which piece of evidence from the lesson most directly contradicts this?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Factories were located in cities, which caused urban growth</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Workers lived in small, cramped, overcrowded tenements and often worked long hours in dangerous conditions for low pay</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>The Spinning Jenny replaced hand-spinning, reducing demand for artisan labor</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Britain's coal reserves were located far from major cities</span></button></div><div class="explanation" id="exp3"></div></div><div class="section-label">Sectors of Production</div><div class="question-block" id="q4"><div class="q-number">05 / 40</div><div class="q-text">A company mines bauxite, refines it into aluminum, fabricates aluminum into airplane parts, sells those parts to airlines, and insures the transaction. Which answer correctly identifies all sectors involved in order?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Primary, Secondary, Secondary, Tertiary, Quaternary</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Primary, Tertiary, Secondary, Quaternary, Quinary</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Secondary, Primary, Tertiary, Quaternary, Quinary</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Primary, Secondary, Tertiary, Tertiary, Quaternary</span></button></div><div class="explanation" id="exp4"></div></div><div class="question-block" id="q5"><div class="q-number">06 / 40</div><div class="q-text">The lesson states that 'manufacturing is a type of industry, but not all industries are manufacturing.' Which of the following best illustrates this distinction?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>A steel mill and a coal mine are both industries, but only the steel mill manufactures something</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>A clothing factory and a law firm are both industries, but only the clothing factory manufactures something</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>A bakery and a hospital are both industries, and both manufacture products</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>The service sector and manufacturing sector are both types of industry, and both involve making physical goods</span></button></div><div class="explanation" id="exp5"></div></div><div class="question-block" id="q6"><div class="q-number">07 / 40</div><div class="q-text">Which correctly distinguishes quaternary from quinary activities?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Quaternary involves government services; quinary involves private business services</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Quaternary involves high-level business services like banking and finance; quinary involves direct-to-consumer services like healthcare and retail</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Quaternary is found only in developed countries; quinary exists at all development levels</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Quaternary requires physical goods; quinary is entirely digital</span></button></div><div class="explanation" id="exp6"></div></div><div class="section-label">Agriculture &amp; Commodity Chains</div><div class="question-block" id="q7"><div class="q-number">08 / 40</div><div class="q-text">Guatemala's coffee sector is dominated by companies like Nestlé, Procter &amp; Gamble, and Philip Morris. This is best described as evidence of which concept?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Vertical integration by Guatemalan state-owned enterprises</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Dependency — foreign multinational corporations controlling commodity chains and extracting profits from developing nations</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Fair trade certification improving outcomes for Guatemalan growers</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Import substitution industrialization applied to the agricultural sector</span></button></div><div class="explanation" id="exp7"></div></div><div class="question-block" id="q8"><div class="q-number">09 / 40</div><div class="q-text">Only 2% of global coffee is fair trade certified. What does this statistic suggest about commodity chains more broadly?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Most commodity chains are already regulated fairly, making fair trade certification redundant</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>The vast majority of globally traded agricultural goods flow through chains with little ethical oversight or equitable profit distribution</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Fair trade is too expensive for consumers, limiting its market share</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Coffee is uniquely difficult to certify compared to other agricultural products</span></button></div><div class="explanation" id="exp8"></div></div><div class="question-block" id="q9"><div class="q-number">10 / 40</div><div class="q-text">The lesson describes Zimbabwe's food crisis as stemming from President Mugabe confiscating commercial farms from white Zimbabweans (1995–2008). What broader development principle does this illustrate?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Racial land reform always leads to economic collapse</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Political decisions — including those motivated by legitimate grievances — can devastate an agricultural economy and trigger famine</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Zimbabwe's soil was unsuitable for commercial farming, making collapse inevitable</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Foreign corporations abandoned Zimbabwe because of rising labor costs</span></button></div><div class="explanation" id="exp9"></div></div><div class="section-label">Natural Resources</div><div class="question-block" id="q10"><div class="q-number">11 / 40</div><div class="q-text">Zambia's economy prospered when the U.S. Mint bought large amounts of copper, then collapsed when the Mint stopped. Venezuela's economy collapsed when petroleum prices dropped. What single development strategy do both cases argue against?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Free trade agreements with larger economies</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Over-reliance on a single commodity export without economic diversification</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Nationalization of natural resources by the state</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Accepting foreign direct investment in the resource sector</span></button></div><div class="explanation" id="exp10"></div></div><div class="question-block" id="q11"><div class="q-number">12 / 40</div><div class="q-text">France and the Soviet Union both relied heavily on nuclear power. After Chernobyl (1986), many countries pulled back from nuclear energy. What does this divergence reveal about energy policy?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Nuclear energy is objectively too dangerous to use safely under any circumstances</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Energy choices are shaped by political context, regulatory capacity, and risk tolerance — not just technical feasibility</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Soviet nuclear plants were fundamentally different technology from Western plants, making comparison invalid</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Countries without coal or oil always adopt nuclear energy regardless of safety concerns</span></button></div><div class="explanation" id="exp11"></div></div><div class="question-block" id="q12"><div class="q-number">13 / 40</div><div class="q-text">The lesson states that tree farms are more sustainable than logging virgin forests, but 'do not support full ecosystems like untouched forests do.' What tradeoff does this highlight?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Economic sustainability and ecological sustainability are not always the same thing</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Tree farms are always preferable because they produce more timber per acre</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Sustainable forestry is impossible without government ownership of forests</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Virgin forests are economically more valuable than tree farms</span></button></div><div class="explanation" id="exp12"></div></div><div class="section-label">Manufacturing &amp; Services</div><div class="question-block" id="q13"><div class="q-number">14 / 40</div><div class="q-text">The U.S. service sector makes up about 80% of GDP. The lesson says this means the country has either 'deindustrialized or skipped industrialization.' What is the key difference between these two paths?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Deindustrialization means never having factories; skipping means having factories now</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Deindustrialization means a country once had a large manufacturing base that shrank; skipping means moving directly to services without a major manufacturing phase</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Deindustrialization is always bad; skipping industrialization is always a strategic advantage</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>There is no real difference — both result in service-dominant economies for identical reasons</span></button></div><div class="explanation" id="exp13"></div></div><div class="question-block" id="q14"><div class="q-number">15 / 40</div><div class="q-text">Taiwan in the 1960s focused on low-cost electronics. By the 1990s it had a strong banking and finance sector. This progression most closely mirrors which theoretical model?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Dependency theory — Taiwan escaped exploitation through nationalization</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Rostow's stages of development — moving from lower to higher-value economic activities over time</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Weber's location theory — Taiwan chose locations that minimized transportation costs</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>The Gini coefficient trajectory — wealth inequality decreased as Taiwan developed</span></button></div><div class="explanation" id="exp14"></div></div><div class="section-label">Development Levels</div><div class="question-block" id="q15"><div class="q-number">16 / 40</div><div class="q-text">In 1963, Zimbabwe and South Korea had similar GDPs. By 2002, South Korea's economy was over 120 times larger. Which combination of factors best explains this divergence?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>South Korea had more natural resources and a larger population</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>South Korea had U.S. backing and political stability enabling industrialization; Zimbabwe had corruption, failed land reform, and political collapse</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>South Korea adopted free trade earlier, while Zimbabwe maintained protectionist policies</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Zimbabwe's climate made agricultural development impossible, limiting economic growth</span></button></div><div class="explanation" id="exp15"></div></div><div class="question-block" id="q16"><div class="q-number">17 / 40</div><div class="q-text">The Gini coefficient is described as measuring income inequality on a scale of 0-100. Norway scores ~25; Colombia ~53.5. What does this NOT tell you?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Which country has a more equal distribution of income</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Which country has a larger middle class relative to its population</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Which country has a higher absolute standard of living for its poorest citizens</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Which country has greater wealth concentration among elites</span></button></div><div class="explanation" id="exp16"></div></div><div class="question-block" id="q17"><div class="q-number">18 / 40</div><div class="q-text">Angola had an oil boom and a growing middle class, yet the lesson classifies it as third world and notes its high Gini. What concept does this best illustrate?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Resource wealth guarantees broad development if the government is stable</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Economic growth and equitable development are not the same — wealth can grow while remaining concentrated among elites</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Angola's Gini was distorted by its small population</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Third world classification is based only on GDP, not on wealth distribution</span></button></div><div class="explanation" id="exp17"></div></div><div class="question-block" id="q18"><div class="q-number">19 / 40</div><div class="q-text">The lesson classifies Singapore as first world with per capita income over $50,000, despite being a one-party state with strong government control. What does this challenge?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>The idea that high GDP requires a large country with abundant natural resources</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>The assumption that only liberal democracies can achieve high levels of economic development</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>The claim that education has no impact on economic growth</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>The concept that trade surpluses are needed for MDC status</span></button></div><div class="explanation" id="exp18"></div></div><div class="question-block" id="q19"><div class="q-number">20 / 40</div><div class="q-text">Which of the following most accurately defines a 'failed state' as described in the lesson?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>A country with a Gini coefficient above 50</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>A country that cannot maintain organized government or viable economic institutions, leaving citizens reliant on subsistence farming and barter</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>A country that has lost a war and had its industrial infrastructure destroyed</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>A country with per capita income below $1,000 USD per year</span></button></div><div class="explanation" id="exp19"></div></div><div class="section-label">Rostow &amp; Dependency Theory</div><div class="question-block" id="q20"><div class="q-number">21 / 40</div><div class="q-text">A critic of Rostow argues: 'His model assumes all countries have equal access to the preconditions for development.' Which historical evidence from the lesson best supports this critique?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>The Soviet Union industrialized without following Rostow's stages</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Former colonies in Africa and Asia were denied access to higher education under colonial rule, making it hard to benefit from their own resources after independence</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Japan's Meiji Restoration shows rapid development is possible without following the model's sequence</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Costa Rica's ecotourism proves small countries can skip early stages</span></button></div><div class="explanation" id="exp20"></div></div><div class="question-block" id="q21"><div class="q-number">22 / 40</div><div class="q-text">Iran's 1953 nationalization of its oil industry was reversed by a CIA/MI6-backed coup. What does this episode most directly illustrate about dependency theory?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Nationalization is always economically ineffective as an anti-dependency strategy</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Stronger nations actively intervene to prevent developing countries from controlling their own resources, reinforcing the dependency cycle</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Iran's oil industry was too large for the domestic government to manage effectively</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>The Cold War caused the U.S. to oppose nationalization everywhere regardless of economic factors</span></button></div><div class="explanation" id="exp21"></div></div><div class="question-block" id="q22"><div class="q-number">23 / 40</div><div class="q-text">NAFTA was presented to Mexico as a path to growth through agricultural exports. Instead, the lesson describes cheap U.S. corn flooding Mexican markets and hurting local farmers. This outcome is most consistent with which theory?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Rostow's theory — Stage 2 trade expansion sometimes has short-term disruptions</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Dependency theory — free trade agreements designed by powerful nations tend to benefit those nations at the expense of weaker ones</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Weber's location theory — Mexico was poorly positioned geographically to benefit from NAFTA</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Agglomeration theory — industries clustered in U.S. border cities rather than spreading into Mexico</span></button></div><div class="explanation" id="exp22"></div></div><div class="question-block" id="q23"><div class="q-number">24 / 40</div><div class="q-text">Yugoslavia after the 1960s required foreign companies to reinvest some profits locally. Costa Rica's ecotourism is run by local agencies. India developed its own technology sector. All three are examples of</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Import substitution industrialization applied to three different sectors</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Anti-dependency strategies that attempt to keep more economic value within the country rather than allowing it to flow to foreign entities</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Nationalization policies that gave governments direct ownership of foreign-owned businesses</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Free trade strategies that attracted foreign investment by removing barriers</span></button></div><div class="explanation" id="exp23"></div></div><div class="section-label">Industrial Location</div><div class="question-block" id="q24"><div class="q-number">25 / 40</div><div class="q-text">Weber's theory classifies iron ore as 'distance-elastic.' What does this mean, and what is its practical implication for steel plant location?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Iron ore becomes more valuable the farther it travels, so steel plants should be far from iron ore sources</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Iron ore can be transported long distances without seriously disrupting production costs, so steel plants don't need to locate directly adjacent to iron ore deposits</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Iron ore is so heavy that transportation costs dominate all other location factors</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Distance-elastic resources are too expensive to move, so they dictate plant location absolutely</span></button></div><div class="explanation" id="exp24"></div></div><div class="question-block" id="q25"><div class="q-number">26 / 40</div><div class="q-text">Bread production is described as a 'ubiquitous industry.' What does ubiquitous mean in this context, and why does it affect location decisions?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Bread is produced only in regions with wheat farming, so plants must locate near agricultural areas</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Bread has universal demand everywhere, so production is decentralized near consumer populations rather than centralized near raw materials</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Bread production uses so many different ingredients that no single location has all inputs</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Bread is perishable so it must be exported quickly, requiring coastal plant locations</span></button></div><div class="explanation" id="exp25"></div></div><div class="question-block" id="q26"><div class="q-number">27 / 40</div><div class="q-text">Henry Ford initially used vertical integration at the River Rouge factory, then supply chains decentralized as car demand expanded. What economic logic drove this shift?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Ford lost control of his suppliers after labor strikes disrupted centralized production</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>As demand grew and the U.S. interstate system developed, it became cheaper to produce components in different locations and ship them, rather than doing everything in one place</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Ford was forced to decentralize by government antitrust regulations</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Japanese competition in the 1970s forced Ford to copy Toyota's decentralized model</span></button></div><div class="explanation" id="exp26"></div></div><div class="section-label">Retail &amp; Service Location</div><div class="question-block" id="q27"><div class="q-number">28 / 40</div><div class="q-text">The Westfield Century City shopping center draws customers from within a 50-mile radius. This large range is explained by which combination of factors?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>It is the only shopping center in Los Angeles, giving it a monopoly on retail</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Its location near the 405 and 10 freeways, wealthy surrounding neighborhoods, and high-end retail mix draws affluent shoppers willing to travel farther</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Government subsidies make it cheaper to shop there than at closer competitors</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Its large size means lower prices, attracting budget shoppers from across the region</span></button></div><div class="explanation" id="exp27"></div></div><div class="question-block" id="q28"><div class="q-number">29 / 40</div><div class="q-text">Silicon Valley experienced deglomeration as tech companies moved toward Austin, Portland, and Atlanta. Which combination of factors best explains this?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Austin, Portland, and Atlanta had better engineering universities than Bay Area schools</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Bay Area's extremely high real estate costs, high taxes, and heavy regulation made it cheaper to operate elsewhere while still accessing talent and markets</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>The 1997 Asian financial crisis reduced investment in California tech companies</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Federal antitrust actions forced tech companies to distribute operations geographically</span></button></div><div class="explanation" id="exp28"></div></div><div class="section-label">Asian Economic Rise</div><div class="question-block" id="q29"><div class="q-number">30 / 40</div><div class="q-text">Japan's post-WWII recovery was partly funded by U.S. aid. The lesson notes this aid 'may have helped weaken the U.S. car industry.' What is the argument here?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>U.S. aid came with conditions that forced American car companies to share technology with Japanese firms</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>By rebuilding Japan's industrial base, the U.S. effectively created a future competitor whose cars became dominant in American markets in the 1970s-80s</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>U.S. aid was secretly routed through Japanese car companies rather than the broader economy</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>American workers went on strike to protest the aid, weakening domestic production</span></button></div><div class="explanation" id="exp29"></div></div><div class="question-block" id="q30"><div class="q-number">31 / 40</div><div class="q-text">The lesson says India 'is taking a different path' from China — moving more directly into services without as much mass industrialization. What comparative advantage made this path viable for India specifically?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>India's large population gave it a manufacturing labor pool comparable to China's</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>India's former British colonial status produced a large English-speaking workforce with STEM education, making it competitive in global service industries</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>India's geographic location near the Middle East gave it access to petroleum for energy-intensive manufacturing</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>India's caste system created a skilled technical class that could staff service industries</span></button></div><div class="explanation" id="exp30"></div></div><div class="question-block" id="q31"><div class="q-number">32 / 40</div><div class="q-text">Hong Kong was seized by Britain in 1839, returned to China in 1997, but retained 'some autonomy and capitalist features.' What does this arrangement illustrate about economic development?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Colonial history always prevents economic development regardless of later political changes</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Economic systems and political systems can be partially decoupled — a territory can maintain market institutions even under a different sovereign power</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>China adopted Hong Kong's capitalist model for the rest of the country after 1997</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Britain's return of Hong Kong triggered the 1997 Asian financial crisis</span></button></div><div class="explanation" id="exp31"></div></div><div class="question-block" id="q32"><div class="q-number">33 / 40</div><div class="q-text">The 1997 Asian financial crisis began with a banking crash in South Korea and spread across Asia. Which of the following best explains why the crisis spread so rapidly?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>All Asian countries used the same currency, so one country's devaluation affected all others equally</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Asian economies were increasingly interconnected through trade, investment, and banking — when one major economy's banks failed, investor confidence collapsed across the region</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>The U.S. deliberately withdrew investment from Asia to weaken competitors</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>North Korea's military aggression caused regional economic instability</span></button></div><div class="explanation" id="exp32"></div></div><div class="section-label">Industrial Regions</div><div class="question-block" id="q33"><div class="q-number">34 / 40</div><div class="q-text">The lesson notes that U.S. car companies moved production from Michigan and Ohio to Alabama, South Carolina, Kentucky, and Tennessee. What is the primary reason for this shift within the same country?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Southern states have better rail and port access to export markets</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Southern right-to-work states are less union-friendly, resulting in lower wages and fewer worker benefits — reducing production costs</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Southern states have warmer climates that reduce energy costs for factories</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>The Rust Belt's environmental regulations made car manufacturing too expensive</span></button></div><div class="explanation" id="exp33"></div></div><div class="question-block" id="q34"><div class="q-number">35 / 40</div><div class="q-text">The Marshall Plan (1948–1952) helped rebuild Western Europe. By the 1960s, 'Made in Germany' meant high quality. This trajectory most closely mirrors which of Rostow's stages?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Stage 1 to Stage 2 — Germany moved from agriculture to basic trade infrastructure</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Stage 3 to Stage 4 — a post-war takeoff driven by technology spread into a mature, diversified economy</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Stage 5 to Stage 1 — war caused regression that required restarting the development cycle</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Stage 2 to Stage 3 — foreign aid (Marshall Plan) was the catalyst for economic takeoff</span></button></div><div class="explanation" id="exp34"></div></div><div class="question-block" id="q35"><div class="q-number">36 / 40</div><div class="q-text">Finland became a telecom pioneer by the 1970s with Nokia, despite being a small Nordic country that previously relied on fishing and farming. Which factor most likely enabled this leap?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Finland discovered large petroleum reserves that funded tech investment</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Finland's small population meant lower wages, making it competitive with Asian manufacturing centers</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Finland invested heavily in education after WWII, creating a highly skilled workforce that could compete in high-tech sectors</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Finland's geographic proximity to the Soviet Union gave it access to Russian technology</span></button></div><div class="explanation" id="exp35"></div></div><div class="question-block" id="q36"><div class="q-number">37 / 40</div><div class="q-text">The lesson describes garment and clerical factory work in Asia and Latin America as 'often done by women' in 'usually low-paid' positions with 'weak legal protection.' What development concept does this most directly relate to?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>The Gini coefficient — female employment reduces income inequality</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Brain drain — educated women leave for better opportunities in developed countries</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Gender as a structural disadvantage in industrial labor markets, particularly in developing countries, where women face concentrated exploitation in low-wage manufacturing</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Deindustrialization — as countries develop, female-dominated industries are always the first to disappear</span></button></div><div class="explanation" id="exp36"></div></div><div class="section-label">Mixed / Synthesis</div><div class="question-block" id="q37"><div class="q-number">38 / 40</div><div class="q-text">A country has: high GNI per capita, low Gini coefficient, strong service sector, and was a former communist state now restructuring. Which classification fits best?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Third world — high GNI is offset by communist legacy</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>First world — all indicators point to high development</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Second world — former communist, restructuring, but potentially reaching MDC status</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Fourth world — political collapse from communist transition</span></button></div><div class="explanation" id="exp37"></div></div><div class="question-block" id="q38"><div class="q-number">39 / 40</div><div class="q-text">Which pairing of theory and real-world example is INCORRECTLY matched?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>Dependency theory — NAFTA hurting Mexican farmers through cheap U.S. corn imports</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>Rostow Stage 3 — Malaysia using petroleum revenue and Wawasan 2020 to industrialize rapidly</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>Weber's weight-losing industry — a seafood processing plant built in a coastal fishing town</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>Agglomeration — tech companies spreading from Silicon Valley to Austin due to high Bay Area costs</span></button></div><div class="explanation" id="exp38"></div></div><div class="question-block" id="q39"><div class="q-number">40 / 40</div><div class="q-text">Which of the following sequences correctly traces a product from primary to quinary sector?</div><div class="choices"><button class="choice-btn"><span class="choice-letter">A</span><span>A farmer grows tea leaves &gt; a factory processes them into tea bags &gt; a distributor ships them to stores &gt; a financial analyst insures the shipment &gt; a customer buys tea and drinks it at home</span></button><button class="choice-btn"><span class="choice-letter">B</span><span>A financial analyst plans a tea distribution network &gt; a farmer grows tea &gt; a factory processes it &gt; a distributor ships it &gt; a customer buys it</span></button><button class="choice-btn"><span class="choice-letter">C</span><span>A customer buys tea &gt; a distributor ships it &gt; a factory processes it &gt; a farmer grows it &gt; a financial analyst insures the farm</span></button><button class="choice-btn"><span class="choice-letter">D</span><span>A factory processes tea &gt; a farmer grows leaves &gt; a distributor ships them &gt; a customer buys the tea &gt; a financial analyst closes the books</span></button></div><div class="explanation" id="exp39"></div></div></div>
+  <div id="results-panel">
+    <h2 id="final-score"></h2>
+    <p id="final-label"></p>
+    <div class="results-bar"><div class="results-bar-fill" id="score-bar"></div></div>
+    <div class="results-grade" id="final-grade"></div>
+    <br>
+    <button class="retake-btn" onclick="location.reload()">Retake Exam</button>
+  </div>
+</main>
+
+<script>
+const questions = [
+  {
+    section: "Industrial Revolution",
+    q: "Britain's coal reserves were essential for industrialization — but which factor made coal extraction and distribution actually viable at scale?",
+    choices: ["A strong navy that protected coal trade routes from foreign competition","Political stability that allowed infrastructure investment in roads, canals, and rail","A large rural peasant class willing to work in dangerous mine conditions","The enclosure movement that freed up land for mining operations"],
+    answer: 1,
+    explanation: "Coal was useless without the infrastructure to move it. Britain's political stability generated tax revenue that funded roads, bridges, and canals — what Rostow would call Stage 2 preconditions. The navy protected trade broadly, but internal distribution was the more critical bottleneck for domestic industrialization."
+  },
+  {
+    section: "Industrial Revolution",
+    q: "The flying shuttle (1733) was invented before the spinning jenny (1764). What does this sequence reveal about technological development during the Industrial Revolution?",
+    choices: ["Inventions occurred randomly with no relationship to one another","Each invention created a bottleneck that motivated the next invention — faster weaving needed faster spinning","British inventors worked in isolation and were unaware of each other's work","Government planning determined the order in which textile inventions appeared"],
+    answer: 1,
+    explanation: "The flying shuttle sped up weaving so dramatically that thread supply couldn't keep up, creating pressure to invent faster spinning. This chain reaction — one invention creating demand for the next — is a key pattern of the Industrial Revolution. Technology builds on itself."
+  },
+  {
+    section: "Industrial Revolution",
+    q: "Eli Whitney's cotton gin is noted in the lesson as likely prolonging slavery. Which economic logic best explains this?",
+    choices: ["The cotton gin was too expensive for small farms, concentrating wealth among large slave-owning plantations","By making cotton processing far more efficient, it made large-scale cotton agriculture vastly more profitable, increasing demand for field labor","Whitney intentionally designed the machine to require slave operators","The cotton gin replaced skilled artisan work, driving workers into plantation labor"],
+    answer: 1,
+    explanation: "The gin removed the processing bottleneck — cleaning cotton — but growing and picking cotton still required enormous human labor. Because processing became 200x faster, demand for raw cotton exploded, making large slave-operated plantations more economically attractive than ever."
+  },
+  {
+    section: "Industrial Revolution",
+    q: "A student argues: 'The Industrial Revolution improved life for most British people immediately.' Which piece of evidence from the lesson most directly contradicts this?",
+    choices: ["Factories were located in cities, which caused urban growth","Workers lived in small, cramped, overcrowded tenements and often worked long hours in dangerous conditions for low pay","The Spinning Jenny replaced hand-spinning, reducing demand for artisan labor","Britain's coal reserves were located far from major cities"],
+    answer: 1,
+    explanation: "The lesson directly describes tenements, long hours, dangerous jobs, low pay, and widespread child labor. These conditions show that while industrialization created new wealth, it did not immediately improve life for the working class — it often worsened it."
+  },
+  {
+    section: "Sectors of Production",
+    q: "A company mines bauxite, refines it into aluminum, fabricates aluminum into airplane parts, sells those parts to airlines, and insures the transaction. Which answer correctly identifies all sectors involved in order?",
+    choices: ["Primary, Secondary, Secondary, Tertiary, Quaternary","Primary, Tertiary, Secondary, Quaternary, Quinary","Secondary, Primary, Tertiary, Quaternary, Quinary","Primary, Secondary, Tertiary, Tertiary, Quaternary"],
+    answer: 0,
+    explanation: "Mining bauxite = Primary. Refining it = Secondary (processing raw material). Fabricating parts = Secondary (manufacturing). Selling parts to airlines = Tertiary (moving goods to market). Insurance = Quaternary (financial/business services). Each stage correctly follows the production chain."
+  },
+  {
+    section: "Sectors of Production",
+    q: "The lesson states that 'manufacturing is a type of industry, but not all industries are manufacturing.' Which of the following best illustrates this distinction?",
+    choices: ["A steel mill and a coal mine are both industries, but only the steel mill manufactures something","A clothing factory and a law firm are both industries, but only the clothing factory manufactures something","A bakery and a hospital are both industries, and both manufacture products","The service sector and manufacturing sector are both types of industry, and both involve making physical goods"],
+    answer: 1,
+    explanation: "A clothing factory takes raw materials (fabric) and produces a finished good — that's manufacturing. A law firm is an industry (it produces a service — legal advice) but manufactures nothing physical. The distinction is between producing goods versus producing services."
+  },
+  {
+    section: "Sectors of Production",
+    q: "Which correctly distinguishes quaternary from quinary activities?",
+    choices: ["Quaternary involves government services; quinary involves private business services","Quaternary involves high-level business services like banking and finance; quinary involves direct-to-consumer services like healthcare and retail","Quaternary is found only in developed countries; quinary exists at all development levels","Quaternary requires physical goods; quinary is entirely digital"],
+    answer: 1,
+    explanation: "Quaternary = business-to-business services (banking, insurance, finance, marketing). Quinary = business-to-consumer services (healthcare, retail, hospitality, local government). The key distinction is who the client is — other businesses vs. individual people."
+  },
+  {
+    section: "Agriculture & Commodity Chains",
+    q: "Guatemala's coffee sector is dominated by companies like Nestlé, Procter & Gamble, and Philip Morris. This is best described as evidence of which concept?",
+    choices: ["Vertical integration by Guatemalan state-owned enterprises","Dependency — foreign multinational corporations controlling commodity chains and extracting profits from developing nations","Fair trade certification improving outcomes for Guatemalan growers","Import substitution industrialization applied to the agricultural sector"],
+    answer: 1,
+    explanation: "This is a textbook dependency theory example. Foreign multinationals control the commodity chain from processing to marketing, capturing most of the $70+ billion global coffee market's value. Guatemalan growers are at the bottom of the chain, receiving little while investigations found ongoing child labor violations."
+  },
+  {
+    section: "Agriculture & Commodity Chains",
+    q: "Only 2% of global coffee is fair trade certified. What does this statistic suggest about commodity chains more broadly?",
+    choices: ["Most commodity chains are already regulated fairly, making fair trade certification redundant","The vast majority of globally traded agricultural goods flow through chains with little ethical oversight or equitable profit distribution","Fair trade is too expensive for consumers, limiting its market share","Coffee is uniquely difficult to certify compared to other agricultural products"],
+    answer: 1,
+    explanation: "2% is a tiny fraction. It suggests the default state of global commodity chains — for coffee and by extension most goods — is one where producers in developing countries have little leverage, profits concentrate upstream with multinationals, and ethical standards are the exception, not the rule."
+  },
+  {
+    section: "Agriculture & Commodity Chains",
+    q: "The lesson describes Zimbabwe's food crisis as stemming from President Mugabe confiscating commercial farms from white Zimbabweans (1995–2008). What broader development principle does this illustrate?",
+    choices: ["Racial land reform always leads to economic collapse","Political decisions — including those motivated by legitimate grievances — can devastate an agricultural economy and trigger famine","Zimbabwe's soil was unsuitable for commercial farming, making collapse inevitable","Foreign corporations abandoned Zimbabwe because of rising labor costs"],
+    answer: 1,
+    explanation: "Regardless of the political motivations behind land redistribution, the economic result was that Zimbabwe's mostly agricultural economy collapsed — causing food shortages in a country with rich soil. The lesson uses this to show how political instability and poor policy execution can be as destructive as drought or conflict."
+  },
+  {
+    section: "Natural Resources",
+    q: "Zambia's economy prospered when the U.S. Mint bought large amounts of copper, then collapsed when the Mint stopped. Venezuela's economy collapsed when petroleum prices dropped. What single development strategy do both cases argue against?",
+    choices: ["Free trade agreements with larger economies","Over-reliance on a single commodity export without economic diversification","Nationalization of natural resources by the state","Accepting foreign direct investment in the resource sector"],
+    answer: 1,
+    explanation: "Both Zambia and Venezuela are resource-dependent countries — their entire economies rose and fell with the price of one commodity. The lesson uses both as cautionary examples of the same trap: when you lack economic diversification, you have no buffer when commodity prices fall."
+  },
+  {
+    section: "Natural Resources",
+    q: "France and the Soviet Union both relied heavily on nuclear power. After Chernobyl (1986), many countries pulled back from nuclear energy. What does this divergence reveal about energy policy?",
+    choices: ["Nuclear energy is objectively too dangerous to use safely under any circumstances","Energy choices are shaped by political context, regulatory capacity, and risk tolerance — not just technical feasibility","Soviet nuclear plants were fundamentally different technology from Western plants, making comparison invalid","Countries without coal or oil always adopt nuclear energy regardless of safety concerns"],
+    answer: 1,
+    explanation: "France maintained nuclear power with strong government-owned regulation and standardized plant designs and has had no major accidents. The Soviet Union's Chernobyl disaster reflected weak safety culture and political suppression of risk data. The lesson frames nuclear as viable but controversial — its safety depends heavily on governance, not just technology."
+  },
+  {
+    section: "Natural Resources",
+    q: "The lesson states that tree farms are more sustainable than logging virgin forests, but 'do not support full ecosystems like untouched forests do.' What tradeoff does this highlight?",
+    choices: ["Economic sustainability and ecological sustainability are not always the same thing","Tree farms are always preferable because they produce more timber per acre","Sustainable forestry is impossible without government ownership of forests","Virgin forests are economically more valuable than tree farms"],
+    answer: 0,
+    explanation: "A tree farm can sustainably supply timber (renewable in the economic sense) while still being an ecological monoculture that supports far fewer species than a natural forest. This tension — between resource sustainability and full ecological health — is a recurring theme in how natural resources are managed."
+  },
+  {
+    section: "Manufacturing & Services",
+    q: "The U.S. service sector makes up about 80% of GDP. The lesson says this means the country has either 'deindustrialized or skipped industrialization.' What is the key difference between these two paths?",
+    choices: ["Deindustrialization means never having factories; skipping means having factories now","Deindustrialization means a country once had a large manufacturing base that shrank; skipping means moving directly to services without a major manufacturing phase","Deindustrialization is always bad; skipping industrialization is always a strategic advantage","There is no real difference — both result in service-dominant economies for identical reasons"],
+    answer: 1,
+    explanation: "The U.S. and UK deindustrialized — they had massive manufacturing bases in the 19th-20th centuries that shrank as jobs moved offshore. India is the key example of partly skipping — it moved more directly into services (especially tech and call centers) without the same mass industrialization phase. Same destination, very different histories."
+  },
+  {
+    section: "Manufacturing & Services",
+    q: "Taiwan in the 1960s focused on low-cost electronics. By the 1990s it had a strong banking and finance sector. This progression most closely mirrors which theoretical model?",
+    choices: ["Dependency theory — Taiwan escaped exploitation through nationalization","Rostow's stages of development — moving from lower to higher-value economic activities over time","Weber's location theory — Taiwan chose locations that minimized transportation costs","The Gini coefficient trajectory — wealth inequality decreased as Taiwan developed"],
+    answer: 1,
+    explanation: "Taiwan's path — from low-cost manufacturing > advanced manufacturing > finance and services — tracks Rostow's model almost exactly. It moved through the stages: basic production (Stage 2-3), industrial takeoff (Stage 3-4), then mature diversified economy (Stage 4-5). The Old Tigers are often used as Rostow success cases."
+  },
+  {
+    section: "Development Levels",
+    q: "In 1963, Zimbabwe and South Korea had similar GDPs. By 2002, South Korea's economy was over 120 times larger. Which combination of factors best explains this divergence?",
+    choices: ["South Korea had more natural resources and a larger population","South Korea had U.S. backing and political stability enabling industrialization; Zimbabwe had corruption, failed land reform, and political collapse","South Korea adopted free trade earlier, while Zimbabwe maintained protectionist policies","Zimbabwe's climate made agricultural development impossible, limiting economic growth"],
+    answer: 1,
+    explanation: "This is a striking real-world example from the lesson. South Korea's combination of U.S. Cold War investment, political stability (however authoritarian), and deliberate industrialization policy drove 120x growth. Zimbabwe had rich soil but experienced political instability, Mugabe's economic mismanagement, and the collapse of its agricultural base."
+  },
+  {
+    section: "Development Levels",
+    q: "The Gini coefficient is described as measuring income inequality on a scale of 0-100. Norway scores ~25; Colombia ~53.5. What does this NOT tell you?",
+    choices: ["Which country has a more equal distribution of income","Which country has a larger middle class relative to its population","Which country has a higher absolute standard of living for its poorest citizens","Which country has greater wealth concentration among elites"],
+    answer: 2,
+    explanation: "The Gini coefficient measures relative inequality — how evenly income is distributed — not absolute living standards. A country could have very equal distribution of poverty (low Gini, very poor). Norway has both low inequality AND high absolute income, but those are separate facts. Gini alone can't tell you how well off the bottom of the distribution actually lives."
+  },
+  {
+    section: "Development Levels",
+    q: "Angola had an oil boom and a growing middle class, yet the lesson classifies it as third world and notes its high Gini. What concept does this best illustrate?",
+    choices: ["Resource wealth guarantees broad development if the government is stable","Economic growth and equitable development are not the same — wealth can grow while remaining concentrated among elites","Angola's Gini was distorted by its small population","Third world classification is based only on GDP, not on wealth distribution"],
+    answer: 1,
+    explanation: "Angola's case separates GDP growth from development. You can have a growing economy with an expanding middle class AND a high Gini — meaning most of the new wealth is going to the top. The lesson uses this to argue that growth metrics like GDP miss the distributional question: growth for whom?"
+  },
+  {
+    section: "Development Levels",
+    q: "The lesson classifies Singapore as first world with per capita income over $50,000, despite being a one-party state with strong government control. What does this challenge?",
+    choices: ["The idea that high GDP requires a large country with abundant natural resources","The assumption that only liberal democracies can achieve high levels of economic development","The claim that education has no impact on economic growth","The concept that trade surpluses are needed for MDC status"],
+    answer: 1,
+    explanation: "Singapore's founding president Lee Kuan Yew built a wealthy, stable economy through authoritarian governance focused on science, engineering, finance, and shipping. This directly challenges the assumption that democratic political systems are a prerequisite for first-world economic development — a key tension in development theory."
+  },
+  {
+    section: "Development Levels",
+    q: "Which of the following most accurately defines a 'failed state' as described in the lesson?",
+    choices: ["A country with a Gini coefficient above 50","A country that cannot maintain organized government or viable economic institutions, leaving citizens reliant on subsistence farming and barter","A country that has lost a war and had its industrial infrastructure destroyed","A country with per capita income below $1,000 USD per year"],
+    answer: 1,
+    explanation: "Somalia is the lesson's example — a fifth-world failed state where formal government and economic institutions have collapsed. The key markers are not just poverty but the absence of functioning governing structures, leaving people to survive outside formal economic systems entirely."
+  },
+  {
+    section: "Rostow & Dependency Theory",
+    q: "A critic of Rostow argues: 'His model assumes all countries have equal access to the preconditions for development.' Which historical evidence from the lesson best supports this critique?",
+    choices: ["The Soviet Union industrialized without following Rostow's stages","Former colonies in Africa and Asia were denied access to higher education under colonial rule, making it hard to benefit from their own resources after independence","Japan's Meiji Restoration shows rapid development is possible without following the model's sequence","Costa Rica's ecotourism proves small countries can skip early stages"],
+    answer: 1,
+    explanation: "The lesson directly states this as a limit of Rostow's theory: colonialism structurally denied colonized populations education, infrastructure, and capital — the very preconditions Rostow treats as naturally emerging. Countries can't 'just move to Stage 2' if colonial power deliberately kept them in Stage 1. This is the core of why Prebisch's dependency theory developed as a counternarrative."
+  },
+  {
+    section: "Rostow & Dependency Theory",
+    q: "Iran's 1953 nationalization of its oil industry was reversed by a CIA/MI6-backed coup. What does this episode most directly illustrate about dependency theory?",
+    choices: ["Nationalization is always economically ineffective as an anti-dependency strategy","Stronger nations actively intervene to prevent developing countries from controlling their own resources, reinforcing the dependency cycle","Iran's oil industry was too large for the domestic government to manage effectively","The Cold War caused the U.S. to oppose nationalization everywhere regardless of economic factors"],
+    answer: 1,
+    explanation: "This is one of dependency theory's most concrete examples: the moment a developing country (Iran) tried to break the cycle by nationalizing resources, foreign powers intervened to restore the arrangement that benefited them. Prebisch's theory argues this kind of structural intervention — not just economic forces — keeps LDCs dependent."
+  },
+  {
+    section: "Rostow & Dependency Theory",
+    q: "NAFTA was presented to Mexico as a path to growth through agricultural exports. Instead, the lesson describes cheap U.S. corn flooding Mexican markets and hurting local farmers. This outcome is most consistent with which theory?",
+    choices: ["Rostow's theory — Stage 2 trade expansion sometimes has short-term disruptions","Dependency theory — free trade agreements designed by powerful nations tend to benefit those nations at the expense of weaker ones","Weber's location theory — Mexico was poorly positioned geographically to benefit from NAFTA","Agglomeration theory — industries clustered in U.S. border cities rather than spreading into Mexico"],
+    answer: 1,
+    explanation: "NAFTA's outcome for Mexican farmers is a dependency theory case study. The agreement was framed as mutual benefit, but U.S. farm subsidies allowed cheap corn to undercut Mexican producers, while the main U.S. gain was cheap offshore labor through maquiladoras. Prebisch would say this is the dependency cycle made structural through treaty."
+  },
+  {
+    section: "Rostow & Dependency Theory",
+    q: "Yugoslavia after the 1960s required foreign companies to reinvest some profits locally. Costa Rica's ecotourism is run by local agencies. India developed its own technology sector. All three are examples of",
+    choices: ["Import substitution industrialization applied to three different sectors","Anti-dependency strategies that attempt to keep more economic value within the country rather than allowing it to flow to foreign entities","Nationalization policies that gave governments direct ownership of foreign-owned businesses","Free trade strategies that attracted foreign investment by removing barriers"],
+    answer: 1,
+    explanation: "These three examples represent different anti-dependency tools with the same goal: preventing economic value from being fully extracted by foreign parties. Yugoslavia used profit-sharing, Costa Rica used locally-controlled tourism, and India built domestic tech capacity. All three try to capture more of the value generated within their borders."
+  },
+  {
+    section: "Industrial Location",
+    q: "Weber's theory classifies iron ore as 'distance-elastic.' What does this mean, and what is its practical implication for steel plant location?",
+    choices: ["Iron ore becomes more valuable the farther it travels, so steel plants should be far from iron ore sources","Iron ore can be transported long distances without seriously disrupting production costs, so steel plants don't need to locate directly adjacent to iron ore deposits","Iron ore is so heavy that transportation costs dominate all other location factors","Distance-elastic resources are too expensive to move, so they dictate plant location absolutely"],
+    answer: 1,
+    explanation: "Distance-elasticity means the resource's transportation cost doesn't escalate prohibitively over long distances. For steel, this means you don't need to build the plant at the iron ore mine — iron ore can come from the Mesabi Range in Minnesota to Pittsburgh in Pennsylvania without breaking the economics. But coal and water, which are less distance-elastic, must be closer."
+  },
+  {
+    section: "Industrial Location",
+    q: "Bread production is described as a 'ubiquitous industry.' What does ubiquitous mean in this context, and why does it affect location decisions?",
+    choices: ["Bread is produced only in regions with wheat farming, so plants must locate near agricultural areas","Bread has universal demand everywhere, so production is decentralized near consumer populations rather than centralized near raw materials","Bread production uses so many different ingredients that no single location has all inputs","Bread is perishable so it must be exported quickly, requiring coastal plant locations"],
+    answer: 1,
+    explanation: "Ubiquitous means the product has demand everywhere. Combined with the fact that bread spoils quickly (it's a weight-gaining, perishable good), this means it makes no sense to have one central factory — you need many smaller bakeries distributed near consumers. Compare this to steel, which doesn't spoil and can be shipped from centralized plants."
+  },
+  {
+    section: "Industrial Location",
+    q: "Henry Ford initially used vertical integration at the River Rouge factory, then supply chains decentralized as car demand expanded. What economic logic drove this shift?",
+    choices: ["Ford lost control of his suppliers after labor strikes disrupted centralized production","As demand grew and the U.S. interstate system developed, it became cheaper to produce components in different locations and ship them, rather than doing everything in one place","Ford was forced to decentralize by government antitrust regulations","Japanese competition in the 1970s forced Ford to copy Toyota's decentralized model"],
+    answer: 1,
+    explanation: "Cars don't spoil, so centralization made sense at small scale when transportation infrastructure was limited. But as demand grew and the interstate highway system (1950s-60s) enabled rapid nationwide trucking, companies could save money by locating production where labor and land were cheapest, then shipping finished goods. Scale changes the optimal location strategy."
+  },
+  {
+    section: "Retail & Service Location",
+    q: "The Westfield Century City shopping center draws customers from within a 50-mile radius. This large range is explained by which combination of factors?",
+    choices: ["It is the only shopping center in Los Angeles, giving it a monopoly on retail","Its location near the 405 and 10 freeways, wealthy surrounding neighborhoods, and high-end retail mix draws affluent shoppers willing to travel farther","Government subsidies make it cheaper to shop there than at closer competitors","Its large size means lower prices, attracting budget shoppers from across the region"],
+    answer: 1,
+    explanation: "Range (the distance consumers are willing to travel) increases when a destination offers something distinctive enough to justify the trip. Century City combines: freeway accessibility, a wealthy high-spending customer base nearby, and a premium retail mix. Affluent shoppers with cars and time will bypass closer ordinary malls for a better experience."
+  },
+  {
+    section: "Retail & Service Location",
+    q: "Silicon Valley experienced deglomeration as tech companies moved toward Austin, Portland, and Atlanta. Which combination of factors best explains this?",
+    choices: ["Austin, Portland, and Atlanta had better engineering universities than Bay Area schools","Bay Area's extremely high real estate costs, high taxes, and heavy regulation made it cheaper to operate elsewhere while still accessing talent and markets","The 1997 Asian financial crisis reduced investment in California tech companies","Federal antitrust actions forced tech companies to distribute operations geographically"],
+    answer: 1,
+    explanation: "Deglomeration happens when the costs of concentration outweigh the benefits. The Bay Area's agglomeration advantages (talent, networks, capital) remained, but real estate, regulation, and taxation grew so extreme that companies began moving operations to cities that offered lower overhead while still being able to recruit educated workers."
+  },
+  {
+    section: "Asian Economic Rise",
+    q: "Japan's post-WWII recovery was partly funded by U.S. aid. The lesson notes this aid 'may have helped weaken the U.S. car industry.' What is the argument here?",
+    choices: ["U.S. aid came with conditions that forced American car companies to share technology with Japanese firms","By rebuilding Japan's industrial base, the U.S. effectively created a future competitor whose cars became dominant in American markets in the 1970s-80s","U.S. aid was secretly routed through Japanese car companies rather than the broader economy","American workers went on strike to protest the aid, weakening domestic production"],
+    answer: 1,
+    explanation: "The U.S. rebuilt Japan strategically during the Cold War to create a stable, prosperous anti-communist ally. But Honda, Toyota, Subaru, and Mitsubishi were built on that same rebuilt industrial base — and by the 1970s, when fuel efficiency became critical, they outcompeted American brands. Strategic foreign policy created an unintended economic rival."
+  },
+  {
+    section: "Asian Economic Rise",
+    q: "The lesson says India 'is taking a different path' from China — moving more directly into services without as much mass industrialization. What comparative advantage made this path viable for India specifically?",
+    choices: ["India's large population gave it a manufacturing labor pool comparable to China's","India's former British colonial status produced a large English-speaking workforce with STEM education, making it competitive in global service industries","India's geographic location near the Middle East gave it access to petroleum for energy-intensive manufacturing","India's caste system created a skilled technical class that could staff service industries"],
+    answer: 1,
+    explanation: "English fluency from colonial history + Rajiv Gandhi's 1980s expansion of STEM higher education = a workforce that could compete globally in tech support, software development, engineering, and medical research. Companies like Microsoft and Dell found India's English-speaking technical workers far more suited to service work than to factory assembly — a different comparative advantage than China's cheap manufacturing labor."
+  },
+  {
+    section: "Asian Economic Rise",
+    q: "Hong Kong was seized by Britain in 1839, returned to China in 1997, but retained 'some autonomy and capitalist features.' What does this arrangement illustrate about economic development?",
+    choices: ["Colonial history always prevents economic development regardless of later political changes","Economic systems and political systems can be partially decoupled — a territory can maintain market institutions even under a different sovereign power","China adopted Hong Kong's capitalist model for the rest of the country after 1997","Britain's return of Hong Kong triggered the 1997 Asian financial crisis"],
+    answer: 1,
+    explanation: "Hong Kong's 'one country, two systems' arrangement shows that economic institutions (property rights, financial markets, trade rules) can persist even when political sovereignty changes. Hong Kong's status as a financial center was built over 150 years and maintained contractually after 1997. This also illustrates that economic development is partly about institutions, not just geography or politics."
+  },
+  {
+    section: "Asian Economic Rise",
+    q: "The 1997 Asian financial crisis began with a banking crash in South Korea and spread across Asia. Which of the following best explains why the crisis spread so rapidly?",
+    choices: ["All Asian countries used the same currency, so one country's devaluation affected all others equally","Asian economies were increasingly interconnected through trade, investment, and banking — when one major economy's banks failed, investor confidence collapsed across the region","The U.S. deliberately withdrew investment from Asia to weaken competitors","North Korea's military aggression caused regional economic instability"],
+    answer: 1,
+    explanation: "Financial contagion spreads through interconnection. By 1997, Asian economies were deeply linked — South Korean banks held assets tied to other Asian markets, and foreign investors pulled money out of the entire region when confidence fell. Thailand's baht collapse and Jakarta riots followed from the same loss of investor confidence, not from identical underlying problems."
+  },
+  {
+    section: "Industrial Regions",
+    q: "The lesson notes that U.S. car companies moved production from Michigan and Ohio to Alabama, South Carolina, Kentucky, and Tennessee. What is the primary reason for this shift within the same country?",
+    choices: ["Southern states have better rail and port access to export markets","Southern right-to-work states are less union-friendly, resulting in lower wages and fewer worker benefits — reducing production costs","Southern states have warmer climates that reduce energy costs for factories","The Rust Belt's environmental regulations made car manufacturing too expensive"],
+    answer: 1,
+    explanation: "This is domestic deindustrialization within the U.S. — manufacturing moving from high-union Midwest states to right-to-work Southern states where labor costs are lower and unions have less legal protection. The same cost-minimization logic that drives international outsourcing applies within national borders."
+  },
+  {
+    section: "Industrial Regions",
+    q: "The Marshall Plan (1948–1952) helped rebuild Western Europe. By the 1960s, 'Made in Germany' meant high quality. This trajectory most closely mirrors which of Rostow's stages?",
+    choices: ["Stage 1 to Stage 2 — Germany moved from agriculture to basic trade infrastructure","Stage 3 to Stage 4 — a post-war takeoff driven by technology spread into a mature, diversified economy","Stage 5 to Stage 1 — war caused regression that required restarting the development cycle","Stage 2 to Stage 3 — foreign aid (Marshall Plan) was the catalyst for economic takeoff"],
+    answer: 1,
+    explanation: "Postwar West Germany already had industrial knowledge and educated workers — the war destroyed physical capital, not human capital. The Marshall Plan provided the investment to rebuild, and by the 1960s Germany had a mature, technologically advanced economy with quality manufacturing. This is Stage 3-to-4 recovery, not a country starting from scratch."
+  },
+  {
+    section: "Industrial Regions",
+    q: "Finland became a telecom pioneer by the 1970s with Nokia, despite being a small Nordic country that previously relied on fishing and farming. Which factor most likely enabled this leap?",
+    choices: ["Finland discovered large petroleum reserves that funded tech investment","Finland's small population meant lower wages, making it competitive with Asian manufacturing centers","Finland invested heavily in education after WWII, creating a highly skilled workforce that could compete in high-tech sectors","Finland's geographic proximity to the Soviet Union gave it access to Russian technology"],
+    answer: 1,
+    explanation: "Finland's post-WWII industrialization was education-driven. The Scandinavian model of strong public investment in education and R&D created the human capital needed for high-tech sectors. Nokia didn't emerge from natural resources or cheap labor — it emerged from a technically educated population in a country that committed to knowledge-based development."
+  },
+  {
+    section: "Industrial Regions",
+    q: "The lesson describes garment and clerical factory work in Asia and Latin America as 'often done by women' in 'usually low-paid' positions with 'weak legal protection.' What development concept does this most directly relate to?",
+    choices: ["The Gini coefficient — female employment reduces income inequality","Brain drain — educated women leave for better opportunities in developed countries","Gender as a structural disadvantage in industrial labor markets, particularly in developing countries, where women face concentrated exploitation in low-wage manufacturing","Deindustrialization — as countries develop, female-dominated industries are always the first to disappear"],
+    answer: 2,
+    explanation: "The lesson specifically uses this to discuss gender and labor in industrial development — women are concentrated in the lowest-paid, most exploitative segments of manufacturing, often with weak legal recourse. This is a structural pattern across NICs: garments, electronics assembly, and clerical work are feminized and systematically undervalued."
+  },
+  {
+    section: "Mixed / Synthesis",
+    q: "A country has: high GNI per capita, low Gini coefficient, strong service sector, and was a former communist state now restructuring. Which classification fits best?",
+    choices: ["Third world — high GNI is offset by communist legacy","First world — all indicators point to high development","Second world — former communist, restructuring, but potentially reaching MDC status","Fourth world — political collapse from communist transition"],
+    answer: 2,
+    explanation: "The second world category in the lesson = former communist countries restructuring economically. High GNI and low Gini suggest significant progress, and MDC threshold is $10,000/capita — but the communist legacy and restructuring context places it in second world. Think of countries like Czech Republic or Slovenia — former Soviet-bloc, now highly developed but still carrying that historical classification."
+  },
+  {
+    section: "Mixed / Synthesis",
+    q: "Which pairing of theory and real-world example is INCORRECTLY matched?",
+    choices: ["Dependency theory — NAFTA hurting Mexican farmers through cheap U.S. corn imports","Rostow Stage 3 — Malaysia using petroleum revenue and Wawasan 2020 to industrialize rapidly","Weber's weight-losing industry — a seafood processing plant built in a coastal fishing town","Agglomeration — tech companies spreading from Silicon Valley to Austin due to high Bay Area costs"],
+    answer: 3,
+    explanation: "The last pairing is incorrect — that describes deglomeration (spreading outward), not agglomeration (clustering together). Agglomeration would be tech companies all concentrating in Silicon Valley. The other three pairings are all correctly matched: NAFTA/dependency, Malaysia/Rostow, seafood plant/weight-losing industry."
+  },
+  {
+    section: "Mixed / Synthesis",
+    q: "Which of the following sequences correctly traces a product from primary to quinary sector?",
+    choices: ["A farmer grows tea leaves > a factory processes them into tea bags > a distributor ships them to stores > a financial analyst insures the shipment > a customer buys tea and drinks it at home","A financial analyst plans a tea distribution network > a farmer grows tea > a factory processes it > a distributor ships it > a customer buys it","A customer buys tea > a distributor ships it > a factory processes it > a farmer grows it > a financial analyst insures the farm","A factory processes tea > a farmer grows leaves > a distributor ships them > a customer buys the tea > a financial analyst closes the books"],
+    answer: 0,
+    explanation: "The correct sequence is: Primary (farmer grows tea) > Secondary (factory processes into bags) > Tertiary (distributor ships to stores) > Quaternary (financial analyst/insurer) > Quinary (customer interaction — consumption). Option A follows this exactly. The others have sectors out of order."
+  }
+];
+
+let answered = 0;
+let correct = 0;
+const total = questions.length;
+
+function buildExam() {
+  const container = document.getElementById('exam-container');
+  let currentSection = '';
+
+  questions.forEach((q, i) => {
+    if (q.section !== currentSection) {
+      currentSection = q.section;
+      const label = document.createElement('div');
+      label.className = 'section-label';
+      label.textContent = q.section;
+      container.appendChild(label);
+    }
+
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = 'q' + i;
+
+    const num = document.createElement('div');
+    num.className = 'q-number';
+    num.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+
+    const qText = document.createElement('div');
+    qText.className = 'q-text';
+    qText.textContent = q.q;
+
+    const choices = document.createElement('div');
+    choices.className = 'choices';
+
+    const letters = ['A', 'B', 'C', 'D'];
+    q.choices.forEach((c, ci) => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="choice-letter">${letters[ci]}</span><span>${c}</span>`;
+      btn.addEventListener('click', () => handleAnswer(i, ci, block, choices));
+      choices.appendChild(btn);
+    });
+
+    const explanation = document.createElement('div');
+    explanation.className = 'explanation';
+    explanation.id = 'exp' + i;
+
+    block.appendChild(num);
+    block.appendChild(qText);
+    block.appendChild(choices);
+    block.appendChild(explanation);
+    container.appendChild(block);
+  });
+}
+
+function handleAnswer(qIndex, choiceIndex, block, choicesEl) {
+  const q = questions[qIndex];
+  const btns = choicesEl.querySelectorAll('.choice-btn');
+  const exp = document.getElementById('exp' + qIndex);
+  const letters = ['A', 'B', 'C', 'D'];
+
+  btns.forEach(b => b.disabled = true);
+
+  const isCorrect = choiceIndex === q.answer;
+  answered++;
+  if (isCorrect) correct++;
+
+  btns.forEach((btn, bi) => {
+    if (bi === q.answer) {
+      btn.classList.add('correct');
+    } else if (bi === choiceIndex && !isCorrect) {
+      btn.classList.add('incorrect');
+    } else {
+      btn.classList.add('revealed');
+    }
+  });
+
+  const verdict = document.createElement('div');
+  verdict.className = 'verdict ' + (isCorrect ? 'correct-label' : 'incorrect-label');
+  verdict.textContent = isCorrect ? 'Correct' : 'Incorrect — correct answer: ' + letters[q.answer];
+
+  exp.appendChild(verdict);
+  exp.appendChild(document.createTextNode(q.explanation));
+  exp.classList.add('show');
+
+  updateScore();
+
+  if (answered === total) {
+    setTimeout(showResults, 600);
+  }
+}
+
+function updateScore() {
+  document.getElementById('score-display').textContent = answered + ' / ' + total + ' answered  ·  ' + correct + ' correct';
+  const pct = (answered / total) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+function showResults() {
+  const panel = document.getElementById('results-panel');
+  const pct = Math.round((correct / total) * 100);
+  document.getElementById('final-score').textContent = correct + ' / ' + total;
+  document.getElementById('final-label').textContent = pct + '% — ' + getLabel(pct);
+  document.getElementById('final-grade').textContent = 'AP Score Estimate: ' + getAP(pct);
+  panel.classList.add('show');
+  panel.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    document.getElementById('score-bar').style.width = pct + '%';
+  }, 200);
+}
+
+function getLabel(pct) {
+  if (pct >= 90) return 'Exceptional';
+  if (pct >= 80) return 'Strong';
+  if (pct >= 70) return 'Solid';
+  if (pct >= 60) return 'Needs review';
+  return 'Study more before the exam';
+}
+
+function getAP(pct) {
+  if (pct >= 85) return '5';
+  if (pct >= 72) return '4';
+  if (pct >= 60) return '3';
+  if (pct >= 45) return '2';
+  return '1';
+}
+
+buildExam();
+</script>
+
+
+</body></html>
